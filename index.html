@@ -200,6 +200,22 @@ footer ul a{font-size:.92rem;color:var(--muted)}footer ul a:hover{color:#f5a623}
 .faq details[open] summary .pl{transform:rotate(45deg)}
 .faq .ans{padding:0 22px 20px 52px;color:var(--muted);font-size:.95rem;line-height:1.8}
 @media(max-width:560px){.faq .ans{padding-left:22px}}
+.sched{max-width:780px;margin:40px auto 0;display:grid;gap:10px}
+.sched .row{display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 22px;box-shadow:var(--cardsh)}
+.sched .row .t{font-family:"Poppins";font-weight:700;color:#f5a623;font-size:.95rem}
+.sched .row .a{color:var(--muted);font-size:.95rem}.sched .row .a b{color:var(--txt)}
+@media(max-width:560px){.sched .row{grid-template-columns:1fr;gap:4px}}
+.gallery{columns:4 210px;column-gap:14px;margin-top:42px}
+.gallery img{width:100%;border-radius:14px;margin-bottom:14px;display:block;border:1px solid var(--line)}
+@media(max-width:560px){.gallery{columns:2 140px}}
+.qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px}
+.quote{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px 24px;box-shadow:var(--cardsh);display:flex;flex-direction:column}
+.quote .qm{font-family:"Poppins";font-size:2.2rem;color:#f5a623;line-height:.6;margin-bottom:8px}
+.quote p{color:var(--muted);font-size:.96rem;flex:1}
+.quote .who{margin-top:14px;color:var(--txt);font-weight:700;font-size:.9rem}
+.quote .stars{color:#ffd23e;font-size:.8rem;margin-top:4px;letter-spacing:2px}
+@media(max-width:900px){.qgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.qgrid{grid-template-columns:1fr}}
 @media(max-width:780px){.proof{grid-template-columns:1fr;text-align:center}.proof .left{border-right:none;border-bottom:1px solid rgba(255,255,255,.12);padding:0 0 20px}.wframe{grid-template-columns:1fr}.proofstrip{flex-direction:column;gap:18px}.proofstrip .ps-sep{display:none}.proofstrip .ps-cred{text-align:center;max-width:none}}
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}.reveal.in{opacity:1;transform:none}
 @media(max-width:980px){.hgrid,.split,.mosa{grid-template-columns:1fr;gap:32px}.split.rev .vis{order:0}.grid4,.grid3{grid-template-columns:1fr 1fr}.road{grid-template-columns:1fr 1fr}.hv,.vis{order:-1}.foot-grid{grid-template-columns:1fr 1fr}}
