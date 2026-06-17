@@ -58,8 +58,8 @@ body{margin:0;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",syst
 .note{font-size:12px;color:#9AA3B2;text-align:center;margin-top:10px}
 /* ===== 畢業頁清新喜氣版（body.fest）天藍→嫩綠 + 落下紙花動畫 ===== */
 .fest .hero{position:relative;overflow:hidden;
-  background:linear-gradient(160deg,#00008B 0%, #005C6E 50%, #006600 100%);}
-.fest .hero > *:not(.confetti){position:relative;z-index:2}
+  background:linear-gradient(180deg,#3A86D0 0%, #62A8DD 48%, #45A655 62%, #2F9A46 100%);}
+.fest .hero > *:not(.confetti):not(.clouds){position:relative;z-index:2}
 .confetti{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .confetti i{position:absolute;top:-24px;display:block;opacity:.92;animation:fall linear infinite}
 @keyframes fall{
@@ -67,7 +67,14 @@ body{margin:0;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",syst
   8%{opacity:1}
   100%{transform:translateY(460px) rotate(540deg);opacity:.9}
 }
-@media (prefers-reduced-motion: reduce){.confetti i{animation:none;opacity:.5}}
+/* 白雲 */
+.clouds{position:absolute;top:0;left:0;right:0;height:130px;z-index:1;pointer-events:none;overflow:hidden}
+.cloud{position:absolute;background:#fff;border-radius:40px;opacity:.9;animation:drift linear infinite}
+.cloud::before,.cloud::after{content:"";position:absolute;background:#fff;border-radius:50%}
+.cloud::before{width:58%;height:170%;left:16%;top:-78%}
+.cloud::after{width:42%;height:125%;right:14%;top:-46%}
+@keyframes drift{0%{transform:translateX(-160px)}100%{transform:translateX(112vw)}}
+@media (prefers-reduced-motion: reduce){.confetti i,.cloud{animation:none}.confetti i{opacity:.5}}
 .fest .tag{color:rgba(255,255,255,.95)}
 .fest .brand{color:#fff}
 .fest .brand .gold{color:#EAFFF6}
