@@ -58,7 +58,7 @@ body{margin:0;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",syst
 .note{font-size:12px;color:#9AA3B2;text-align:center;margin-top:10px}
 /* ===== 畢業頁清新喜氣版（body.fest）天藍→嫩綠 + 落下紙花動畫 ===== */
 .fest .hero{position:relative;overflow:hidden;
-  background:linear-gradient(160deg,#29B6F6 0%, #26C6DA 42%, #66BB6A 100%);}
+  background:linear-gradient(160deg,#0091EA 0%, #15C0C6 45%, #34C24B 100%);}
 .fest .hero > *:not(.confetti){position:relative;z-index:2}
 .confetti{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .confetti i{position:absolute;top:-24px;display:block;opacity:.92;animation:fall linear infinite}
@@ -90,28 +90,28 @@ body{margin:0;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",syst
 <div class="wrap">
 <div class="steps"><h3>30 秒完成，領取專屬折價券</h3>
 <div class="step"><span class="n">1</span><div>點下方喜歡的範例，文字會<b>自動複製</b></div></div>
-<div class="step"><span class="n">2</span><div>在跳出的 Google 視窗<b>貼上</b>、點選<b>五顆星 ★★★★★</b></div></div>
+<div class="step"><span class="n">2</span><div>在 Google 評論框<b>長按 →「貼上」</b>，再點<b>五顆星 ★★★★★</b></div></div>
 <div class="step"><span class="n">3</span><div>按<b>「發布」</b>後，把<b>評論截圖</b>傳回 LINE 給 TIPS 老師，即可領取 均瑜 的專屬折價券！</div></div>
 </div>
 <div class="sec-title">點選您喜歡的好評範例</div>
 <div class="card" onclick='pick("老師很用心，孩子在 TIPS 進步很多，環境也安全舒適，推薦給南屯的家長！")'>
 <div class="ctext">老師很用心，孩子在 TIPS 進步很多，環境也安全舒適，推薦給南屯的家長！</div>
-<div class="tap">👆 點一下複製並前往評論</div></div>
+<div class="tap">👆 點一下複製 → 到 Google 長按貼上</div></div>
 <div class="card" onclick='pick("TIPS 的師資和教學品質都很棒，孩子很喜歡來上課，成績明顯提升，非常推薦！")'>
 <div class="ctext">TIPS 的師資和教學品質都很棒，孩子很喜歡來上課，成績明顯提升，非常推薦！</div>
-<div class="tap">👆 點一下複製並前往評論</div></div>
+<div class="tap">👆 點一下複製 → 到 Google 長按貼上</div></div>
 <div class="card" onclick='pick("TIPS 英典的課程規劃完整，從國小課輔到英數加強都很扎實，老師會針對孩子的弱點個別輔導，並定期回報學習狀況，讓家長很放心。")'>
 <div class="ctext">TIPS 英典的課程規劃完整，從國小課輔到英數加強都很扎實，老師會針對孩子的弱點個別輔導，並定期回報學習狀況，讓家長很放心。</div>
-<div class="tap">👆 點一下複製並前往評論</div></div>
+<div class="tap">👆 點一下複製 → 到 Google 長按貼上</div></div>
 <div class="card" onclick='pick("選補習班最看重師資與制度，TIPS 兩者都到位：小班教學、進度透明、考前會做試題分析，孩子的學習態度和成績都有明顯改變，值得信賴。")'>
 <div class="ctext">選補習班最看重師資與制度，TIPS 兩者都到位：小班教學、進度透明、考前會做試題分析，孩子的學習態度和成績都有明顯改變，值得信賴。</div>
-<div class="tap">👆 點一下複製並前往評論</div></div>
+<div class="tap">👆 點一下複製 → 到 Google 長按貼上</div></div>
 <div class="card" onclick='pick("謝謝 TIPS 的老師們這段時間的陪伴，孩子從原本排斥讀書到現在主動學習，每天都開心地來上課。看到孩子的轉變，真的很感動，謝謝你們！")'>
 <div class="ctext">謝謝 TIPS 的老師們這段時間的陪伴，孩子從原本排斥讀書到現在主動學習，每天都開心地來上課。看到孩子的轉變，真的很感動，謝謝你們！</div>
-<div class="tap">👆 點一下複製並前往評論</div></div>
+<div class="tap">👆 點一下複製 → 到 Google 長按貼上</div></div>
 <div class="card" onclick='pick("在 TIPS 不只是學知識，老師更像家人一樣關心孩子的生活與品格。孩子在這裡學得快樂又踏實，我們全家都很感謝這裡的每一位老師。")'>
 <div class="ctext">在 TIPS 不只是學知識，老師更像家人一樣關心孩子的生活與品格。孩子在這裡學得快樂又踏實，我們全家都很感謝這裡的每一位老師。</div>
-<div class="tap">👆 點一下複製並前往評論</div></div>
+<div class="tap">👆 點一下複製 → 到 Google 長按貼上</div></div>
 <div class="foot">TIPS 英典教育學習中心<br>台中市南屯區中和里黎明路一段295號 · 0905-547839<br><a href="https://www.tips-edu.com">www.tips-edu.com</a></div>
 </div>
 <div id="toast"></div>
@@ -124,7 +124,7 @@ function copyText(s){
 }
 function pick(s){
   copyText(s);
-  toast('✅ 好評已複製！正在開啟 Google，請貼上→點五顆星→送出');
+  toast('✅ 文字已複製！到 Google 評論框「長按 →貼上」，再點五顆星送出');
   setTimeout(function(){ window.open(REVIEW_URL,'_blank'); },700);
 }
 function showCoupon(){document.getElementById('ov').classList.add('show');}
