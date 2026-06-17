@@ -58,7 +58,7 @@ body{margin:0;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",syst
 .note{font-size:12px;color:#9AA3B2;text-align:center;margin-top:10px}
 /* ===== 畢業頁清新喜氣版（body.fest）天藍→嫩綠 + 落下紙花動畫 ===== */
 .fest .hero{position:relative;overflow:hidden;
-  background:linear-gradient(160deg,#29B6F6 0%, #26C6DA 42%, #66BB6A 100%);}
+  background:linear-gradient(160deg,#0091FF 0%, #06C6C0 44%, #12C247 100%);}
 .fest .hero > *:not(.confetti){position:relative;z-index:2}
 .confetti{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .confetti i{position:absolute;top:-24px;display:block;opacity:.92;animation:fall linear infinite}
@@ -77,6 +77,21 @@ body{margin:0;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",syst
 .fest .lead{color:rgba(255,255,255,.97)}
 .fest .gift{background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.75);color:#fff}
 .fest .gift b{color:#FFF59D}
+/* ===== 點選後跳出的引導卡片 ===== */
+.gmov{position:fixed;inset:0;background:rgba(10,15,28,.78);display:none;align-items:center;justify-content:center;z-index:80;padding:20px;backdrop-filter:blur(3px)}
+.gmov.show{display:flex;animation:fade .2s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.gmcard{background:#fff;border-radius:18px;max-width:380px;width:100%;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.4);text-align:center;animation:pop .3s cubic-bezier(.2,1.2,.4,1)}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.gmh{font-size:20px;font-weight:800;color:var(--navy)}
+.gmsub{font-size:13px;color:var(--grey);margin-top:6px}
+.gmtext{font-size:14px;color:#2a3142;background:#F2F4F8;border-radius:10px;padding:12px;margin:10px 0 4px;text-align:left;line-height:1.6;max-height:150px;overflow:auto}
+.gmsteps{text-align:left;margin:14px 2px 4px}
+.gmsteps>div{display:flex;gap:9px;align-items:flex-start;font-size:14px;color:#3a4150;margin:9px 0}
+.gmsteps span{flex:0 0 22px;height:22px;border-radius:50%;background:#4285F4;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.gmbtn{display:block;width:100%;background:#4285F4;color:#fff;border:none;font-size:16px;font-weight:800;padding:15px;border-radius:12px;margin-top:14px;cursor:pointer}
+.gmbtn:active{transform:scale(.99)}
+.gmclose{display:block;width:100%;background:none;border:none;color:#9AA3B2;font-size:13px;padding:10px 0 0;margin-top:6px;cursor:pointer}
 
 .g{display:block;background:#fff;border-radius:12px;padding:14px 16px;margin:8px 0;box-shadow:0 3px 12px rgba(20,30,60,.07);text-decoration:none;color:var(--navy);font-size:16px}
 .g span{color:#9AA3B2;font-size:13px}

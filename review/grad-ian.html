@@ -58,7 +58,7 @@ body{margin:0;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",syst
 .note{font-size:12px;color:#9AA3B2;text-align:center;margin-top:10px}
 /* ===== 畢業頁清新喜氣版（body.fest）天藍→嫩綠 + 落下紙花動畫 ===== */
 .fest .hero{position:relative;overflow:hidden;
-  background:linear-gradient(160deg,#29B6F6 0%, #26C6DA 42%, #66BB6A 100%);}
+  background:linear-gradient(160deg,#0091FF 0%, #06C6C0 44%, #12C247 100%);}
 .fest .hero > *:not(.confetti){position:relative;z-index:2}
 .confetti{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
 .confetti i{position:absolute;top:-24px;display:block;opacity:.92;animation:fall linear infinite}
@@ -77,6 +77,21 @@ body{margin:0;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",syst
 .fest .lead{color:rgba(255,255,255,.97)}
 .fest .gift{background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.75);color:#fff}
 .fest .gift b{color:#FFF59D}
+/* ===== 點選後跳出的引導卡片 ===== */
+.gmov{position:fixed;inset:0;background:rgba(10,15,28,.78);display:none;align-items:center;justify-content:center;z-index:80;padding:20px;backdrop-filter:blur(3px)}
+.gmov.show{display:flex;animation:fade .2s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.gmcard{background:#fff;border-radius:18px;max-width:380px;width:100%;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.4);text-align:center;animation:pop .3s cubic-bezier(.2,1.2,.4,1)}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.gmh{font-size:20px;font-weight:800;color:var(--navy)}
+.gmsub{font-size:13px;color:var(--grey);margin-top:6px}
+.gmtext{font-size:14px;color:#2a3142;background:#F2F4F8;border-radius:10px;padding:12px;margin:10px 0 4px;text-align:left;line-height:1.6;max-height:150px;overflow:auto}
+.gmsteps{text-align:left;margin:14px 2px 4px}
+.gmsteps>div{display:flex;gap:9px;align-items:flex-start;font-size:14px;color:#3a4150;margin:9px 0}
+.gmsteps span{flex:0 0 22px;height:22px;border-radius:50%;background:#4285F4;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.gmbtn{display:block;width:100%;background:#4285F4;color:#fff;border:none;font-size:16px;font-weight:800;padding:15px;border-radius:12px;margin-top:14px;cursor:pointer}
+.gmbtn:active{transform:scale(.99)}
+.gmclose{display:block;width:100%;background:none;border:none;color:#9AA3B2;font-size:13px;padding:10px 0 0;margin-top:6px;cursor:pointer}
 </style></head><body class="fest">
 <script>const REVIEW_URL="https://maps.google.com/?cid=12004499386984425673";</script>
 <div class="hero"><div class="confetti"><i style="left:57%;width:13px;height:19px;border-radius:2px;background:#C5E1A5;animation-duration:6.9s;animation-delay:6.0s"></i><i style="left:75%;width:10px;height:15px;border-radius:2px;background:#80DEEA;animation-duration:4.2s;animation-delay:5.6s"></i><i style="left:12%;width:11px;height:16px;border-radius:2px;background:#FFFFFF;animation-duration:5.2s;animation-delay:1.0s"></i><i style="left:50%;width:11px;height:16px;border-radius:2px;background:#4FC3F7;animation-duration:7.4s;animation-delay:4.6s"></i><i style="left:67%;width:8px;height:8px;border-radius:50%;background:#80DEEA;animation-duration:3.7s;animation-delay:0.2s"></i><i style="left:59%;width:8px;height:8px;border-radius:50%;background:#FFFFFF;animation-duration:4.7s;animation-delay:4.1s"></i><i style="left:37%;width:10px;height:10px;border-radius:50%;background:#FF8A80;animation-duration:5.4s;animation-delay:4.6s"></i><i style="left:70%;width:12px;height:12px;border-radius:50%;background:#FF8A80;animation-duration:7.5s;animation-delay:5.9s"></i><i style="left:29%;width:11px;height:11px;border-radius:50%;background:#FFE082;animation-duration:5.5s;animation-delay:0.2s"></i><i style="left:37%;width:13px;height:13px;border-radius:50%;background:#FFFFFF;animation-duration:5.0s;animation-delay:6.7s"></i><i style="left:6%;width:10px;height:10px;border-radius:50%;background:#FFD54F;animation-duration:5.3s;animation-delay:6.9s"></i><i style="left:80%;width:9px;height:9px;border-radius:50%;background:#FFE082;animation-duration:4.2s;animation-delay:4.7s"></i><i style="left:1%;width:7px;height:7px;border-radius:50%;background:#4FC3F7;animation-duration:7.4s;animation-delay:5.3s"></i><i style="left:12%;width:10px;height:15px;border-radius:2px;background:#4FC3F7;animation-duration:3.4s;animation-delay:3.3s"></i><i style="left:24%;width:12px;height:12px;border-radius:50%;background:#4FC3F7;animation-duration:5.2s;animation-delay:1.3s"></i><i style="left:49%;width:8px;height:8px;border-radius:50%;background:#FFFFFF;animation-duration:3.9s;animation-delay:2.9s"></i><i style="left:75%;width:8px;height:8px;border-radius:50%;background:#4FC3F7;animation-duration:4.6s;animation-delay:6.2s"></i><i style="left:77%;width:8px;height:8px;border-radius:50%;background:#AED581;animation-duration:6.0s;animation-delay:0.7s"></i><i style="left:1%;width:9px;height:9px;border-radius:50%;background:#FFD54F;animation-duration:6.6s;animation-delay:2.3s"></i><i style="left:11%;width:7px;height:7px;border-radius:50%;background:#80DEEA;animation-duration:4.3s;animation-delay:4.5s"></i><i style="left:79%;width:10px;height:10px;border-radius:50%;background:#80DEEA;animation-duration:5.3s;animation-delay:6.7s"></i><i style="left:49%;width:8px;height:8px;border-radius:50%;background:#80DEEA;animation-duration:4.1s;animation-delay:1.1s"></i><i style="left:24%;width:11px;height:16px;border-radius:2px;background:#AED581;animation-duration:4.0s;animation-delay:4.4s"></i><i style="left:49%;width:10px;height:10px;border-radius:50%;background:#FFFFFF;animation-duration:7.0s;animation-delay:4.2s"></i><i style="left:4%;width:12px;height:12px;border-radius:50%;background:#FFD54F;animation-duration:5.5s;animation-delay:1.8s"></i><i style="left:76%;width:12px;height:12px;border-radius:50%;background:#FFE082;animation-duration:5.4s;animation-delay:3.6s"></i><i style="left:61%;width:11px;height:11px;border-radius:50%;background:#FFE082;animation-duration:5.7s;animation-delay:6.0s"></i><i style="left:26%;width:10px;height:10px;border-radius:50%;background:#C5E1A5;animation-duration:6.5s;animation-delay:0.5s"></i><i style="left:5%;width:11px;height:11px;border-radius:50%;background:#4FC3F7;animation-duration:4.1s;animation-delay:2.6s"></i><i style="left:17%;width:12px;height:18px;border-radius:2px;background:#FFFFFF;animation-duration:7.1s;animation-delay:6.9s"></i><i style="left:17%;width:10px;height:15px;border-radius:2px;background:#B3E5FC;animation-duration:5.8s;animation-delay:6.5s"></i><i style="left:4%;width:10px;height:15px;border-radius:2px;background:#FFE082;animation-duration:3.5s;animation-delay:4.5s"></i><i style="left:40%;width:10px;height:10px;border-radius:50%;background:#FFFFFF;animation-duration:4.0s;animation-delay:0.5s"></i><i style="left:5%;width:12px;height:18px;border-radius:2px;background:#4FC3F7;animation-duration:7.1s;animation-delay:5.2s"></i><i style="left:43%;width:7px;height:10px;border-radius:2px;background:#FFD54F;animation-duration:4.8s;animation-delay:4.8s"></i><i style="left:3%;width:11px;height:11px;border-radius:50%;background:#FFD54F;animation-duration:6.9s;animation-delay:4.0s"></i><i style="left:1%;width:12px;height:18px;border-radius:2px;background:#FFE082;animation-duration:5.9s;animation-delay:0.6s"></i><i style="left:53%;width:12px;height:18px;border-radius:2px;background:#80DEEA;animation-duration:6.4s;animation-delay:2.7s"></i><i style="left:59%;width:13px;height:13px;border-radius:50%;background:#FFFFFF;animation-duration:6.8s;animation-delay:0.6s"></i><i style="left:76%;width:12px;height:18px;border-radius:2px;background:#FFE082;animation-duration:3.8s;animation-delay:0.2s"></i></div>
@@ -90,31 +105,45 @@ body{margin:0;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",syst
 <div class="wrap">
 <div class="steps"><h3>30 秒完成，領取專屬折價券</h3>
 <div class="step"><span class="n">1</span><div>點下方喜歡的範例，文字會<b>自動複製</b></div></div>
-<div class="step"><span class="n">2</span><div>在跳出的 Google 視窗<b>貼上</b>、點選<b>五顆星 ★★★★★</b></div></div>
+<div class="step"><span class="n">2</span><div>在 Google 評論框<b>長按 →「貼上」</b>，再點<b>五顆星 ★★★★★</b></div></div>
 <div class="step"><span class="n">3</span><div>按<b>「發布」</b>後，把<b>評論截圖</b>傳回 LINE 給 TIPS 老師，即可領取 逸恩 的專屬折價券！</div></div>
 </div>
 <div class="sec-title">點選您喜歡的好評範例</div>
 <div class="card" onclick='pick("老師很用心，孩子在 TIPS 進步很多，環境也安全舒適，推薦給南屯的家長！")'>
 <div class="ctext">老師很用心，孩子在 TIPS 進步很多，環境也安全舒適，推薦給南屯的家長！</div>
-<div class="tap">👆 點一下複製並前往評論</div></div>
+<div class="tap">👆 點一下複製 → 到 Google 長按貼上</div></div>
 <div class="card" onclick='pick("TIPS 的師資和教學品質都很棒，孩子很喜歡來上課，成績明顯提升，非常推薦！")'>
 <div class="ctext">TIPS 的師資和教學品質都很棒，孩子很喜歡來上課，成績明顯提升，非常推薦！</div>
-<div class="tap">👆 點一下複製並前往評論</div></div>
+<div class="tap">👆 點一下複製 → 到 Google 長按貼上</div></div>
 <div class="card" onclick='pick("TIPS 英典的課程規劃完整，從國小課輔到英數加強都很扎實，老師會針對孩子的弱點個別輔導，並定期回報學習狀況，讓家長很放心。")'>
 <div class="ctext">TIPS 英典的課程規劃完整，從國小課輔到英數加強都很扎實，老師會針對孩子的弱點個別輔導，並定期回報學習狀況，讓家長很放心。</div>
-<div class="tap">👆 點一下複製並前往評論</div></div>
+<div class="tap">👆 點一下複製 → 到 Google 長按貼上</div></div>
 <div class="card" onclick='pick("選補習班最看重師資與制度，TIPS 兩者都到位：小班教學、進度透明、考前會做試題分析，孩子的學習態度和成績都有明顯改變，值得信賴。")'>
 <div class="ctext">選補習班最看重師資與制度，TIPS 兩者都到位：小班教學、進度透明、考前會做試題分析，孩子的學習態度和成績都有明顯改變，值得信賴。</div>
-<div class="tap">👆 點一下複製並前往評論</div></div>
+<div class="tap">👆 點一下複製 → 到 Google 長按貼上</div></div>
 <div class="card" onclick='pick("謝謝 TIPS 的老師們這段時間的陪伴，孩子從原本排斥讀書到現在主動學習，每天都開心地來上課。看到孩子的轉變，真的很感動，謝謝你們！")'>
 <div class="ctext">謝謝 TIPS 的老師們這段時間的陪伴，孩子從原本排斥讀書到現在主動學習，每天都開心地來上課。看到孩子的轉變，真的很感動，謝謝你們！</div>
-<div class="tap">👆 點一下複製並前往評論</div></div>
+<div class="tap">👆 點一下複製 → 到 Google 長按貼上</div></div>
 <div class="card" onclick='pick("在 TIPS 不只是學知識，老師更像家人一樣關心孩子的生活與品格。孩子在這裡學得快樂又踏實，我們全家都很感謝這裡的每一位老師。")'>
 <div class="ctext">在 TIPS 不只是學知識，老師更像家人一樣關心孩子的生活與品格。孩子在這裡學得快樂又踏實，我們全家都很感謝這裡的每一位老師。</div>
-<div class="tap">👆 點一下複製並前往評論</div></div>
+<div class="tap">👆 點一下複製 → 到 Google 長按貼上</div></div>
 <div class="foot">TIPS 英典教育學習中心<br>台中市南屯區中和里黎明路一段295號 · 0905-547839<br><a href="https://www.tips-edu.com">www.tips-edu.com</a></div>
 </div>
 <div id="toast"></div>
+<div id="gmOv" class="gmov">
+ <div class="gmcard">
+  <div class="gmh">✅ 好評已複製！</div>
+  <div class="gmsub">您選的這則已複製起來：</div>
+  <div class="gmtext" id="gmText"></div>
+  <div class="gmsteps">
+   <div><span>1</span><div>點下方按鈕前往 Google</div></div>
+   <div><span>2</span><div>在評論框<b>長按 →「貼上」</b></div></div>
+   <div><span>3</span><div>點<b>五顆星 ★★★★★</b>，再按送出</div></div>
+  </div>
+  <button class="gmbtn" onclick="goReview()">前往 Google 評論 →</button>
+  <button class="gmclose" onclick="closeGuide()">關閉</button>
+ </div>
+</div>
 <script>
 function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(window.__tt);window.__tt=setTimeout(function(){t.classList.remove('show')},2600);}
 function copyText(s){
@@ -124,9 +153,11 @@ function copyText(s){
 }
 function pick(s){
   copyText(s);
-  toast('✅ 好評已複製！正在開啟 Google，請貼上→點五顆星→送出');
-  setTimeout(function(){ window.open(REVIEW_URL,'_blank'); },700);
+  var el=document.getElementById('gmText'); if(el){el.textContent=s;}
+  var ov=document.getElementById('gmOv'); if(ov){ov.classList.add('show');}
 }
+function goReview(){ window.open(REVIEW_URL,'_blank'); var ov=document.getElementById('gmOv'); if(ov){ov.classList.remove('show');} }
+function closeGuide(){ var ov=document.getElementById('gmOv'); if(ov){ov.classList.remove('show');} }
 function showCoupon(){document.getElementById('ov').classList.add('show');}
 function hideCoupon(){document.getElementById('ov').classList.remove('show');}
 </script></body></html>
