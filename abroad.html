@@ -161,9 +161,9 @@ footer ul a{font-size:.92rem;color:var(--muted)}footer ul a:hover{color:#f5a623}
 .float-line{position:fixed;right:20px;bottom:22px;z-index:80;background:#06c755;color:#fff;padding:13px 22px;border-radius:999px;font-weight:700;box-shadow:0 12px 34px -8px rgba(6,199,85,.7);display:flex;gap:9px;align-items:center;transition:.2s}
 .float-line:hover{transform:translateY(-3px) scale(1.04)}
 /* TIPS 小幫手 bot */
-.tb-btn{position:fixed;left:20px;bottom:22px;z-index:80;border:none;cursor:pointer;background:linear-gradient(135deg,#ffd23e,#ff7a1a);color:#2a1500;font-weight:800;font-family:inherit;font-size:.94rem;padding:13px 20px;border-radius:999px;box-shadow:0 12px 34px -8px rgba(255,150,40,.7);display:flex;gap:8px;align-items:center;transition:.2s}
+.tb-btn{position:fixed;right:20px;bottom:92px;z-index:80;border:none;cursor:pointer;background:linear-gradient(135deg,#ffd23e,#ff7a1a);color:#2a1500;font-weight:800;font-family:inherit;font-size:.94rem;padding:13px 20px;border-radius:999px;box-shadow:0 12px 34px -8px rgba(255,150,40,.7);display:flex;gap:8px;align-items:center;transition:.2s}
 .tb-btn:hover{transform:translateY(-3px) scale(1.04)}
-.tb-panel{position:fixed;left:20px;bottom:84px;z-index:81;width:360px;max-width:calc(100vw - 40px);height:520px;max-height:calc(100vh - 120px);background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:0 30px 70px -20px rgba(0,0,0,.7);display:none;flex-direction:column;overflow:hidden}
+.tb-panel{position:fixed;right:20px;bottom:156px;z-index:81;width:360px;max-width:calc(100vw - 40px);height:520px;max-height:calc(100vh - 170px);background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:0 30px 70px -20px rgba(0,0,0,.7);display:none;flex-direction:column;overflow:hidden}
 .tb-panel.open{display:flex}
 .tb-head{display:flex;align-items:center;gap:10px;padding:14px 16px;background:linear-gradient(135deg,#1b2540,#121826);border-bottom:1px solid var(--line)}
 .tb-head .av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#ffd23e,#ff7a1a);display:grid;place-items:center;font-size:1.15rem}
@@ -185,7 +185,7 @@ footer ul a{font-size:.92rem;color:var(--muted)}footer ul a:hover{color:#f5a623}
 .tb-input{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--line)}
 .tb-input input{flex:1;background:var(--surface2);border:1px solid var(--line);border-radius:999px;padding:10px 14px;color:var(--txt);font-family:inherit;font-size:.88rem;outline:none}
 .tb-input button{flex:none;background:linear-gradient(135deg,#ffd23e,#ff7a1a);border:none;border-radius:50%;width:40px;height:40px;cursor:pointer;font-size:1rem;color:#2a1500}
-@media(max-width:560px){.tb-panel{height:72vh;bottom:80px}.tb-btn{padding:11px 16px;font-size:.88rem}}
+@media(max-width:560px){.tb-panel{height:auto;bottom:150px;top:14px}.tb-btn{padding:11px 16px;font-size:.88rem;bottom:88px}}
 .proof{background:radial-gradient(circle at 12% 25%,#17263f,#0a1018);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:38px 40px;display:grid;grid-template-columns:230px 1fr;gap:34px;align-items:center;color:#eaf0f8;box-shadow:0 26px 60px -28px rgba(0,0,0,.6)}
 .proof+.proof{margin-top:22px}
 .proof .left{text-align:center;border-right:1px solid rgba(255,255,255,.12);padding-right:24px}
@@ -307,8 +307,15 @@ document.addEventListener('DOMContentLoaded',function(){
  function answer(id){var t=T[id];if(t)bot(t.a,t.acts);else fallback();}
  function match(q){q=q.toLowerCase();for(var i=0;i<KW.length;i++)for(var j=0;j<KW[i][0].length;j++)if(q.indexOf(KW[i][0][j])>=0)return KW[i][1];return null;}
  function renderChips(){chips.innerHTML='';CH.forEach(function(c){var b=el('button','tb-chip',c[0]);b.type='button';b.onclick=function(){usr(c[0]);answer(c[1]);};chips.appendChild(b);});}
+ var GREET={
+  home:'嗨～我是 <b>TIPS 小幫手</b> 🤖<br>想了解什麼呢？點下方按鈕，或直接打字問我。',
+  elem:'嗨～我是 <b>TIPS 小幫手</b> 🤖<br>想了解<b>國小部（1～4 年級）</b>的課程嗎？也可以先做個免費英檢，或點下方按鈕。',
+  sec:'嗨～我是 <b>TIPS 小幫手</b> 🤖<br>會考、學測倒數中！想做<b>升學規劃</b>或了解 KC 科基語測落點，點下方按鈕或直接問我 💪',
+  abroad:'嗨～我是 <b>TIPS 小幫手</b> 🤖<br>對<b>菲律賓宿霧遊學</b>有興趣嗎？我可以介紹營隊內容，或幫你預約諮詢 🐠'
+ };
+ function pageKey(){var p=location.pathname.toLowerCase();if(p.indexOf('junior-senior-high')>=0)return 'sec';if(p.indexOf('elementary')>=0)return 'elem';if(p.indexOf('abroad')>=0)return 'abroad';return 'home';}
  var greeted=false;
- function open(){panel.classList.add('open');if(!greeted){greeted=true;bot('嗨～我是 <b>TIPS 小幫手</b> 🤖<br>想了解什麼呢？點下方按鈕，或直接打字問我。');renderChips();}input.focus();}
+ function open(){panel.classList.add('open');if(!greeted){greeted=true;bot(GREET[pageKey()]||GREET.home);renderChips();}input.focus();}
  function close(){panel.classList.remove('open');}
  btn.onclick=function(){panel.classList.contains('open')?close():open();};
  document.getElementById('tbX').onclick=close;
