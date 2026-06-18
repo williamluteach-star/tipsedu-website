@@ -331,12 +331,14 @@ function updateSeats(){
   var SEATS_START=8, START_DATE=new Date('2026-06-15T00:00:00+08:00'), TOTAL=20;
   var days=Math.floor((new Date()-START_DATE)/86400000);
   if(days<0) days=0;
-  var remaining=SEATS_START-days;
+  var raw=SEATS_START-days, PAUSE_DAYS=2, remaining;
+  if(raw>=1){remaining=raw;}else{remaining=((-raw)<PAUSE_DAYS)?1:0;} // 剩 1 時暫停 2 天再歸 0
   var fill=document.getElementById('bar-fill'), text=document.getElementById('seats-text'), prefix=document.getElementById('seats-prefix');
   if(remaining<=0){
     fill.style.width='100%';fill.style.background='#FFD166';fill.style.boxShadow='0 0 12px rgba(255,209,102,0.8)';
     prefix.textContent='';
     text.innerHTML='<span class="seats-full">名額已滿 · 請洽 TIPS 英典教育登記候補</span>';
+    var gfb=document.getElementById('go-form-btn');if(gfb){gfb.href='https://lin.ee/p4Zdfl3';gfb.target='_blank';gfb.style.background='#06C755';gfb.style.color='#fff';gfb.style.boxShadow='0 6px 24px rgba(6,199,85,0.35)';gfb.innerHTML='<span>💬 加官方 LINE 登記候補 →</span>';}
   }else{
     var pct=Math.max(8,Math.round(remaining/TOTAL*100));
     fill.style.width=pct+'%';
