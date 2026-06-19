@@ -310,7 +310,19 @@ function getParam(key){
 }
 (function(){
   var formUrl = getParam('form') || DEFAULT_FORM;
-  document.getElementById('go-form-btn').setAttribute('href', formUrl);
+  var REVOKED = ["https://docs.google.com/forms/d/e/1FAIpQLSfGJ5cjczrv2xAgnvUTMVW-oy67zTvwhmsamOFfNezvquDYhQ/viewform?entry.153205542=%E5%BC%B5%E6%81%86%E8%BB%92%20Ryan&usp=pp_url"]; // 已失效的舊連結（誤傳作廢）
+  var btn = document.getElementById('go-form-btn');
+  if (REVOKED.indexOf(formUrl) >= 0) {
+    btn.removeAttribute('href'); btn.style.background='#9aa0a6'; btn.style.cursor='not-allowed';
+    btn.innerHTML='<span>⚠️ 此報名連結已失效</span>';
+    btn.addEventListener('click', function(e){ e.preventDefault(); });
+    var note=document.createElement('div');
+    note.style.cssText='margin-top:12px;font-size:13px;line-height:1.6;color:#FFD166;text-align:center;position:relative;z-index:1';
+    note.innerHTML='此報名連結已停用。請加官方 LINE（lin.ee/p4Zdfl3）或來電 0905-547-839，我們會提供正確的報名連結。';
+    if (btn.parentNode) btn.parentNode.insertBefore(note, btn.nextSibling);
+  } else {
+    btn.setAttribute('href', formUrl);
+  }
 })();
 
 function updateCountdown(){
