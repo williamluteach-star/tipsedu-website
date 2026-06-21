@@ -350,5 +350,16 @@ updateDeadline();setInterval(updateDeadline,60000);
   u(); setInterval(u,60000);
 })();
 </script>
+<script>
+(function(){
+  var DL=new Date('2026-06-30T23:59:00+08:00'); // 6/30 23:59 後報名失效
+  if(new Date()<DL) return;
+  var o=document.createElement('div');
+  o.style.cssText="position:fixed;inset:0;z-index:99999;background:linear-gradient(135deg,#1a1a2e,#16213e 50%,#0f3460);color:#fff;display:flex;align-items:center;justify-content:center;padding:1.5rem;font-family:'Noto Sans TC',sans-serif";
+  o.innerHTML='<div style="max-width:440px;text-align:center"><div style="font-size:46px;margin-bottom:1rem">\u23F0</div><h1 style="font-size:22px;margin:0 0 .8rem;font-weight:900">2026 \u6691\u671f\u73ed\u5831\u540d\u5df2\u622a\u6b62</h1><p style="font-size:15px;line-height:1.9;color:rgba(255,255,255,0.75);margin:0 0 1.6rem">\u5831\u540d\u671f\u9650\u81f3 6/30 \u5df2\u7d50\u675f\uff0c\u611f\u8b1d\u4f60\u7684\u95dc\u6ce8\u3002<br>\u4ecd\u6709\u9700\u6c42\u6216\u60f3\u4e86\u89e3\u5f8c\u7e8c\u8ab2\u7a0b\uff0c\u6b61\u8fce\u8207\u6211\u5011\u806f\u7e6b\u3002</p><a href="https://lin.ee/p4Zdfl3" target="_blank" rel="noopener" style="display:inline-block;background:#06C755;color:#fff;font-weight:900;text-decoration:none;padding:.9rem 2rem;border-radius:30px;margin:4px">\uD83D\uDCAC \u52a0\u5b98\u65b9 LINE</a> <a href="tel:0905547839" style="display:inline-block;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.3);color:#fff;font-weight:700;text-decoration:none;padding:.9rem 2rem;border-radius:30px;margin:4px">\uD83D\uDCDE 0905-547-839</a></div>';
+  (document.body||document.documentElement).appendChild(o);
+  if(document.body) document.body.style.overflow='hidden';
+})();
+</script>
 </body>
 </html>
