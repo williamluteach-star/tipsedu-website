@@ -154,6 +154,13 @@ body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text
   </div>
   <p class="cd-note">距 2027 年學測（1/22 – 1/24）</p>
   <div style="margin-bottom:1rem"><span class="urgent-pill" style="background:rgba(212,175,55,0.2);animation:none">🔥 新生限定優惠 · 6/30 截止</span></div>
+  <div style="margin:0 0 1.25rem;position:relative;z-index:1">
+    <div style="display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.32);border:1px solid rgba(255,255,255,0.18);border-radius:12px;padding:.7rem 1rem;max-width:430px">
+      <span style="font-size:13px;color:rgba(255,255,255,0.6);white-space:nowrap" id="seats-prefix">剩餘席次</span>
+      <span style="flex:1;height:8px;background:rgba(255,255,255,0.15);border-radius:4px;overflow:hidden"><span id="bar-fill" style="display:block;height:100%;width:40%;background:#E8503C;border-radius:4px"></span></span>
+      <span style="font-size:14px;font-weight:900;color:#fff;white-space:nowrap" id="seats-text">僅剩 <b style="color:#FFD166">8</b> 位</span>
+    </div>
+  </div>
   <div class="hero-cta-row">
     <a class="btn-line" href="https://lin.ee/p4Zdfl3" target="_blank" rel="noopener">💬 LINE 免費諮詢</a>
     <a class="btn-ghost" href="tel:0905547839">📞 0905-547-839</a>
@@ -370,6 +377,20 @@ function updateDeadline(){
   el.textContent='距新生優惠截止（6/30）還有 '+days+' 天';
 }
 updateDeadline();setInterval(updateDeadline,60000);
+</script>
+<script>
+(function(){
+  function u(){
+    var S=8, ST=new Date('2026-06-15T00:00:00+08:00'), T=20, P=2;   // 與 index.html 同步
+    var d=Math.floor((new Date()-ST)/86400000); if(d<0)d=0;
+    var raw=S-d, r; if(raw>=1)r=raw; else r=((-raw)<P)?1:0;
+    var f=document.getElementById('bar-fill'),x=document.getElementById('seats-text'),pre=document.getElementById('seats-prefix');
+    if(!f)return;
+    if(r<=0){f.style.width='100%';f.style.background='#FFD166';if(pre)pre.textContent='';x.innerHTML='<span style="color:#FFD166;font-weight:700">名額已滿 · 候補請洽 LINE</span>';}
+    else{f.style.width=Math.max(8,Math.round(r/T*100))+'%';x.innerHTML='僅剩 <b style="color:#FFD166">'+r+'</b> 位';}
+  }
+  u(); setInterval(u,60000);
+})();
 </script>
 </body>
 </html>
