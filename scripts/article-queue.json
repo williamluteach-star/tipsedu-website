@@ -1,0 +1,13 @@
+[
+  { "slug": "huikao-chinese-composition", "title": "國中會考國文作文怎麼寫？審題、立意、結構一次搞懂", "keyword": "國中會考 國文作文", "intent": "資訊", "internalPage": "/junior-senior-high.html", "angle": "拆解會考作文評分，四步驟：審題→立意→起承轉合結構→詞彙，附常見扣分點。" },
+  { "slug": "when-kids-start-english", "title": "國小幾年級開始學英文最好？兒童英語啟蒙懶人包", "keyword": "小孩幾歲學英文", "intent": "資訊", "internalPage": "/elementary.html", "angle": "語言黃金期、不同年齡學法（聽說先行、自然發音）、零基礎家長常見問題。" },
+  { "slug": "nantun-anqin-class", "title": "南屯安親班／課輔怎麼挑？接送、寫作業、品格一次看", "keyword": "南屯 安親班", "intent": "商業/在地", "internalPage": "/", "angle": "安親 vs 課輔差別、挑選重點（作業指導、品格、接送、安全），南屯在地觀點。" },
+  { "slug": "children-gept-prep", "title": "兒童全民英檢（初級）怎麼準備？家長行前指南", "keyword": "兒童 全民英檢", "intent": "資訊", "internalPage": "/elementary.html", "angle": "各級別與適合年齡、聽說讀寫準備法與時程、模考與心態。" },
+  { "slug": "xuece-english-writing", "title": "高中學測英文作文：拿分結構與常見題型解析", "keyword": "學測英文作文", "intent": "資訊", "internalPage": "/junior-senior-high.html", "angle": "學測英作題型與評分、觀察—分析—預測高分結構、範例與修改示範。" },
+  { "slug": "english-reading-literacy", "title": "怎麼培養孩子的英文閱讀素養？藍思分級實用法", "keyword": "英文閱讀素養", "intent": "資訊", "internalPage": "/elementary.html", "angle": "閱讀素養的重要、藍思分級怎麼用、在家養成閱讀習慣的方法。" },
+  { "slug": "ai-personalized-learning", "title": "AI 個人化學習是什麼？對孩子的學習真的有用嗎", "keyword": "AI 學習 補習班", "intent": "資訊", "internalPage": "/junior-senior-high.html", "angle": "個人化學習原理、AI 如何診斷弱點與規劃路徑、家長該注意什麼。" },
+  { "slug": "huikao-100-day-plan", "title": "國中會考衝刺：最後 100 天讀書計畫", "keyword": "國中會考 衝刺", "intent": "資訊", "internalPage": "/junior-senior-high.html", "angle": "100 天分階段讀書計畫、各科衝刺重點、作息與心態管理。" },
+  { "slug": "all-english-vs-local-teacher", "title": "全美語 vs 中師英文，差在哪？怎麼選不踩雷", "keyword": "全美語 補習班", "intent": "商業", "internalPage": "/elementary.html", "angle": "兩種教學的優缺點、適合的孩子類型、挑選時的判斷重點。" },
+  { "slug": "cebu-study-tour", "title": "菲律賓宿霧遊學適合國高中生嗎？費用、安全與行前準備", "keyword": "菲律賓 遊學 國中", "intent": "資訊/商業", "internalPage": "/abroad.html", "angle": "遊學適合誰、費用結構、安全與住宿、行前準備清單。" },
+  { "slug": "summer-study-plan", "title": "暑假怎麼安排孩子的學習？不浪費又不過勞的時間表", "keyword": "暑假 學習 安排", "intent": "資訊（季節）", "internalPage": "/", "angle": "暑假學習與休息的平衡、各年級建議、可下載的時間表概念。" }
+]
