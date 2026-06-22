@@ -1,1 +1,7 @@
+call
 
+<invoke name="mcp__cowork__present_files">
+
+<parameter name="files">[{"file_path": "/Users/william/Library/Application Support/Claude/local-agent-mode-sessions/4eb2c709-4512-4548-9217-d6aaa85c869b/fc057f0b-a939-400f-b63d-69eb733e8675/local_ef3eb4d1-3dba-4d79-ade7-b8d906521c38/outputs/cloud-blog/.github/workflows/weekly-article.yml"}]</parameter>
+
+</invoke>
