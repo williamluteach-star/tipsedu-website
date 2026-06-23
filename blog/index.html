@@ -282,8 +282,8 @@ footer ul a{font-size:.92rem;color:var(--muted)}footer ul a:hover{color:#f5a623}
 .blog-hero{background:transparent;border:0;padding:54px 24px 6px;text-align:center}
 .blog-hero h1{font-size:2.1rem;margin:0 0 10px;color:var(--txt)}
 .blog-hero p{margin:0;color:var(--muted);font-size:1.02rem}
-.blog-list{max-width:860px;margin:0 auto;padding:44px 24px 80px}
-.bcard{display:block;border:3px solid #F5A623;border-radius:16px;overflow:hidden;margin:0 0 18px;text-decoration:none;box-shadow:var(--cardsh);transition:transform .15s,box-shadow .15s}.bcard:hover{box-shadow:0 12px 32px rgba(245,166,35,.22)}.bcard img{width:100%;height:auto;display:block}
+.blog-list{max-width:1200px;margin:0 auto;padding:40px 24px 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:26px;align-items:start}@media(max-width:900px){.blog-list{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.blog-list{grid-template-columns:1fr}}
+.bcard{display:block;border:3px solid #F5A623;border-radius:16px;overflow:hidden;margin:0;text-decoration:none;box-shadow:var(--cardsh);transition:transform .15s,box-shadow .15s}.bcard:hover{box-shadow:0 12px 32px rgba(245,166,35,.22)}.bcard img{width:100%;height:auto;display:block}
 
 .bcard .tag{display:inline-block;background:rgba(245,166,35,.14);color:#f5a623;border-radius:999px;padding:3px 13px;font-size:.8rem;font-weight:700;margin-bottom:10px}
 .bcard h2{margin:4px 0 8px;font-size:1.3rem;color:var(--txt);line-height:1.5}
