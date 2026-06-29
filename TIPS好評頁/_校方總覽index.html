@@ -1,0 +1,140 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TIPS 好評頁面 — 校方總覽</title><meta name="robots" content="noindex,follow"><style>
+:root{--navy:#161D2E;--navy2:#0E1A2E;--gold:#F5A623;--light:#EAF0F8;--grey:#5B6472;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;background:#F2F4F8;color:#1c2230;line-height:1.6}
+.wrap{max-width:520px;margin:0 auto;padding:0 16px 60px}
+.hero{background:linear-gradient(160deg,var(--navy),var(--navy2));color:#fff;padding:30px 22px 26px;border-radius:0 0 22px 22px;text-align:center}
+.brand{font-weight:700;font-size:15px;letter-spacing:.5px}
+.brand .gold{color:var(--gold)}
+.tag{font-size:12px;color:#9AABC1;margin-top:4px}
+.stars{font-size:30px;color:var(--gold);letter-spacing:4px;margin:14px 0 8px}
+.h1{font-size:22px;font-weight:800;margin:6px 0}
+.h1 .gold{color:var(--gold)}
+.lead{font-size:14.5px;color:#C7D2E2;margin:10px 4px 0}
+.gift{margin:18px 0 0;background:rgba(245,166,35,.14);border:1px solid rgba(245,166,35,.5);color:#FFE7C2;border-radius:14px;padding:12px 14px;font-size:13.5px;font-weight:600}
+.gift b{color:var(--gold)}
+.steps{margin:20px 2px 6px;background:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 4px 18px rgba(20,30,60,.06)}
+.steps h3{margin:2px 0 10px;font-size:14px;color:var(--navy)}
+.step{display:flex;gap:10px;align-items:flex-start;margin:8px 0;font-size:13.5px;color:#3a4150}
+.step .n{flex:0 0 22px;height:22px;border-radius:50%;background:var(--navy);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.sec-title{font-size:14px;font-weight:700;color:var(--navy);margin:22px 4px 8px;display:flex;align-items:center;gap:8px}
+.sec-title::before{content:"";width:4px;height:16px;background:var(--gold);border-radius:2px;display:inline-block}
+.card{background:#fff;border-radius:16px;padding:15px 16px;margin:10px 0;box-shadow:0 4px 16px rgba(20,30,60,.07);border:1.5px solid transparent;transition:.15s;cursor:pointer}
+.card:active{transform:scale(.985);border-color:var(--gold)}
+.badge{display:inline-block;font-size:11.5px;font-weight:700;color:#fff;border-radius:20px;padding:2px 11px;margin-bottom:8px}
+.ctext{font-size:14.5px;color:#2a3142}
+.tap{margin-top:10px;font-size:12.5px;font-weight:700;color:#4285F4;display:flex;align-items:center;gap:6px}
+.claimwrap{text-align:center;margin:26px 0 0}
+.claim{display:inline-block;width:100%;background:var(--gold);color:#3a2b00;border:none;font-size:16px;font-weight:800;padding:16px;border-radius:14px;box-shadow:0 6px 18px rgba(245,166,35,.4);cursor:pointer}
+.claim:active{transform:scale(.985)}
+.foot{text-align:center;color:#9AA3B2;font-size:11.5px;margin-top:24px;line-height:1.8}
+.foot a{color:#5B6472;text-decoration:none}
+/* toast */
+#toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(20px);background:#161D2E;color:#fff;padding:12px 18px;border-radius:30px;font-size:13.5px;opacity:0;pointer-events:none;transition:.3s;z-index:50;box-shadow:0 6px 20px rgba(0,0,0,.3);max-width:90%;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* coupon overlay */
+#ov{position:fixed;inset:0;background:rgba(10,15,28,.78);display:none;align-items:center;justify-content:center;z-index:60;padding:20px;backdrop-filter:blur(3px)}
+#ov.show{display:flex;animation:fade .25s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.coupon{position:relative;width:100%;max-width:380px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4);animation:pop .35s cubic-bezier(.2,1.2,.4,1)}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.c-top{background:repeating-linear-gradient(45deg,#161D2E,#161D2E 12px,#1d2740 12px,#1d2740 24px);color:#fff;text-align:center;padding:16px 16px 14px}
+.c-top .s{color:var(--gold);font-size:22px;letter-spacing:3px}
+.c-top .t{font-size:13px;margin-top:2px;color:#cdd6e6}
+.c-body{padding:22px 22px 10px;text-align:center}
+.c-amt{font-size:54px;font-weight:900;color:var(--navy);line-height:1;letter-spacing:-1px}
+.c-amt small{font-size:22px;font-weight:800;vertical-align:top}
+.c-for{font-size:15px;font-weight:700;color:#3a4150;margin-top:6px}
+.c-name{margin-top:14px;font-size:15px;font-weight:800;color:#B8860B;background:#FFF6E0;border:1px dashed var(--gold);border-radius:10px;padding:9px}
+.c-only{font-size:12px;color:#c0392b;font-weight:700;margin-top:8px}
+.perf{border-top:2px dashed #d4dae6;position:relative;margin:16px 0 0}
+.perf::before,.perf::after{content:"";position:absolute;top:-13px;width:26px;height:26px;border-radius:50%;background:rgba(10,15,28,.78)}
+.perf::before{left:-26px}.perf::after{right:-26px}
+.c-foot{padding:12px 20px 20px;font-size:11.5px;color:#7a828f;text-align:center;line-height:1.7}
+.c-code{font-family:monospace;font-weight:700;color:var(--navy);background:#EAF0F8;border-radius:6px;padding:2px 8px;display:inline-block;margin-top:4px}
+.c-close{display:block;width:100%;background:var(--navy);color:#fff;border:none;padding:14px;font-size:15px;font-weight:700;cursor:pointer}
+.note{font-size:12px;color:#9AA3B2;text-align:center;margin-top:10px}
+/* ===== 畢業頁清新喜氣版（body.fest）天藍→嫩綠 + 落下紙花動畫 ===== */
+.fest .hero{position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#1E80E0 0%, #5FA9E2 44%, #43B055 60%, #1FA23F 100%);}
+.fest .hero > *:not(.confetti):not(.clouds){position:relative;z-index:2}
+.confetti{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.confetti i{position:absolute;top:-24px;display:block;opacity:.92;animation:fall linear infinite}
+@keyframes fall{
+  0%{transform:translateY(-30px) rotate(0deg);opacity:0}
+  8%{opacity:1}
+  100%{transform:translateY(460px) rotate(540deg);opacity:.9}
+}
+/* 白雲 */
+.clouds{position:absolute;top:0;left:0;right:0;height:130px;z-index:1;pointer-events:none;overflow:hidden}
+.cloud{position:absolute;background:#fff;border-radius:40px;opacity:.9;animation:drift linear infinite}
+.cloud::before,.cloud::after{content:"";position:absolute;background:#fff;border-radius:50%}
+.cloud::before{width:58%;height:170%;left:16%;top:-78%}
+.cloud::after{width:42%;height:125%;right:14%;top:-46%}
+@keyframes drift{0%{transform:translateX(-160px)}100%{transform:translateX(112vw)}}
+@media (prefers-reduced-motion: reduce){.confetti i,.cloud{animation:none}.confetti i{opacity:.5}}
+.fest .tag{color:rgba(255,255,255,.95)}
+.fest .brand{color:#fff}
+.fest .brand .gold{color:#EAFFF6}
+.fest .stars{color:#FFEB3B;text-shadow:0 1px 4px rgba(0,70,60,.25)}
+.fest .h1{color:#fff;text-shadow:0 1px 4px rgba(0,70,60,.22)}
+.fest .h1 .gold{color:#FFF59D}
+.fest .lead{color:rgba(255,255,255,.97)}
+.fest .gift{background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.75);color:#fff}
+.fest .gift b{color:#FFF59D}
+/* ===== 點選後跳出的引導卡片 ===== */
+.gmov{position:fixed;inset:0;background:rgba(10,15,28,.78);display:none;align-items:center;justify-content:center;z-index:80;padding:20px;backdrop-filter:blur(3px)}
+.gmov.show{display:flex;animation:fade .2s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.gmcard{background:#fff;border-radius:18px;max-width:380px;width:100%;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.4);text-align:center;animation:pop .3s cubic-bezier(.2,1.2,.4,1)}
+@keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.gmh{font-size:20px;font-weight:800;color:var(--navy)}
+.gmsub{font-size:13px;color:var(--grey);margin-top:6px}
+.gmtext{font-size:14px;color:#2a3142;background:#F2F4F8;border-radius:10px;padding:12px;margin:10px 0 4px;text-align:left;line-height:1.6;max-height:150px;overflow:auto}
+.gmsteps{text-align:left;margin:14px 2px 4px}
+.gmsteps>div{display:flex;gap:9px;align-items:flex-start;font-size:14px;color:#3a4150;margin:9px 0}
+.gmsteps span{flex:0 0 22px;height:22px;border-radius:50%;background:#4285F4;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.gmbtn{display:block;width:100%;background:#4285F4;color:#fff;border:none;font-size:16px;font-weight:800;padding:15px;border-radius:12px;margin-top:14px;cursor:pointer}
+.gmbtn:active{transform:scale(.99)}
+.gmclose{display:block;width:100%;background:none;border:none;color:#9AA3B2;font-size:13px;padding:10px 0 0;margin-top:6px;cursor:pointer}
+
+.g{display:flex;align-items:center;gap:8px;background:#fff;border-radius:12px;padding:14px 16px;margin:8px 0;box-shadow:0 3px 12px rgba(20,30,60,.07);text-decoration:none;color:var(--navy);font-size:16px}
+.g span{color:#9AA3B2;font-size:13px}
+.g:active{transform:scale(.99)}
+.big{display:block;background:var(--navy);color:#fff;text-align:center;border-radius:14px;padding:16px;text-decoration:none;font-weight:700;margin:10px 0}
+</style></head><body>
+<div class="hero"><div class="brand">TIPS <span class="gold">好評頁面總覽</span></div>
+<div class="tag">校方使用 · 點孩子開啟其專屬頁面，複製網址傳給家長</div></div>
+<div class="wrap">
+<a class="big" href="五星好評助手.html" target="_blank">📣 通用版「五星好評助手」（給所有家長）</a>
+<div class="sec-title">2026 畢業生個人化頁面（含 NT$1000 折價券）</div>
+<a class="g" href="畢業生/恭喜唯歆Zoe畢業.html" target="_blank"><b>唯歆</b> <span>Zoe</span></a>
+<a class="g" href="畢業生/恭喜裕宸Vic畢業.html" target="_blank"><b>裕宸</b> <span>Vic</span></a>
+<a class="g" href="畢業生/恭喜芷妤Anna畢業.html" target="_blank"><b>芷妤</b> <span>Anna</span></a>
+<a class="g" href="畢業生/恭喜佑霆Owen畢業.html" target="_blank"><b>佑霆</b> <span>Owen</span></a>
+<a class="g" href="畢業生/恭喜怡晴Claire畢業.html" target="_blank"><b>怡晴</b> <span>Claire</span></a>
+<a class="g" href="畢業生/恭喜育郡Jill畢業.html" target="_blank"><b>育郡</b> <span>Jill</span></a>
+<a class="g" href="畢業生/恭喜采隆Jarvis畢業.html" target="_blank"><b>采隆</b> <span>Jarvis</span></a>
+<a class="g" href="畢業生/恭喜均瑜Jimmy畢業.html" target="_blank"><b>均瑜</b> <span>Jimmy</span></a>
+<a class="g" href="畢業生/恭喜芷翎Elsa畢業.html" target="_blank"><b>芷翎</b> <span>Elsa</span></a>
+<a class="g" href="畢業生/恭喜珈瑀Claire畢業.html" target="_blank"><b>珈瑀</b> <span>Claire</span></a>
+<a class="g" href="畢業生/恭喜霆軒Joby畢業.html" target="_blank"><b>霆軒</b> <span>Joby</span></a>
+<a class="g" href="畢業生/恭喜可軒Cathy畢業.html" target="_blank"><b>可軒</b> <span>Cathy</span></a>
+<a class="g" href="畢業生/恭喜宸瑋Nathan畢業.html" target="_blank"><b>宸瑋</b> <span>Nathan</span></a>
+<a class="g" href="畢業生/恭喜逸恩Ian畢業.html" target="_blank"><b>逸恩</b> <span>Ian</span></a>
+<a class="g" href="畢業生/恭喜佩恩Emma畢業.html" target="_blank"><b>佩恩</b> <span>Emma</span></a>
+<a class="g" href="畢業生/恭喜歆棠Candice畢業.html" target="_blank"><b>歆棠</b> <span>Candice</span></a>
+<a class="g" href="畢業生/恭喜雋諺Din畢業.html" target="_blank"><b>雋諺</b> <span>Din</span></a>
+<div class="sec-title">在校生 · 學期末感謝（不分畢業，免填姓名）</div>
+<a class="g" href="在校生/在校生通用-學期末感謝.html" target="_blank"><b>通用版</b> <span>任何年級</span></a>
+<a class="g" href="在校生/國小在校版.html" target="_blank"><b>國小在校版</b> <span>課輔・全美語</span></a>
+<a class="g" href="在校生/國中在校版.html" target="_blank"><b>國中在校版</b> <span>會考</span></a>
+<a class="g" href="在校生/高中在校版.html" target="_blank"><b>高中在校版</b> <span>學測</span></a>
+<div class="sec-title">其他畢業年級（喜氣版，使用前先換姓名）</div>
+<a class="g" href="其他畢業/國中畢業-國九.html" target="_blank"><b>國中畢業</b> <span>國九</span></a>
+<a class="g" href="其他畢業/高中畢業-高三.html" target="_blank"><b>高中畢業</b> <span>高三</span></a>
+<div class="note">提醒：要讓家長能點開，請把整個「TIPS好評頁」資料夾上傳到網站或 GitHub，再把各頁網址用 LINE 傳給對應家長。</div>
+<div class="foot">共 17 位畢業生 · TIPS 英典教育學習中心</div>
+</div></body></html>
