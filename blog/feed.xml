@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>TIPS 英典教育部落格</title>
+  <link>https://www.tips-edu.com/blog/</link>
+  <description>台中南屯的升學與英語學習實用資訊，陪家長一起為孩子做對的選擇。</description>
+  <language>zh-Hant</language>
+  <atom:link href="https://www.tips-edu.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>國小幾年級開始學英文最好？小孩幾歲學英文啟蒙懶人包</title>
+    <link>https://www.tips-edu.com/blog/when-kids-start-english.html</link>
+    <guid>https://www.tips-edu.com/blog/when-kids-start-english.html</guid>
+    <pubDate>Mon, 29 Jun 2026 18:00:00 +0800</pubDate>
+    <description>小孩幾歲學英文才不會太早或太晚？綜合語言學習研究與108課綱，一次看懂兒童英語啟蒙時機與選班重點。</description>
+  </item>
+  <item>
+    <title>國中會考國文作文怎麼寫？審題、立意、結構一次搞懂</title>
+    <link>https://www.tips-edu.com/blog/huikao-chinese-composition.html</link>
+    <guid>https://www.tips-edu.com/blog/huikao-chinese-composition.html</guid>
+    <pubDate>Tue, 23 Jun 2026 18:00:00 +0800</pubDate>
+    <description>掌握審題、立意、結構三個關鍵，搭配認真回饋，作文級分穩定提升。</description>
+  </item>
+  <item>
+    <title>台中南屯補習班怎麼選？家長必看的 5 個重點</title>
+    <link>https://www.tips-edu.com/blog/how-to-choose-nantun-cramschool.html</link>
+    <guid>https://www.tips-edu.com/blog/how-to-choose-nantun-cramschool.html</guid>
+    <pubDate>Tue, 16 Jun 2026 18:00:00 +0800</pubDate>
+    <description>從制度、個人化到真實口碑，5 個重點幫你在台中南屯挑對補習班。</description>
+  </item>
+</channel>
+</rss>
