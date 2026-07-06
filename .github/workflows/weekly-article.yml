@@ -2,7 +2,7 @@ name: Weekly TIPS Blog Article
 
 on:
   schedule:
-    - cron: "0 1 * * 1"
+    - cron: "0 10 * * 1"
   workflow_dispatch: {}
 
 permissions:
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Generate next article
         id: gen
@@ -33,7 +33,9 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           branch: blog/${{ steps.gen.outputs.slug }}
-          add-paths: blog/*.html
+          add-paths: |
+            blog/*.html
+            scripts/article-queue.json
           commit-message: "新增部落格文章：${{ steps.gen.outputs.title }}"
           title: "📝 新文章草稿：${{ steps.gen.outputs.title }}"
           body: |
