@@ -17,17 +17,64 @@ function out(key, val) {
 // 找出下一篇尚未存在的文章
 fs.mkdirSync(BLOG_DIR, { recursive: true });
 const existing = new Set(fs.readdirSync(BLOG_DIR).filter(f => f.endsWith(".html")).map(f => f.replace(/\.html$/, "")));
-const next = QUEUE.find(a => !existing.has(a.slug));
-
-if (!next) {
-  console.log("內容計畫已全部完成，沒有要產出的文章。");
-  out("status", "done");
-  process.exit(0);
-}
-console.log("這次要寫：", next.slug, next.title);
+let next = QUEUE.find(a => !existing.has(a.slug));
 
 const apiKey = process.env.ANTHROPIC_API_KEY;
 if (!apiKey) { console.error("缺少 ANTHROPIC_API_KEY"); process.exit(1); }
+
+// 佇列產完時，自動請 AI 想一個「不重複」的新題目，加入佇列後續產
+if (!next) {
+  console.log("佇列已產完，改為自動產生新題目…");
+  next = await proposeNewTopic();
+  if (!next) {
+    console.error("自動想題失敗，這週先跳過。");
+    out("status", "done");
+    process.exit(0);
+  }
+  QUEUE.push(next);
+  fs.writeFileSync(path.join(ROOT, "scripts", "article-queue.json"), JSON.stringify(QUEUE, null, 1), "utf8");
+  console.log("新題目已加入佇列：", next.slug, next.title);
+}
+console.log("這次要寫：", next.slug, next.title);
+
+async function proposeNewTopic() {
+  let brandCtx = "";
+  try { brandCtx = fs.readFileSync(path.join(ROOT, "scripts", "brand-context.md"), "utf8"); } catch {}
+  const done = QUEUE.map(a => `- ${a.title}（關鍵字：${a.keyword}，slug：${a.slug}）`).join("\n");
+  const now = new Date();
+  const month = now.getMonth() + 1;
+  const topicPrompt = `${brandCtx ? "===== 品牌事實與規範 =====\n" + brandCtx + "\n=====\n\n" : ""}你是 TIPS 英典教育（台中南屯升學補習班）的 SEO 內容策略師。
+以下是已經寫過（或已排定）的所有文章，新題目「絕對不可以」與它們重複或高度相似（主題、關鍵字、slug 都要避開）：
+${done}
+
+請提出 1 個新的部落格文章題目，要求：
+- 目標讀者：台中南屯的國小～高中家長；搜尋意圖明確、有搜尋量的長尾關鍵字。
+- 考慮現在是 ${month} 月的季節性（開學、段考、會考學測、寒暑假等）。
+- 能自然連到本站課程頁（/elementary.html、/junior-senior-high.html、/abroad.html 或 /）。
+- slug 用小寫英文與連字號，不可與上面清單重複。
+只輸出一個 JSON 物件（不要 markdown 圍欄），格式：
+{"slug":"...","title":"...","keyword":"...","intent":"...","internalPage":"...","angle":"..."}`;
+
+  const r = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "x-api-key": apiKey, "anthropic-version": "2023-06-01", "content-type": "application/json" },
+    body: JSON.stringify({ model: MODEL, max_tokens: 1000, messages: [{ role: "user", content: topicPrompt }] }),
+  });
+  if (!r.ok) { console.error("想題 API 失敗：", r.status, await r.text()); return null; }
+  const d = await r.json();
+  let txt = (d.content || []).map(b => b.text || "").join("").trim();
+  txt = txt.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```\s*$/i, "").trim();
+  let t;
+  try { t = JSON.parse(txt); } catch { console.error("想題輸出不是合法 JSON：", txt.slice(0, 200)); return null; }
+  if (!t.slug || !t.title || !t.keyword) { console.error("想題輸出欄位不完整"); return null; }
+  t.slug = String(t.slug).toLowerCase().replace(/[^a-z0-9-]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+  const taken = new Set([...QUEUE.map(a => a.slug), ...existing]);
+  if (taken.has(t.slug)) { console.error("新題 slug 與既有重複：", t.slug); return null; }
+  if (!t.internalPage) t.internalPage = "/";
+  if (!t.intent) t.intent = "資訊";
+  if (!t.angle) t.angle = "";
+  return t;
+}
 
 const canonical = `${SITE}/blog/${next.slug}.html`;
 
