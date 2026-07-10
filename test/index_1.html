@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>免費生涯興趣測驗｜高中還是高職？20分鐘數據化評估｜TIPS 英典教育</title>
+<meta name="description" content="國二升國三的關鍵選擇：高中還是高職？TIPS 英典教育免費提供 76 題數據化生涯興趣測驗，採美國勞工部 O*NET 與 Holland 六型碼架構，自動產出興趣雷達圖、高中/高職適性判定與技高 15 群科排名。台中南屯，加 LINE 免費一對一解讀。">
+<meta property="og:title" content="免費測驗：孩子適合讀高中還是高職？20 分鐘數據化評估">
+<meta property="og:description" content="76 題科學化興趣測驗，馬上知道孩子的興趣類型與最適合的升學路線。TIPS 英典教育提供免費一對一解讀。">
+<meta property="og:type" content="website">
+<meta name="robots" content="index,follow">
+<style>
+  :root{
+    --ink:#1a2233; --muted:#5b6478; --bg:#f4f6fa; --card:#ffffff;
+    --accent:#2f6fed; --accent2:#12b5a5; --warn:#e8873a;
+    --r:#e05d5d; --i:#7c5cd6; --a:#e8873a; --s:#12b5a5; --e:#2f6fed; --c:#8a6d3b;
+    --radius:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.65;}
+  .wrap{max-width:860px; margin:0 auto; padding:24px 16px 80px;}
+  header.top{background:linear-gradient(135deg,#20315c,#2f6fed); color:#fff; padding:28px 20px; border-radius:0 0 22px 22px;}
+  header.top h1{font-size:1.45rem; letter-spacing:1px;}
+  header.top p{opacity:.85; font-size:.92rem; margin-top:6px;}
+  .card{background:var(--card); border-radius:var(--radius); padding:24px; margin-top:18px; box-shadow:0 2px 10px rgba(20,30,60,.06);}
+  .card h2{font-size:1.15rem; margin-bottom:12px; color:#20315c;}
+  .card h3{font-size:1.02rem; margin:14px 0 8px;}
+  .btn{display:inline-block; background:var(--accent); color:#fff; border:none; border-radius:10px; padding:12px 26px; font-size:1rem; cursor:pointer; font-family:inherit; transition:.15s;}
+  .btn:hover{filter:brightness(1.1);}
+  .btn.secondary{background:#e6ebf5; color:#20315c;}
+  .btn:disabled{background:#c3cad8; cursor:not-allowed;}
+  .field{margin:10px 0;}
+  .field label{font-size:.9rem; color:var(--muted); display:block; margin-bottom:4px;}
+  .field input{width:100%; max-width:320px; padding:10px 12px; border:1px solid #ccd4e2; border-radius:8px; font-size:1rem; font-family:inherit;}
+  .progressbar{position:sticky; top:0; z-index:50; background:var(--bg); padding:10px 0 6px;}
+  .pb-track{height:10px; background:#dde3ee; border-radius:6px; overflow:hidden;}
+  .pb-fill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0%; transition:width .25s;}
+  .pb-label{font-size:.8rem; color:var(--muted); margin-top:4px; text-align:right;}
+  .q-item{background:var(--card); border-radius:var(--radius); padding:18px 20px; margin-top:14px; box-shadow:0 1px 6px rgba(20,30,60,.05);}
+  .q-item.unanswered-flash{outline:2px solid var(--warn);}
+  .q-text{font-size:1.02rem; margin-bottom:12px;}
+  .q-num{color:var(--muted); font-size:.85rem; margin-right:6px;}
+  .opts{display:flex; gap:6px; flex-wrap:wrap;}
+  .opts button{flex:1 1 0; min-width:86px; padding:10px 6px; border:1.5px solid #ccd4e2; background:#fff; border-radius:9px; font-size:.86rem; cursor:pointer; font-family:inherit; color:#3a4358; transition:.12s;}
+  .opts button:hover{border-color:var(--accent);}
+  .opts button.sel{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600;}
+  .nav-row{display:flex; justify-content:space-between; margin-top:22px; gap:10px;}
+  .part-intro{border-left:5px solid var(--accent2); padding-left:14px; margin-bottom:6px;}
+  .hidden{display:none;}
+  .tagline{font-size:.85rem; color:var(--muted);}
+  ul.tips{padding-left:20px; font-size:.95rem;}
+  ul.tips li{margin:5px 0;}
+  /* results */
+  .score-row{display:flex; align-items:center; gap:10px; margin:8px 0;}
+  .score-label{width:130px; font-size:.92rem; font-weight:600;}
+  .score-track{flex:1;}
+  .score-val{width:64px; text-align:right; font-variant-numeric:tabular-nums; font-size:.9rem;}
+  .code-badge{display:inline-block; font-size:1.6rem; font-weight:800; letter-spacing:6px; background:#20315c; color:#fff; padding:8px 22px 8px 26px; border-radius:12px; margin:6px 0;}
+  .pill{display:inline-block; background:#eef2fb; color:#20315c; border-radius:20px; padding:3px 12px; font-size:.83rem; margin:3px 4px 3px 0;}
+  .gauge-wrap{margin:14px 0;}
+  .gauge-track{position:relative; height:22px; border-radius:12px; background:linear-gradient(90deg,#2f6fed 0%,#9db9f5 35%,#e3e8f2 50%,#a8e3dc 65%,#12b5a5 100%);}
+  .gauge-marker{position:absolute; top:-8px; width:4px; height:38px; background:#20315c; border-radius:2px; transform:translateX(-2px);}
+  .gauge-labels{display:flex; justify-content:space-between; font-size:.82rem; color:var(--muted); margin-top:8px;}
+  .verdict{border-radius:12px; padding:16px 18px; margin:14px 0; font-size:.98rem;}
+  .verdict.hs{background:#e9f0fe; border-left:5px solid var(--accent);}
+  .verdict.vs{background:#e5f7f5; border-left:5px solid var(--accent2);}
+  .verdict.mid{background:#fdf3e7; border-left:5px solid var(--warn);}
+  .group-card{border:1px solid #e2e7f0; border-radius:12px; padding:14px 16px; margin:10px 0;}
+  .group-card b{font-size:1rem;}
+  .group-card .match{float:right; font-size:.85rem; color:var(--accent); font-weight:700;}
+  .group-card p{font-size:.88rem; color:var(--muted); margin-top:4px;}
+  .note{font-size:.85rem; color:var(--muted); background:#f0f3f9; border-radius:10px; padding:12px 14px; margin-top:14px;}
+  .note a{color:var(--accent);}
+  table.type-table{width:100%; border-collapse:collapse; font-size:.88rem; margin-top:8px;}
+  table.type-table th, table.type-table td{border:1px solid #e2e7f0; padding:8px 10px; text-align:left; vertical-align:top;}
+  table.type-table th{background:#f0f3f9;}
+  #radarBox{text-align:center; margin:10px 0;}
+  .flag{background:#fdecec; border-left:5px solid var(--r); border-radius:10px; padding:12px 14px; font-size:.9rem; margin:12px 0;}
+  /* ===== TIPS hook additions ===== */
+  .brandbar{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .brand-logo{background:#fff; color:#20315c; font-weight:900; letter-spacing:2px; border-radius:8px; padding:4px 10px; font-size:1.05rem;}
+  .brand-sub{font-size:.8rem; opacity:.8;}
+  .hero h1{font-size:1.6rem; line-height:1.4;}
+  .hero .hl{color:#ffd66b;}
+  .hero-stats{display:flex; gap:14px; margin-top:16px; flex-wrap:wrap;}
+  .hero-stat{background:rgba(255,255,255,.12); border-radius:10px; padding:8px 14px; font-size:.85rem;}
+  .hero-stat b{font-size:1.15rem; display:block;}
+  .feature-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:10px;}
+  .feature{background:#f6f8fc; border-radius:12px; padding:14px 16px; font-size:.9rem;}
+  .feature b{display:block; margin-bottom:4px; color:#20315c;}
+  .lead-form{background:linear-gradient(135deg,#f0f5ff,#e9fbf8); border:1.5px solid #cfe0fa; border-radius:14px; padding:20px;}
+  .lead-form .field input, .lead-form .field select{max-width:100%; background:#fff;}
+  .consent{font-size:.8rem; color:var(--muted); margin-top:10px; display:flex; gap:8px; align-items:flex-start;}
+  .consent input{margin-top:4px;}
+  .err{color:#d33; font-size:.82rem; margin-top:3px; display:none;}
+  .cta-box{background:linear-gradient(135deg,#20315c,#2f6fed); color:#fff; border-radius:14px; padding:22px; margin-top:16px;}
+  .cta-box h2{color:#fff;}
+  .cta-box .btn{background:#06c755; font-weight:700; font-size:1.05rem;}
+  .cta-contact{font-size:.9rem; opacity:.9; margin-top:12px; line-height:1.9;}
+  .line-float{position:fixed; right:16px; bottom:16px; z-index:99; background:#06c755; color:#fff; border-radius:30px; padding:12px 20px; font-weight:700; text-decoration:none; box-shadow:0 4px 14px rgba(0,0,0,.25); font-size:.95rem;}
+  @media print{
+    *{-webkit-print-color-adjust:exact !important; print-color-adjust:exact !important;}
+    body{background:#fff;}
+    .btn,.nav-row,.progressbar,#screen-intro,#noprint,.line-float{display:none !important;}
+    .card{box-shadow:none; border:1px solid #ddd; page-break-inside:avoid;}
+    /* 保險：即使背景色被瀏覽器移除，三碼徽章仍可讀 */
+    .code-badge{background:#fff !important; color:#20315c !important; border:2.5px solid #20315c;}
+    header.top{background:#20315c !important;}
+  }
+  @media (max-width:560px){
+    .opts button{min-width:30%; font-size:.78rem;}
+    .score-label{width:96px; font-size:.82rem;}
+  }
+</style>
+</head>
+<body>
+<header class="top hero">
+  <div class="brandbar"><span class="brand-logo">TIPS 英典教育</span><span class="brand-sub">KC INSIDE ‧ 智慧引擎驅動</span></div>
+  <h1>國二升國三的關鍵一步：<br>孩子適合讀<span class="hl">高中</span>，還是<span class="hl">高職</span>？</h1>
+  <p style="margin-top:10px;">76 題科學化生涯興趣測驗，20 分鐘產出數據化報告——興趣雷達圖、Holland 興趣三碼、高中/高職適性判定、技高 15 群科適配排名。<b>完全免費。</b></p>
+  <div class="hero-stats">
+    <div class="hero-stat"><b>76 題</b>雙量表評估</div>
+    <div class="hero-stat"><b>6 大</b>興趣類型分析</div>
+    <div class="hero-stat"><b>15 群科</b>適配排名</div>
+    <div class="hero-stat"><b>免費</b>一對一報告解讀</div>
+  </div>
+</header>
+<div class="wrap">
+
+<!-- ============ INTRO / LANDING ============ -->
+<div id="screen-intro">
+  <div class="card">
+    <h2>為什麼國二暑假就要開始想這件事？</h2>
+    <p>九年級一開學，孩子就會面臨免試入學志願的準備。<b>選高中還是高職，影響的不只是三年，而是往後的升學路線與職涯方向。</b>台師大心測中心研究發現，高達 51% 的學生「興趣」與「天賦」沒有交集——越早開始探索，越有時間用營隊、參訪去驗證方向，而不是等會考成績出來才倉促決定。</p>
+    <div class="feature-grid">
+      <div class="feature"><b>🇺🇸 國際理論架構</b>興趣量表改編自美國勞工部 O*NET Interest Profiler，採用與台師大心測中心、大考中心相同的 Holland 六型碼理論。</div>
+      <div class="feature"><b>📊 數據化報告</b>興趣雷達圖、六型分數、區分性指標、學術/實作傾向指數，不是模糊的星座式描述。</div>
+      <div class="feature"><b>🎯 台灣升學制度對接</b>直接對應普通高中選組方向與技術型高中 15 群科，附各群科別與適合特質。</div>
+      <div class="feature"><b>👨‍🏫 免費專人解讀</b>做完測驗加 LINE，TIPS 教育顧問免費一對一解讀報告，並提供 12 年學習藍圖建議。</div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>📝 填寫基本資料，立即開始免費測驗</h2>
+    <div class="lead-form">
+      <div class="field">
+        <label>學生姓名 *</label>
+        <input type="text" id="stuName" placeholder="請輸入學生姓名">
+        <div class="err" id="errName">請填寫學生姓名</div>
+      </div>
+      <div class="field">
+        <label>年級 *</label>
+        <select id="stuClass" style="width:100%; padding:10px 12px; border:1px solid #ccd4e2; border-radius:8px; font-size:1rem; font-family:inherit;">
+          <option value="">請選擇年級</option>
+          <option>七年級（國一）</option>
+          <option>八年級（國二）</option>
+          <option>九年級（國三）</option>
+          <option>其他</option>
+        </select>
+        <div class="err" id="errClass">請選擇年級</div>
+      </div>
+      <div class="field">
+        <label>家長聯絡手機 *（測驗報告解讀通知用）</label>
+        <input type="tel" id="leadPhone" placeholder="09xxxxxxxx" maxlength="10">
+        <div class="err" id="errPhone">請填寫正確的手機號碼（09 開頭共 10 碼）</div>
+      </div>
+      <div class="field">
+        <label>LINE ID（選填，方便顧問聯繫解讀）</label>
+        <input type="text" id="leadLine" placeholder="選填">
+      </div>
+      <label class="consent"><input type="checkbox" id="leadConsent">我同意 TIPS 英典教育蒐集以上資料，用於提供測驗報告解讀與課程資訊。<span class="err" id="errConsent" style="display:none;">請勾選同意</span></label>
+      <button class="btn" style="margin-top:14px; width:100%; font-size:1.1rem;" onclick="startTest()">🚀 開始免費測驗（約 20 分鐘）</button>
+    </div>
+    <div class="note">本工具為興趣探索的<b>參考輔助工具</b>，非正式標準化心理測驗。重大升學決定建議搭配學校輔導室的正式測驗與 TIPS 顧問的專業意見。</div>
+  </div>
+</div>
+
+<!-- ============ TEST ============ -->
+<div id="screen-test" class="hidden">
+  <div class="progressbar">
+    <div class="pb-track"><div class="pb-fill" id="pbFill"></div></div>
+    <div class="pb-label" id="pbLabel"></div>
+  </div>
+  <div id="partIntro" class="card part-intro-card"></div>
+  <div id="qContainer"></div>
+  <div class="nav-row">
+    <button class="btn secondary" id="btnPrev" onclick="prevPage()">← 上一頁</button>
+    <button class="btn" id="btnNext" onclick="nextPage()">下一頁 →</button>
+  </div>
+</div>
+
+<!-- ============ RESULTS ============ -->
+<div id="screen-result" class="hidden"></div>
+
+<script>
+/* ================= TIPS 設定區（網管只需要改這裡） ================= */
+const TIPS_CONFIG = {
+  // LINE 官方帳號連結
+  LINE_URL: "https://line.me/R/ti/p/@tipsedu",
+  LINE_ID: "@tipsedu",
+  PHONE: "0905-547839",
+  ADDRESS: "台中市南屯區黎明路一段295號",
+  // === Google 表單串接 ===
+  // 1. 到 Google 表單建立一份表單，依序建立 6 個「簡答」題：
+  //    學生姓名 / 年級 / 家長手機 / LINE ID / 測驗狀態 / 結果摘要
+  // 2. 點表單右上「傳送」→ 連結圖示，取得表單網址中的長 ID，填入下方 FORM_ID
+  // 3. 點表單右上「⋮」→「取得預先填入的連結」→ 每題隨便填一個字 → 取得連結
+  //    連結中每題會有 entry.數字，把 6 個數字依序填入下方 ENTRY 各欄位
+  // 沒設定時測驗仍可正常使用，只是名單不會寫入 Google 試算表
+  FORM_ID: "1FAIpQLSeoVWKF4FuOUyYFv__vdaTsNZjgbTvuFKfhpv6N-298oKXxOA", // 生涯測驗名單（已設定完成）
+  ENTRY: {
+    name:   "1580379696",  // 學生姓名
+    grade:  "1277850670",  // 年級
+    phone:  "1103931844",  // 家長手機
+    line:   "737842167",   // LINE ID
+    status: "1942238160",  // 測驗狀態
+    result: "1686776976"   // 結果摘要
+  }
+};
+function submitToGoogleForm(fields){
+  if(!TIPS_CONFIG.FORM_ID) return; // 未設定時略過
+  try{
+    const url = `https://docs.google.com/forms/d/e/${TIPS_CONFIG.FORM_ID}/formResponse`;
+    const fd = new FormData();
+    for(const k in fields){
+      const id = TIPS_CONFIG.ENTRY[k];
+      if(id) fd.append(`entry.${id}`, fields[k]);
+    }
+    // no-cors 背景送出，不影響使用者操作
+    fetch(url, {method:"POST", mode:"no-cors", body:fd});
+  }catch(e){ /* 靜默失敗，不中斷測驗 */ }
+}
+function leadData(){
+  return {
+    name: document.getElementById("stuName").value.trim(),
+    grade: document.getElementById("stuClass").value,
+    phone: document.getElementById("leadPhone").value.trim(),
+    line: document.getElementById("leadLine").value.trim()
+  };
+}
+
+/* ================= DATA ================= */
+// Part 1: RIASEC 60 items — adapted (translated) from the O*NET Interest Profiler Short Form
+// (U.S. Department of Labor, Creative Commons licensed), culturally adapted for Taiwanese junior-high students.
+const TYPES = {
+  R:{name:"實用型 R", full:"Realistic 實用型", color:"var(--r)", colorHex:"#e05d5d",
+     desc:"喜歡動手操作、使用工具機械、戶外與體力活動，重視具體成果。",
+     hs:"自然組工程方向（機械、電機、土木）、體育相關",
+     traits:"動手做、務實、喜歡具體明確的任務",
+     jobs:"機械／電機工程師、汽車修護技師、消防員、無人機操作員、廚師、木工與室內裝修、職業運動員",
+     study:"「做中學」效果最好——實驗、實作課、現場參訪比死讀課本更能吸收，建議搭配動手做的專題來學理論。"},
+  I:{name:"研究型 I", full:"Investigative 研究型", color:"var(--i)", colorHex:"#7c5cd6",
+     desc:"喜歡觀察、分析、推理與實驗，對「為什麼」充滿好奇。",
+     hs:"自然組（數理化、醫藥衛生、生命科學、資訊）",
+     traits:"好奇、邏輯強、喜歡獨立思考解決問題",
+     jobs:"醫師、藥師、資料科學家、軟體工程師、化學研究員、獸醫、環境工程師、鑑識人員",
+     study:"適合探究式學習——多問為什麼、做小型專題研究、參加科展或程式競賽，把課本知識變成待解的謎題。"},
+  A:{name:"藝術型 A", full:"Artistic 藝術型", color:"var(--a)", colorHex:"#e8873a",
+     desc:"喜歡創作與表達，重視美感、想像力與原創性，不喜歡一成不變。",
+     hs:"社會組（文史哲、大眾傳播）、藝術班、建築設計方向",
+     traits:"有創意、感受力強、追求獨特表達",
+     jobs:"平面／多媒體設計師、遊戲美術、影片剪輯師、音樂創作者、作家編劇、建築師、動畫師、攝影師",
+     study:"用創作整理知識——心智圖、圖像筆記、把學習成果做成作品或影片，成就感會帶動學習動力。"},
+  S:{name:"社會型 S", full:"Social 社會型", color:"var(--s)", colorHex:"#12b5a5",
+     desc:"喜歡與人互動、教導、幫助與照顧他人，重視人際關係。",
+     hs:"社會組（教育、心理、社會工作）、醫護方向",
+     traits:"熱心、善解人意、喜歡團隊與服務",
+     jobs:"教師、護理師、物理治療師、心理諮商師、社工師、幼教老師、運動教練、語言治療師",
+     study:"小組共學效果好——當小老師教別人是最強的複習法，讀書會、討論式學習都很適合。"},
+  E:{name:"企業型 E", full:"Enterprising 企業型", color:"var(--e)", colorHex:"#2f6fed",
+     desc:"喜歡領導、說服、競爭與冒險，希望影響他人、達成目標。",
+     hs:"社會組（法政、財經、管理）",
+     traits:"有企圖心、口才好、喜歡領導與挑戰",
+     jobs:"創業家、行銷企劃、業務經理、律師、電商經營者、產品經理、活動策劃、自媒體經營者",
+     study:"目標導向學習——設定明確挑戰、參加競賽、爭取上台發表的機會，有舞台就有動力。"},
+  C:{name:"事務型 C", full:"Conventional 事務型", color:"var(--c)", colorHex:"#8a6d3b",
+     desc:"喜歡條理分明、按部就班處理資料與細節，重視正確與效率。",
+     hs:"社會組（財經會計、資訊管理）",
+     traits:"細心、有條理、可靠且重視規則",
+     jobs:"會計師、金融行員、資訊管理師、報關與物流管理、稽核人員、資料庫管理員、行政主管",
+     study:"有系統的學習——固定讀書計畫、整齊的筆記與錯題本是你的強項，善用表格與清單整理知識。"}
+};
+// 前兩碼組合的個人化解讀（key 為兩碼字母排序）
+const PAIRS = {
+  IR:{n:"工程研發型", d:"動手又動腦，適合需要技術與分析並重的領域，如工程、資訊、醫事技術、精密製造。"},
+  AR:{n:"工藝創作型", d:"手作能力與美感兼具，適合工業設計、模型製作、舞台技術、烘焙裝飾等「做出美的東西」的領域。"},
+  RS:{n:"實務服務型", d:"喜歡用具體技能直接幫助人，如醫護技術、運動教練、復健輔具、消防救護。"},
+  ER:{n:"行動領導型", d:"喜歡實地執行並帶領團隊完成任務，如營建管理、店面經營、航運領域。"},
+  CR:{n:"精確操作型", d:"重視標準流程與品質，適合機械加工、品管檢驗、航空維修等講求精準的技術領域。"},
+  AI:{n:"創新研究型", d:"科學與想像力的少見組合，適合建築、產品研發、資料視覺化、醫學美容等領域。"},
+  IS:{n:"助人專業型", d:"想用專業知識照顧人，是醫師、心理師、營養師、獸醫等專業助人工作的典型組合。"},
+  EI:{n:"策略分析型", d:"擅長用數據與邏輯做決策，適合金融分析、市場研究、科技創業。"},
+  CI:{n:"嚴謹分析型", d:"精確加上邏輯，適合會計稽核、程式設計、實驗室檢驗等要求正確性的專業。"},
+  AS:{n:"表達關懷型", d:"用創意連結人心，適合幼教、藝術教學、社群經營、活動設計。"},
+  AE:{n:"創意商業型", d:"能把創意變成影響力，適合行銷、品牌經營、自媒體、時尚產業。"},
+  AC:{n:"精緻執行型", d:"創意加上細膩的執行力，適合編輯、排版設計、文創商品、展覽策劃。"},
+  ES:{n:"人際影響型", d:"擅長帶動氣氛與說服他人，適合業務、導遊、公關、教學工作。"},
+  CS:{n:"可靠支持型", d:"細心可靠的服務者，適合行政管理、護理、客服營運、圖書資訊。"},
+  CE:{n:"經營管理型", d:"目標明確且做事有條理，適合店長、專案管理、電商營運、金融服務。"}
+};
+// 第二部分 16 題對應的特質標籤（順序同 P2_ITEMS）
+const P2_TRAITS = ["能長時間專注讀書","從動手做獲得成就感","對學科本身有興趣","實作課程特別投入","喜歡抽象理論思考","已有明確想投入的領域","想先廣泛探索再定向","透過操作練習學得快","能接受升學導向的高中生活","想及早學會一技之長","喜歡追根究底","適合做中學","以一般大學為目標","願意及早確定方向","從解題寫作獲得成就感","對特定領域特別有熱情"];
+const P1_ITEMS = [
+ // Realistic
+ ["R","製作木工作品（例如書架、櫃子）"],
+ ["R","砌磚或鋪設磁磚"],
+ ["R","修理家用電器"],
+ ["R","在養殖場飼養魚類"],
+ ["R","組裝電子零件"],
+ ["R","開車運送包裹到公司和住家"],
+ ["R","檢測產品零件的品質"],
+ ["R","修理和安裝門鎖"],
+ ["R","操作機器製造產品"],
+ ["R","參與消防救災工作"],
+ // Investigative
+ ["I","研發一種新藥"],
+ ["I","研究減少水污染的方法"],
+ ["I","進行化學實驗"],
+ ["I","研究行星的運行"],
+ ["I","用顯微鏡檢驗血液樣本"],
+ ["I","調查火災發生的原因"],
+ ["I","研發更準確的天氣預測方法"],
+ ["I","在生物實驗室做研究"],
+ ["I","發明糖的替代品"],
+ ["I","做實驗室檢測來判斷疾病"],
+ // Artistic
+ ["A","寫小說或劇本"],
+ ["A","演奏樂器"],
+ ["A","作曲或編曲"],
+ ["A","畫畫、繪製插圖"],
+ ["A","為電影製作特效"],
+ ["A","為舞台劇設計繪製佈景"],
+ ["A","為電影或電視節目寫腳本"],
+ ["A","表演舞蹈（街舞、爵士舞等）"],
+ ["A","在樂團裡唱歌或表演"],
+ ["A","剪輯影片"],
+ // Social
+ ["S","教別人運動健身的方法"],
+ ["S","幫助有心事或情緒困擾的人"],
+ ["S","給別人生涯規劃的建議"],
+ ["S","協助病人做復健治療"],
+ ["S","在公益團體擔任志工"],
+ ["S","教小朋友打球或運動"],
+ ["S","學手語幫助聽障人士溝通"],
+ ["S","協助帶領班級或團體活動"],
+ ["S","在幼兒園照顧小朋友"],
+ ["S","在學校擔任老師教課"],
+ // Enterprising
+ ["E","研究並買賣股票或基金"],
+ ["E","替公司談判商業合約"],
+ ["E","管理一家商店"],
+ ["E","經營美髮沙龍或美容工作室"],
+ ["E","管理公司裡的一個部門"],
+ ["E","自己創業當老闆"],
+ ["E","在法庭上為當事人辯護"],
+ ["E","行銷推廣新的服裝品牌"],
+ ["E","在百貨公司銷售商品"],
+ ["E","經營一家服飾店"],
+ // Conventional
+ ["C","用電腦軟體製作表格整理資料"],
+ ["C","校對文件和表格中的錯誤"],
+ ["C","為很多台電腦安裝設定軟體"],
+ ["C","用計算機處理數據帳目"],
+ ["C","記錄貨物進出的資料"],
+ ["C","計算員工的薪資"],
+ ["C","用行動裝置盤點商品庫存"],
+ ["C","記錄每月的收款帳目"],
+ ["C","管理倉庫的庫存紀錄"],
+ ["C","為公司整理、分類和寄送文件"]
+];
+// Part 2: academic (A) vs practical (P) learning-orientation items
+// Indicators drawn from Taiwanese career-guidance expert advice on 高中/高職 choice.
+const P2_ITEMS = [
+ ["AC","我可以長時間坐著專心讀書，不會覺得太痛苦"],
+ ["PR","我喜歡動手做東西，完成具體的作品讓我特別有成就感"],
+ ["AC","我對國文、英文、數學、自然、社會這些學科本身有興趣（不只是為了考試）"],
+ ["PR","上實作類課程（生活科技、家政、資訊、美術）時，我比在一般課堂上更投入"],
+ ["AC","我喜歡研究抽象的概念和理論，例如數學證明、科學原理或歷史脈絡"],
+ ["PR","我已經有明確想投入的領域（例如餐飲、設計、機械、美容、電機、寵物等）"],
+ ["AC","我還不確定未來想做什麼，想先廣泛學習各種科目，之後再決定方向"],
+ ["PR","比起閱讀課本，透過實際操作和練習，我學得更快、記得更牢"],
+ ["AC","我願意為了考大學的目標，接受三年以學科為主的高中生活"],
+ ["PR","我希望及早學會一技之長，取得專業技能或證照"],
+ ["AC","遇到不懂的知識，我會想追根究底弄清楚「為什麼」"],
+ ["PR","長時間坐著聽課讓我很難專注，我更適合「做中學」"],
+ ["AC","我的目標是進入一般大學鑽研學問或專業（例如醫學、法律、理工、人文）"],
+ ["PR","如果能學自己喜歡的專業，我願意早點確定方向，不必每一科都深入讀"],
+ ["AC","比起做出實際作品，解出一道難題或寫出一篇好文章更讓我有成就感"],
+ ["PR","我對為了考試而讀的學科感到疲乏，但對特定領域的知識很有熱情"]
+];
+const P1_OPTS = ["很不喜歡","不喜歡","不確定","喜歡","很喜歡"];
+const P2_OPTS = ["非常不符合","不符合","一半一半","符合","非常符合"];
+
+// 技術型高中 15 職群（教育部國教署適性入學宣導資料），標註主要對應的何倫碼
+const GROUPS = [
+ {n:"機械群", codes:["R","I"], majors:"機械科、模具科、製圖科、機電科", fit:"喜歡機械設計製造、動手操作、電腦繪圖", path:"升學：科大機械／自動化工程；出路：精密機械、半導體設備——台灣製造業的核心人才"},
+ {n:"動力機械群", codes:["R","I"], majors:"汽車科、飛機修護科、軌道車輛科", fit:"對引擎動力機械有興趣、空間邏輯推理佳", path:"升學：科大車輛／航空維修；出路：汽車廠、航空公司維修、捷運與鐵道系統"},
+ {n:"電機與電子群", codes:["I","R"], majors:"資訊科、電子科、電機科、冷凍空調科", fit:"數學邏輯推理強、對電腦與新科技好奇", path:"升學：科大電機／電子／資工；出路：半導體、電子業——技職體系薪資前段班"},
+ {n:"化工群", codes:["I","R"], majors:"化工科、紡織科、染整科", fit:"喜歡化學實驗操作、對化工產業有興趣", path:"升學：科大化工／材料；出路：化工廠、製藥、材料研發與檢驗"},
+ {n:"土木與建築群", codes:["R","I"], majors:"建築科、土木科、空間測繪科、消防工程科", fit:"數理與空間能力佳、具美感、喜歡思考分析", path:"升學：科大土木／建築／室內設計；出路：營造工程、建築師事務所、室內設計"},
+ {n:"商業與管理群", codes:["E","C"], majors:"商經科、國貿科、會計科、資處科、電商科", fit:"對商業銷售與服務有興趣、語文數學能力佳", path:"升學：科大企管／行銷／財金；出路：企業行政、電商營運、金融服務"},
+ {n:"外語群", codes:["S","E"], majors:"應用英語科、應用日語科", fit:"喜歡學外語、接觸異國文化、喜歡溝通", path:"升學：科大應用外語；出路：國際貿易、觀光旅遊、航空地勤"},
+ {n:"農業群", codes:["R","I"], majors:"園藝科、森林科、畜產保健科、野生動物保育科", fit:"愛好自然戶外、喜歡觀察動植物", path:"升學：科大農業／景觀／動物科技；出路：休閒農場、動物照護、景觀園藝"},
+ {n:"食品群", codes:["I","R"], majors:"食品加工科、烘焙科、水產食品科", fit:"對食品製作、加工與檢驗有興趣、有創意", path:"升學：科大食品科學／烘焙；出路：食品廠、烘焙業、食品檢驗機構"},
+ {n:"家政群", codes:["S","A"], majors:"幼保科、美容科、服裝科、時尚造型科", fit:"有創意美感、善體人意、喜歡與人合作", path:"升學：科大幼保／時尚造型／服裝；出路：幼兒園、美容美髮、時尚產業"},
+ {n:"餐旅群", codes:["S","E"], majors:"餐飲管理科、觀光事業科", fit:"喜歡烹飪烘焙、導覽服務、對餐旅有熱情", path:"升學：科大餐旅／觀光；出路：飯店、餐飲業、旅行社與觀光產業"},
+ {n:"水產群", codes:["R","I"], majors:"漁業科、水產養殖科", fit:"喜歡海洋與水中生物、愛好自然觀察", path:"升學：科大水產養殖／海洋科技；出路：養殖漁業、水產貿易、海洋保育"},
+ {n:"海事群", codes:["R","E"], majors:"航海科、輪機科", fit:"喜愛海洋與船舶、空間能力佳、有領導特質", path:"升學：科大航海／輪機；出路：商船船員、港務公司——起薪為技職體系最高之一"},
+ {n:"設計群", codes:["A","R"], majors:"廣告設計科、多媒體設計科、室內設計科", fit:"對美感與空間有興趣、想用作品表達想法", path:"升學：科大視覺傳達／多媒體設計；出路：設計公司、遊戲美術、接案設計師"},
+ {n:"藝術群", codes:["A","S"], majors:"音樂科、舞蹈科、美術科、表演藝術科", fit:"創意與觀察力強、喜歡表演與藝術表達", path:"升學：藝術大學／科大表演藝術；出路：劇團、音樂教學、演藝與策展"}
+];
+
+/* ================= STATE ================= */
+const PAGE_SIZE = 10;
+const TOTAL = P1_ITEMS.length + P2_ITEMS.length; // 76
+let answers = new Array(TOTAL).fill(null);
+let page = 0;
+const totalPages = Math.ceil(TOTAL / PAGE_SIZE); // 8
+
+function itemMeta(gi){
+  if(gi < P1_ITEMS.length) return {part:1, type:P1_ITEMS[gi][0], text:P1_ITEMS[gi][1], opts:P1_OPTS, num:gi+1};
+  const j = gi - P1_ITEMS.length;
+  return {part:2, type:P2_ITEMS[j][0], text:P2_ITEMS[j][1], opts:P2_OPTS, num:j+1};
+}
+
+/* ================= FLOW ================= */
+function startTest(){
+  // 驗證留資料表單
+  const d = leadData();
+  let ok = true;
+  const show = (id,bad)=>{ document.getElementById(id).style.display = bad ? "block":"none"; if(bad) ok=false; };
+  show("errName", !d.name);
+  show("errClass", !d.grade);
+  show("errPhone", !/^09\d{8}$/.test(d.phone));
+  const consent = document.getElementById("leadConsent").checked;
+  show("errConsent", !consent);
+  if(!ok) return;
+  // 測前先送出名單（即使中途放棄也留得住）
+  submitToGoogleForm({...d, status:"開始測驗（未完成）", result:""});
+  document.getElementById("screen-intro").classList.add("hidden");
+  document.getElementById("screen-test").classList.remove("hidden");
+  page = 0; renderPage();
+  window.scrollTo(0,0);
+}
+function renderPage(){
+  const start = page*PAGE_SIZE, end = Math.min(start+PAGE_SIZE, TOTAL);
+  const first = itemMeta(start);
+  const intro = document.getElementById("partIntro");
+  if(first.part===1 && start===0){
+    intro.innerHTML = '<div class="part-intro"><h2>第一部分：職業興趣探索（60 題）</h2><p class="tagline">以下是各種工作活動。想像自己在做這件事，憑直覺選出你的喜歡程度。不要考慮薪水、成績或能力，只考慮「喜不喜歡」。</p></div>';
+  } else if(first.part===2 && (start===P1_ITEMS.length)){
+    intro.innerHTML = '<div class="part-intro"><h2>第二部分：學習型態評估（16 題）</h2><p class="tagline">以下描述各種學習的樣子。請依你「實際上的情況」（不是理想中的自己）選出符合程度。</p></div>';
+  } else {
+    intro.innerHTML = "";
+  }
+  let html = "";
+  for(let gi=start; gi<end; gi++){
+    const m = itemMeta(gi);
+    html += `<div class="q-item" id="q${gi}">
+      <div class="q-text"><span class="q-num">${m.part===1?"":"第二部分 "}${m.num}.</span>${m.part===1?"我喜歡…　":""}<b>${m.text}</b></div>
+      <div class="opts">` +
+      m.opts.map((o,v)=>`<button type="button" class="${answers[gi]===v?'sel':''}" onclick="pick(${gi},${v})">${o}</button>`).join("") +
+      `</div></div>`;
+  }
+  document.getElementById("qContainer").innerHTML = html;
+  document.getElementById("btnPrev").style.visibility = page===0 ? "hidden":"visible";
+  document.getElementById("btnNext").textContent = (end===TOTAL) ? "看結果 →" : "下一頁 →";
+  updateProgress();
+  window.scrollTo(0,0);
+}
+function pick(gi,v){
+  answers[gi]=v;
+  const box = document.getElementById("q"+gi);
+  box.querySelectorAll(".opts button").forEach((b,idx)=>b.classList.toggle("sel", idx===v));
+  updateProgress();
+}
+function updateProgress(){
+  const done = answers.filter(a=>a!==null).length;
+  document.getElementById("pbFill").style.width = (done/TOTAL*100)+"%";
+  document.getElementById("pbLabel").textContent = `已完成 ${done} / ${TOTAL} 題　（第 ${page+1} / ${totalPages} 頁）`;
+}
+function prevPage(){ if(page>0){page--; renderPage();} }
+function nextPage(){
+  const start = page*PAGE_SIZE, end = Math.min(start+PAGE_SIZE, TOTAL);
+  for(let gi=start; gi<end; gi++){
+    if(answers[gi]===null){
+      const el = document.getElementById("q"+gi);
+      el.classList.add("unanswered-flash");
+      el.scrollIntoView({behavior:"smooth", block:"center"});
+      setTimeout(()=>el.classList.remove("unanswered-flash"),1800);
+      return;
+    }
+  }
+  if(end===TOTAL){ showResults(); } else { page++; renderPage(); }
+}
+
+/* ================= SCORING ================= */
+function computeScores(){
+  const riasec = {R:0,I:0,A:0,S:0,E:0,C:0};
+  P1_ITEMS.forEach((it,idx)=>{ riasec[it[0]] += answers[idx]; }); // each 0-40
+  let ac=0, pr=0;
+  P2_ITEMS.forEach((it,j)=>{
+    const v = answers[P1_ITEMS.length+j];
+    if(it[0]==="AC") ac+=v; else pr+=v;   // each 0-32
+  });
+  // sort types desc; stable tie-break by canonical order R I A S E C
+  const order = ["R","I","A","S","E","C"];
+  const sorted = order.slice().sort((a,b)=> riasec[b]-riasec[a] || order.indexOf(a)-order.indexOf(b));
+  // differentiation (adapted from CEEC 區分性: D = ((X1-X2)+(X1-X4))/2, rescaled to 0-40 range)
+  const X = sorted.map(t=>riasec[t]);
+  const D = ((X[0]-X[1]) + (X[0]-X[3]))/2;
+  const range = X[0]-X[5];
+  return {riasec, sorted, D, range, ac, pr, T: pr-ac};
+}
+function groupMatch(riasec, g){
+  // weighted match 0-100: primary code x2, secondary x1, normalized to 0-40 scale
+  return Math.round(((riasec[g.codes[0]]*2 + riasec[g.codes[1]]) / 120) * 100);
+}
+
+/* ================= RESULTS ================= */
+function barSVG(pct, colorHex){
+  // SVG 長條圖：列印/存PDF 時不會像 CSS 背景色一樣被瀏覽器移除
+  const w = pct>0 ? Math.max(pct,3).toFixed(1) : 0;
+  return `<svg viewBox="0 0 100 14" preserveAspectRatio="none" width="100%" height="16" style="display:block;">
+    <rect x="0" y="0" width="100" height="14" rx="4" fill="#e8ecf4"/>
+    ${w? `<rect x="0" y="0" width="${w}" height="14" rx="4" fill="${colorHex}"/>`:""}
+  </svg>`;
+}
+function gaugeSVG(pos){ // pos: 0-100
+  const x = Math.min(Math.max(pos,1),99);
+  return `<svg viewBox="0 0 100 14" preserveAspectRatio="none" width="100%" height="30" style="display:block;">
+    <defs><linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2f6fed"/><stop offset="35%" stop-color="#9db9f5"/>
+      <stop offset="50%" stop-color="#e3e8f2"/><stop offset="65%" stop-color="#a8e3dc"/>
+      <stop offset="100%" stop-color="#12b5a5"/></linearGradient></defs>
+    <rect x="0" y="3" width="100" height="8" rx="4" fill="url(#gaugeGrad)"/>
+    <rect x="${(x-0.7).toFixed(1)}" y="0" width="1.4" height="14" fill="#20315c"/>
+  </svg>`;
+}
+function radarSVG(riasec){
+  const order=["R","I","A","S","E","C"];
+  const cx=160, cy=150, rMax=105;
+  const pt=(i,val)=>{
+    const ang = -Math.PI/2 + i*(Math.PI/3);
+    const r = rMax*val;
+    return [(cx+r*Math.cos(ang)).toFixed(1), (cy+r*Math.sin(ang)).toFixed(1)];
+  };
+  let grid="";
+  for(let ring=1; ring<=4; ring++){
+    const pts = order.map((_,i)=>pt(i,ring/4).join(",")).join(" ");
+    grid += `<polygon points="${pts}" fill="none" stroke="#d7deea" stroke-width="1"/>`;
+  }
+  let axes="", labels="";
+  order.forEach((t,i)=>{
+    const [x,y]=pt(i,1);
+    axes += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#d7deea" stroke-width="1"/>`;
+    const [lx,ly]=pt(i,1.22);
+    labels += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="700" fill="${TYPES[t].colorHex}">${t} ${riasec[t]}</text>`;
+  });
+  const poly = order.map((t,i)=>pt(i, riasec[t]/40).join(",")).join(" ");
+  return `<svg viewBox="0 0 320 300" width="320" height="300" role="img" aria-label="興趣六型雷達圖">
+    ${grid}${axes}
+    <polygon points="${poly}" fill="rgba(47,111,237,.25)" stroke="#2f6fed" stroke-width="2.5"/>
+    ${labels}
+  </svg>`;
+}
+
+function showResults(){
+  const s = computeScores();
+  const name = document.getElementById("stuName").value.trim() || "同學";
+  const cls = document.getElementById("stuClass").value.trim();
+  const dateStr = new Date().toLocaleDateString("zh-TW");
+  const top3 = s.sorted.slice(0,3);
+  const code = top3.join("");
+  // differentiation text
+  let diffTxt, flatFlag=false;
+  if(s.D >= 4) diffTxt = `<b>區分性高（D=${s.D.toFixed(1)}）</b>：你的興趣輪廓清晰，高低分型態明確，三碼結果可信度較高。`;
+  else if(s.D >= 2) diffTxt = `<b>區分性中等（D=${s.D.toFixed(1)}）</b>：興趣方向已有雛形，但部分類型分數接近，建議多參加相關活動進一步確認。`;
+  else { diffTxt = `<b>區分性低（D=${s.D.toFixed(1)}）</b>：六型分數相當接近（平坦剖面），代表興趣還在探索中——這在國中階段很正常。以下結果僅供初步參考，建議搭配輔導老師晤談與更多職業試探活動。`; flatFlag=true; }
+  // low-elevation check
+  const maxScore = s.riasec[s.sorted[0]];
+  const lowAll = maxScore < 14;
+  // tendency verdict
+  let verdict, verdictClass;
+  if(s.T <= -8){
+    verdictClass="hs";
+    verdict = `<b>學習型態偏向「學術型」→ 建議優先考慮：普通高中</b><br>你比較能投入學科式、理論式的學習，也傾向先廣泛探索再定向。普通高中的課程設計（部定必修＋多元選修＋學測升學）較符合你的學習樣貌。仍建議搭配會考成績與學校特色綜合評估。`;
+  } else if(s.T >= 8){
+    verdictClass="vs";
+    verdict = `<b>學習型態偏向「實作型」→ 建議優先考慮：技術型高中（高職）或五專</b><br>你從動手實作中獲得最大的學習動力與成就感，及早進入專業群科能讓你的優勢發揮出來。<b>提醒：高職不等於不升學</b>——透過統測可升科技大學，四技甄選、技優保送等管道都很暢通。下方的群科建議請搭配興趣碼一起看。`;
+  } else {
+    verdictClass="mid";
+    verdict = `<b>學術型與實作型傾向接近 → 兩條路都可行，建議進一步探索</b><br>你同時具備學科學習與實作學習的適應力。建議：(1) 參加高中與高職的營隊或參訪日實際體驗；(2) 考慮「綜合高中」（高二再分流）；(3) 若興趣碼有明確的專業方向（如設計、餐飲），可優先了解對應群科；(4) 與家人、導師及輔導老師討論會考成績落點與學校選項。`;
+  }
+  const gaugePos = ((s.T+32)/64*100).toFixed(1);
+  // group recommendations
+  const ranked = GROUPS.map(g=>({g, m:groupMatch(s.riasec,g)})).sort((a,b)=>b.m-a.m).slice(0,5);
+  const groupHTML = ranked.map(({g,m})=>
+    `<div class="group-card"><span class="match">適配 ${m}%</span><b>${g.n}</b>　<span class="tagline">主要科別：${g.majors}</span><p>適合特質：${g.fit}（對應興趣碼 ${g.codes.join("、")}）</p><p>🎓 ${g.path}</p></div>`).join("");
+  // HS directions from top2 codes
+  const hsDir = [...new Set(top3.slice(0,2).map(t=>TYPES[t].hs))].join("；");
+  // score bars
+  const bars = s.sorted.map(t=>{
+    const v=s.riasec[t];
+    return `<div class="score-row"><div class="score-label" style="color:${TYPES[t].colorHex}">${TYPES[t].name}</div>
+      <div class="score-track">${barSVG(v/40*100, TYPES[t].colorHex)}</div>
+      <div class="score-val">${v} / 40</div></div>`;
+  }).join("");
+  const typeRows = top3.map((t,i)=>
+    `<tr><th>第 ${i+1} 碼：${TYPES[t].name}</th><td>${TYPES[t].desc}<br><span class="tagline">特質：${TYPES[t].traits}</span><br><span class="tagline">👉 職業舉例：${TYPES[t].jobs}</span><br><span class="tagline">📖 適合的學習方式：${TYPES[t].study}</span></td></tr>`).join("");
+  // 前兩碼組合解讀
+  const pairKey = [top3[0],top3[1]].sort().join("");
+  const pair = PAIRS[pairKey];
+  const pairHTML = pair? `<div class="note">🧩 <b>${top3[0]}＋${top3[1]} 組合特質——「${pair.n}」</b>：${pair.d}</div>` : "";
+  // 學習特質標籤（答「符合」以上的項目）
+  const traitChips = P2_ITEMS.map((it,j)=>({k:it[0], t:P2_TRAITS[j], v:answers[P1_ITEMS.length+j]}))
+    .filter(x=>x.v>=3)
+    .map(x=>`<span class="pill" style="${x.k==='PR'? 'background:#e5f7f5;color:#0c7d72;':''}">${x.t}</span>`).join("");
+  const traitHTML = traitChips? `<h3>孩子的學習特質側寫</h3><p class="tagline" style="margin-bottom:6px;">以下是作答「符合」以上的項目（藍＝學術型、綠＝實作型）：</p><div>${traitChips}</div>` : "";
+
+  // 個人化行動清單
+  const topG = ranked[0].g;
+  const actions = [
+    `和孩子一起上網查「${topG.n}」的科系介紹影片，看 15 分鐘，聊聊「哪裡有趣、哪裡無感」`,
+    `請孩子從報告的職業舉例中圈出 3 個最好奇的，一起查查這些工作實際一天在做什麼`
+  ];
+  actions.push(`帶這份報告到 TIPS 英典教育（LINE：${TIPS_CONFIG.LINE_ID}）：顧問免費一對一解讀，並用 KC 智慧學習系統實際檢測孩子目前的程度，把「興趣方向」轉成一份科學化、數據化的學習計畫——興趣告訴我們方向，數據告訴我們怎麼走`);
+  actions.push(`把報告帶去學校，和輔導老師約 20 分鐘討論，對照學校測驗結果`);
+  if(flatFlag) actions.push(`興趣還在成形中：多方嘗試 2～3 個月後再測一次，比較兩次結果的變化`);
+  const actionHTML = actions.map((a,i)=>`<li><b>行動 ${i+1}</b>：${a}</li>`).join("");
+
+  const html = `
+  <div class="card">
+    <h2>📋 測驗結果報告</h2>
+    <p class="tagline">${name}${cls? "（"+cls+"）":""}｜測驗日期：${dateStr}｜共 ${TOTAL} 題</p>
+  </div>
+  <div class="card">
+    <h2>1️⃣ 你的興趣六型剖面（Holland 何倫碼）</h2>
+    <div id="radarBox">${radarSVG(s.riasec)}</div>
+    ${bars}
+    <h3>你的興趣三碼</h3>
+    <div class="code-badge">${code}</div>
+    <table class="type-table">${typeRows}</table>
+    ${pairHTML}
+    <div class="note">📐 ${diffTxt}</div>
+    ${lowAll? `<div class="flag">⚠️ 各類型分數整體偏低，可能代表目前接觸過的活動經驗較少，或作答較保守。建議先增加各領域的體驗（社團、營隊、參訪），再重新施測。</div>`:""}
+  </div>
+  <div class="card">
+    <h2>2️⃣ 高中 vs 高職：學習型態評估</h2>
+    <div class="score-row"><div class="score-label">學術型得分</div><div class="score-track">${barSVG(s.ac/32*100, "#2f6fed")}</div><div class="score-val">${s.ac} / 32</div></div>
+    <div class="score-row"><div class="score-label">實作型得分</div><div class="score-track">${barSVG(s.pr/32*100, "#12b5a5")}</div><div class="score-val">${s.pr} / 32</div></div>
+    <div class="gauge-wrap">
+      ${gaugeSVG(parseFloat(gaugePos))}
+      <div class="gauge-labels"><span>◀ 學術型（普通高中）</span><span>中間帶</span><span>實作型（技術型高中）▶</span></div>
+    </div>
+    <div class="verdict ${verdictClass}">${verdict}</div>
+    ${traitHTML}
+    ${flatFlag? `<div class="flag">因興趣區分性偏低，以下群科建議請視為「值得去體驗看看的方向」，而非定論。</div>`:""}
+  </div>
+  <div class="card">
+    <h2>3️⃣ 若走技職路線：最適配的 5 個群科（全國共 15 群）</h2>
+    <p class="tagline">依你的興趣碼與各群科對應的何倫碼計算適配度。建議實際參加職業試探課程或群科參訪來驗證。</p>
+    ${groupHTML}
+  </div>
+  <div class="card">
+    <h2>4️⃣ 若走普通高中路線：適合發展的方向</h2>
+    <p>依你的前兩碼（${top3[0]}、${top3[1]}），高中階段可留意：<b>${hsDir}</b>。</p>
+    <p class="tagline" style="margin-top:6px;">高一結束前會再面臨選組（自然組／社會組），屆時學校會安排性向測驗與興趣量表協助決定。</p>
+  </div>
+  <div class="card">
+    <h2>5️⃣ 接下來 30 天的行動清單（依測驗結果客製）</h2>
+    <ul class="tips">${actionHTML}</ul>
+    <h3>💬 給家長的話：怎麼跟孩子談這份報告</h3>
+    <ul class="tips">
+      <li>用「我看到你的○○型分數很高，你自己覺得準嗎？」開啟對話，<b>讓孩子先說</b>——而不是「測驗說你適合讀○○」。</li>
+      <li>興趣不等於能力：這份報告測的是「喜歡」，請搭配在校成績與學校的性向測驗一起看，找興趣與能力的交集。</li>
+      <li>如果結果和您的期待不同，先別急著否定——國中階段的探索本來就會變動，強壓方向反而讓孩子失去學習動力。</li>
+      <li>最終的決定權留給孩子，家長的角色是提供資訊、安排體驗機會、一起討論利弊。</li>
+    </ul>
+  </div>
+  <div class="cta-box" id="noprint">
+    <h2>🎁 這份報告，值得一次專業解讀</h2>
+    <p style="margin-top:8px;">測驗只是起點。<b>孩子的興趣碼要怎麼對到會考落點？區分性低代表什麼？高職群科怎麼挑學校？</b>加入 TIPS 英典教育官方 LINE，教育顧問提供<b>免費一對一報告解讀</b>，並為孩子規劃專屬的 12 年學習藍圖。</p>
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+      <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" style="text-decoration:none;">💬 加 LINE 免費預約解讀（${TIPS_CONFIG.LINE_ID}）</a>
+      <button class="btn secondary" onclick="copySummary()">📋 複製結果摘要傳給顧問</button>
+    </div>
+    <div class="cta-contact">📞 ${TIPS_CONFIG.PHONE}　📍 ${TIPS_CONFIG.ADDRESS}</div>
+  </div>
+  <div class="card">
+    <h2>6️⃣ 給家長的下一步建議</h2>
+    <ul class="tips">
+      <li>把這份結果<b>列印或存成 PDF</b>，與學校輔導老師討論，對照學校施測的心測中心「國中生涯興趣量表」與「性向測驗」結果。</li>
+      <li>到 <a href="https://career.ntnu.edu.tw/junior/" target="_blank">台師大職涯測驗系統（國中版）</a> 做官方的情境式職涯興趣測驗與適性化職涯性向測驗。</li>
+      <li>瀏覽 <a href="https://shs.k12ea.gov.tw/site/adapt-k12ea" target="_blank">國中畢業生適性入學宣導網站</a>（國教署）了解免試入學、特色招生等管道；用 <a href="https://www.techadmi.edu.tw/" target="_blank">技專校院招生宣導網站</a> 查詢各校群科與未來科大升學路徑。</li>
+      <li>參加暑假的<b>高中／高職營隊、職業試探體驗</b>，用實際經驗驗證測驗結果。</li>
+      <li>九年級上學期把「興趣 ＋ 性向 ＋ 會考成績落點」三個資訊放在一起做最後決定。</li>
+    </ul>
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+      <button class="btn" onclick="window.print()">🖨 列印 / 存成 PDF</button>
+      <button class="btn secondary" onclick="location.reload()">↺ 重新測驗</button>
+    </div>
+    <div class="note">
+      本工具第一部分改編自美國勞工部 <a href="https://www.onetcenter.org/IP.html" target="_blank">O*NET Interest Profiler</a>（CC 授權）之 60 題短式量表，採 Holland 六型碼理論；解讀方式（三碼、區分性）參考大考中心興趣量表解釋架構；15 群科對照採教育部國教署適性入學宣導資料。<b>本工具為探索參考，非標準化心理測驗</b>，重大升學決定請務必搭配學校正式測驗與輔導老師專業意見。
+    </div>
+  </div>`;
+  document.getElementById("screen-test").classList.add("hidden");
+  const rs = document.getElementById("screen-result");
+  rs.innerHTML = html;
+  rs.classList.remove("hidden");
+  window.__lastResult = {s, name, cls, dateStr, code, ranked};
+  // 完成測驗：把結果摘要寫回 Google 表單（第二筆，含分數）
+  const d = leadData();
+  const summary = `三碼${code}｜D=${s.D.toFixed(1)}｜R${s.riasec.R} I${s.riasec.I} A${s.riasec.A} S${s.riasec.S} E${s.riasec.E} C${s.riasec.C}｜學術${s.ac}/32 實作${s.pr}/32 T=${s.T>0?"+":""}${s.T}｜建議群科:${ranked.map(r=>r.g.n).join("、")}`;
+  submitToGoogleForm({...d, status:"已完成測驗", result:summary});
+  window.scrollTo(0,0);
+}
+function copySummary(){
+  const {s,name,cls,dateStr,code,ranked} = window.__lastResult;
+  const lines = [
+    `【生涯興趣探索測驗結果】`,
+    `姓名：${name}${cls? "（"+cls+"）":""}　日期：${dateStr}`,
+    `興趣三碼：${code}　區分性D值：${s.D.toFixed(1)}`,
+    `六型分數（0-40）：R=${s.riasec.R} I=${s.riasec.I} A=${s.riasec.A} S=${s.riasec.S} E=${s.riasec.E} C=${s.riasec.C}`,
+    `學術型：${s.ac}/32　實作型：${s.pr}/32　傾向指數T=${s.T>0?"+":""}${s.T}（T≦-8偏普高、T≧+8偏技高、其間為中間帶）`,
+    `建議優先群科：${ranked.map(r=>`${r.g.n}(${r.m}%)`).join("、")}`
+  ].join("\n");
+  navigator.clipboard.writeText(lines).then(()=>alert("已複製結果摘要！加 LINE 後直接貼上傳給顧問，即可預約免費解讀。"));
+}
+</script>
+<a class="line-float" id="lineFloat" href="https://line.me/R/ti/p/@tipsedu" target="_blank">💬 LINE 諮詢</a>
+<script>document.getElementById("lineFloat").href = TIPS_CONFIG.LINE_URL;</script>
+</body>
+</html>
