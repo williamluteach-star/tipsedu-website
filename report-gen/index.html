@@ -59,7 +59,7 @@
 <body>
 
 <div class="panel">
-  <h1>🔒 TIPS 報告產生器（內部工具，請勿外流網址）</h1>
+  <h1>🔒 TIPS 報告產生器（內部工具，請勿外流網址）<a href="sop.html" style="float:right; font-size:.75rem; color:#2f6fed; text-decoration:none;">📖 解讀面談 SOP</a></h1>
   <p class="hint">從試算表複製「結果摘要」欄整格貼上即可（孩子那筆＋對照卷那筆可以一起貼，系統會自動抓「代碼[…]」）。支援：高中定向 HSC／國中興趣 JHC／準備度 RDC／入班評估 NSC＋各對照卷代碼。</p>
   <textarea id="codeInput" placeholder="把試算表的結果摘要貼在這裡（可多筆一起貼）…"></textarea>
   <div class="row">
@@ -257,7 +257,8 @@ function riasecSection(riasec, pA, top3code){
 }
 
 function renderHS(cc, pc, internal){
-  const [_,name,grade,scores,nh]=cc.split("|");
+  const __seg=cc.split("|");
+  const [_,name,grade,scores,nh]=__seg;
   const vals=scores.split(",").map(Number);
   const riasec={}; R6.forEach((k,i)=>riasec[k]=vals[i]);
   const [nat,hum]=nh.split(",").map(Number);
@@ -284,6 +285,7 @@ function renderHS(cc, pc, internal){
   }
   const topCards=ranked.slice(0,4).map((g,i)=>`<div class="gcard"><b>TOP${i+1}　${g.n}</b><span class="pct">${g.pct}%</span><br>${g.majors}｜採計：${g.subj}</div>`).join("");
   const body=
+    qWarn(__seg[5],internal)+
     riasecSection(riasec,pA,top3)+
     `<h3 class="sec">選組傾向</h3><div class="verdict">${streamTxt}｜自然 ${nat}/32・社會 ${hum}/32｜區分性 D=${D.toFixed(1)}${D<4?"（偏低，興趣仍在探索中，排名僅供參考）":""}</div>`+
     expTable+
@@ -293,6 +295,11 @@ function renderHS(cc, pc, internal){
     `<span>學生：<b>${esc(name)}</b></span><span>年級：<b>${esc(grade)}</b></span><span>何倫碼：<b>${top3}</b></span><span>選組指數：<b>${streamIdx}</b></span>${pc?"":"<span style='color:#c0392b;'>（未填對照卷）</span>"}`, body);
 }
 
+function qWarn(seg,internal){
+  const q=(seg||"").replace(/^Q:/,"");
+  if(!internal || !q || q==="OK") return "";
+  return `<div class="verdict warn" style="border-left-color:#e05d5d; background:#fdecec;">⚠ <b>作答品質旗標：${q}</b>——作答過快或全程同一選項，結果參考價值可能偏低，建議安排重測後再據以規劃。</div>`;
+}
 /* ---- 溝通方向（內部）情境句 ---- */
 function gapTip(pA,riasec){
   if(!pA) return null;
@@ -357,7 +364,8 @@ function renderHSLegacy(L){
     `<span>學生：<b>（姓名見試算表該列）</b></span><span>何倫碼：<b>${L.code3}</b></span><span>選組指數：<b>${L.idx}</b></span>`, body);
 }
 function renderJH(cc, pc, internal){
-  const [_,name,grade,scores,ap]=cc.split("|");
+  const __seg=cc.split("|");
+  const [_,name,grade,scores,ap]=__seg;
   const vals=scores.split(",").map(Number);
   const riasec={}; R6.forEach((k,i)=>riasec[k]=vals[i]);
   const [ac,pr]=ap.split(",").map(Number);
@@ -384,6 +392,7 @@ function renderJH(cc, pc, internal){
   }
   const topCards=ranked.slice(0,4).map((g,i)=>`<div class="gcard"><b>TOP${i+1}　${g.n}</b><span class="pct">${g.pct}%</span><br>${g.majors}</div>`).join("");
   const body=
+    qWarn(__seg[5],internal)+
     riasecSection(riasec,pA,top3)+
     `<h3 class="sec">高中／高職傾向</h3><div class="verdict">${dirTxt}｜學術 ${ac}/32・實作 ${pr}/32｜區分性 D=${D.toFixed(1)}${D<4?"（偏低，興趣仍在探索中，排名僅供參考）":""}</div>`+
     expTable+
@@ -394,7 +403,8 @@ function renderJH(cc, pc, internal){
 }
 
 function renderRD(cc, pc, internal){
-  const [_,name,grade,scores]=cc.split("|");
+  const __seg=cc.split("|");
+  const [_,name,grade,scores]=__seg;
   const vals=scores.split(",").map(Number);
   const total=vals.reduce((a,b)=>a+b,0);
   const index=Math.round(total/192*100);
@@ -417,6 +427,7 @@ function renderRD(cc, pc, internal){
   let planBlock="";
   if(pc) planBlock=`<h3 class="sec">家長的規劃與擔心</h3><table><tr><th>國中學習安排傾向</th><th>最擔心</th></tr><tr><td>${RD_PLAN[pPlan]}</td><td>${RD_WORRY[pWorry]}</td></tr></table>`;
   const body=
+    qWarn(__seg[4],internal)+
     `<h3 class="sec">六大能力：孩子自評${pA?" vs 家長觀察":""}（就緒指數 <span class="badge">${index}</span>）</h3>
      <div class="flex"><div style="text-align:center;">${radarDual(labels,vals,parentVals,32)}<div class="legend">─ <span class="c1">孩子自評</span>${pA?"　╌ <span class='c2'>家長觀察</span>":""}</div></div><div>${table}</div></div>`+
     planBlock+
@@ -435,6 +446,7 @@ function renderNS(cc, pc, internal){
     const lv=vals[i]>=14?["亮點優勢","#12b5a5"]:(vals[i]>=9?["穩定發展","#e8873a"]:["慢慢來","#e05d5d"]);
     return `<tr><td>${d[1]}</td><td>${vals[i]}/18</td><td style="color:${lv[1]}; font-weight:700;">${lv[0]}</td></tr>`;}).join("");
   const body=
+    qWarn(seg[5],internal)+
     `<h3 class="sec">五大發展面向（家長觀察填答）</h3>
      <div class="flex"><div style="text-align:center;">${radarDual(labels,vals,null,18)}<div class="legend">─ <span class="c1">家長觀察</span></div></div>
      <div><table><tr><th>面向</th><th>分數</th><th>階段</th></tr>${rows}</table></div></div>

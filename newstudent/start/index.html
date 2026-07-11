@@ -153,7 +153,7 @@
         <label>LINE ID（選填，方便顧問聯繫）</label>
         <input type="text" id="leadLine" placeholder="選填">
       </div>
-      <label class="consent"><input type="checkbox" id="leadConsent">我同意 TIPS 英典教育蒐集以上資料，用於提供評估結果說明與課程資訊。<span class="err" id="errConsent" style="display:none;">請勾選同意</span></label>
+      <label class="consent"><input type="checkbox" id="leadConsent">我同意 TIPS 英典教育依《<a href="/privacy/" target="_blank" rel="noopener" style="color:inherit;">資料使用說明</a>》蒐集以上資料，用於提供評估結果說明與課程資訊。<span class="err" id="errConsent" style="display:none;">請勾選同意</span></label>
       <button class="btn" style="margin-top:14px; width:100%; font-size:1.1rem;" onclick="startTest()">🚀 開始評估（約 8 分鐘）</button>
     </div>
     <div class="note">📚 <b>編製依據</b>：本問卷向度架構參考美國多州入學準備度評估（KRA）之領域設計與「學習取向」研究構面，並依國際慣例採家長觀察填答，詳細說明見報告末。本問卷為<b>家長觀察式的參考工具</b>，不是兒童發展篩檢或診斷。若您對孩子的發展有疑慮，請洽小兒科醫師或各縣市「兒童發展聯合評估中心」。</div>
@@ -288,6 +288,7 @@ let answers = new Array(TOTAL).fill(null);
 let page = 0;
 
 function startTest(){
+  window.__t0=Date.now();
   const d = leadData();
   let ok = true;
   const show=(id,bad)=>{document.getElementById(id).style.display=bad?"block":"none"; if(bad) ok=false;};
@@ -416,7 +417,11 @@ function showResults(){
   const d=leadData();
   const scoreStr=DIMS.map(x=>s.scores[x.key]).join(",");
   const bg=BG_QUESTIONS.map((bq,bi)=>bq.opts[bgAnswers[bi]]).join("/");
-  const code=`NSC1|${d.name}|${d.grade}|${scoreStr}|${bg}`;
+    const __secs=window.__t0?Math.round((Date.now()-window.__t0)/1000):null;
+  const __flat=(new Set(answers)).size<=1;
+  const __fast=__secs!==null && __secs<90;
+  const qflag=(__fast||__flat)?[__fast?`快答${__secs}s`:null,__flat?"全同選項":null].filter(Boolean).join("+"):"OK";
+const code=`NSC1|${d.name}|${d.grade}|${scoreStr}|${bg}|Q:${qflag}`;
   const summary=`入班評估｜專注${s.scores.focus} 語言${s.scores.lang} 情緒${s.scores.social} 自理${s.scores.self} 好奇${s.scores.curio}｜亮點:${s.strongest.map(x=>x.name).join("、")}｜陪伴:${s.gentlest.map(x=>x.name).join("、")}｜英語:${bg}｜代碼[${code}]`;
   submitToGoogleForm({...d, status:"已完成評估", result:summary});
   document.getElementById("screen-test").classList.add("hidden");

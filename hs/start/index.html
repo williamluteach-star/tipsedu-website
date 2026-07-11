@@ -151,7 +151,7 @@
         <label>LINE ID（選填，方便顧問聯繫解讀）</label>
         <input type="text" id="leadLine" placeholder="選填">
       </div>
-      <label class="consent"><input type="checkbox" id="leadConsent">我同意 TIPS 英典教育蒐集以上資料，用於提供測驗報告解讀與課程資訊。<span class="err" id="errConsent" style="display:none;">請勾選同意</span></label>
+      <label class="consent"><input type="checkbox" id="leadConsent">我同意 TIPS 英典教育依《<a href="/privacy/" target="_blank" rel="noopener" style="color:inherit;">資料使用說明</a>》蒐集以上資料，用於提供測驗報告解讀與課程資訊。<span class="err" id="errConsent" style="display:none;">請勾選同意</span></label>
       <button class="btn" style="margin-top:14px; width:100%; font-size:1.1rem;" onclick="startTest()">🚀 開始免費測驗（約 20 分鐘）</button>
     </div>
     <div class="note">📚 <b>編製依據</b>：本測驗第一部分改編自美國勞工部 O*NET Interest Profiler 短式量表（CC 授權），採 Holland 六型碼理論；解讀架構參考大考中心興趣量表；學群對照採大考中心「十八學群」分類，詳細說明見報告末。本工具為生涯探索的<b>參考輔助工具</b>，非正式標準化心理測驗。</div>
@@ -374,6 +374,7 @@ function itemMeta(gi){
   return {part:2, type:P2_ITEMS[j][0], text:P2_ITEMS[j][1], opts:P2_OPTS, num:j+1};
 }
 function startTest(){
+  window.__t0=Date.now();
   const d = leadData();
   let ok = true;
   const show=(id,bad)=>{document.getElementById(id).style.display=bad?"block":"none"; if(bad) ok=false;};
@@ -494,7 +495,11 @@ function showResults(){
   const d=leadData();
   const code3=s.top3.join("");
   const scoreStr=["R","I","A","S","E","C"].map(k=>s.riasec[k]).join(",");
-  const code=`HSC1|${d.name}|${d.grade}|${scoreStr}|${s.nat},${s.hum}`;
+    const __secs=window.__t0?Math.round((Date.now()-window.__t0)/1000):null;
+  const __flat=(new Set(answers)).size<=1;
+  const __fast=__secs!==null && __secs<180;
+  const qflag=(__fast||__flat)?[__fast?`快答${__secs}s`:null,__flat?"全同選項":null].filter(Boolean).join("+"):"OK";
+const code=`HSC1|${d.name}|${d.grade}|${scoreStr}|${s.nat},${s.hum}|Q:${qflag}`;
   const summary=`高中定向｜何倫碼${code3}｜D${s.D.toFixed(1)}｜選組${s.streamIdx}｜Top3:${s.gmatch.slice(0,3).map(g=>g.n+g.pct+"%").join("、")}｜代碼[${code}]`;
   submitToGoogleForm({...d, status:"已完成測驗", result:summary});
   document.getElementById("screen-test").classList.add("hidden");
