@@ -203,7 +203,24 @@ function parseCodes(txt){
   });
   const out={};
   found.forEach(c=>{ const tag=c.split("|")[0]; out[tag]=c; });
+  if(Object.keys(out).length===0) parseLegacy(txt,out);
   return out;
+}
+/* ---- 舊格式相容（改版前的結果摘要，無代碼） ---- */
+function parseLegacy(txt,out){
+  let m;
+  // ① 舊國中：三碼RIA｜D=1.0｜R20 I18 ...｜學術16/32 實作20/32 T=+4
+  m=txt.match(/三碼\s*([RIASEC]{3})[\s\S]*?R\s*(\d+)\s*I\s*(\d+)\s*A\s*(\d+)\s*S\s*(\d+)\s*E\s*(\d+)\s*C\s*(\d+)[\s\S]*?學術\s*(\d+)\/32\s*實作\s*(\d+)\/32/);
+  if(m){ out.JHC1=`JHC1|（舊資料·姓名見試算表）|—|${m[2]},${m[3]},${m[4]},${m[5]},${m[6]},${m[7]}|${m[8]},${m[9]}`; return; }
+  // ③ 舊準備度：就緒指數63/100｜動機16 時間16 專注16 方法16 心態16 獨立16
+  m=txt.match(/動機\s*(\d+)\s*時間\s*(\d+)\s*專注\s*(\d+)\s*方法\s*(\d+)\s*心態\s*(\d+)\s*獨立\s*(\d+)/);
+  if(m){ out.RDC1=`RDC1|（舊資料·姓名見試算表）|—|${m[1]},${m[2]},${m[3]},${m[4]},${m[5]},${m[6]}`; return; }
+  // ④ 舊入班：入班評估｜專注12 語言12 情緒12 自理12 好奇12 ... 英語:xxx
+  m=txt.match(/專注\s*(\d+)\s*語言\s*(\d+)\s*情緒\s*(\d+)\s*自理\s*(\d+)\s*好奇\s*(\d+)/);
+  if(m){ const bg=(txt.match(/英語[:：]([^｜|]+)/)||[])[1]||""; out.NSC1=`NSC1|（舊資料·姓名見試算表）|—|${m[1]},${m[2]},${m[3]},${m[4]},${m[5]}|${bg.trim()}`; return; }
+  // ⑤ 舊高中：何倫碼IRA｜D值12｜選組指數88（自然30/社會8）→ 六型分數不足，產簡化版
+  m=txt.match(/何倫碼\s*([RIASEC]{3})[\s\S]*?選組(?:指數)?\s*(\d+)（?自然\s*(\d+)\/?社會\s*(\d+)/);
+  if(m){ out.HSLEGACY={code3:m[1], idx:Number(m[2]), nat:Number(m[3]), hum:Number(m[4]), D:(txt.match(/D值?\s*=?\s*([\d.]+)/)||[])[1]||"—"}; return; }
 }
 
 /* ================= 各測驗報告 ================= */
@@ -266,6 +283,14 @@ function renderHS(cc, pc, internal){
     `<span>學生：<b>${esc(name)}</b></span><span>年級：<b>${esc(grade)}</b></span><span>何倫碼：<b>${top3}</b></span><span>選組指數：<b>${streamIdx}</b></span>${pc?"":"<span style='color:#c0392b;'>（未填對照卷）</span>"}`, body);
 }
 
+function renderHSLegacy(L){
+  const streamTxt= L.idx>=62?`自然組傾向明顯（${L.idx}）`: L.idx>=54?`偏自然組（${L.idx}）`: L.idx>46?`均衡型（${L.idx}）`: L.idx>38?`偏社會組（${L.idx}）`:`社會組傾向明顯（${L.idx}）`;
+  const body=`<h3 class="sec">興趣何倫碼</h3><div style="margin:6px 0;"><span class="badge">${L.code3}</span>　<span style="font-size:.8rem;">區分性 D=${L.D}</span></div>
+    <h3 class="sec">選組傾向</h3><div class="verdict">${streamTxt}｜自然 ${L.nat}/32・社會 ${L.hum}/32</div>
+    <div class="verdict warn">⚠ 這是改版前的舊資料，摘要未含六型原始分數，無法重建雷達圖、學群排名與親子對照。如需完整報告，請學生重新施測（新資料會自動帶完整代碼）。</div>`;
+  return rptShell("高中生涯定向報告（舊資料簡化版）",
+    `<span>學生：<b>（姓名見試算表該列）</b></span><span>何倫碼：<b>${L.code3}</b></span><span>選組指數：<b>${L.idx}</b></span>`, body);
+}
 function renderJH(cc, pc, internal){
   const [_,name,grade,scores,ap]=cc.split("|");
   const vals=scores.split(",").map(Number);
@@ -361,6 +386,7 @@ function generate(){
   let html="";
   try{
     if(codes.HSC1) html=renderHS(codes.HSC1, codes.HSP1||null, internal);
+    else if(codes.HSLEGACY) html=renderHSLegacy(codes.HSLEGACY);
     else if(codes.JHC1) html=renderJH(codes.JHC1, codes.JHP1||null, internal);
     else if(codes.RDC1) html=renderRD(codes.RDC1, codes.RDP1||null, internal);
     else if(codes.NSC1) html=renderNS(codes.NSC1);
