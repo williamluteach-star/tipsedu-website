@@ -15,6 +15,13 @@
 - [台中南屯補習班怎麼選？家長必看的 5 個重點](https://www.tips-edu.com/blog/how-to-choose-nantun-cramschool.html)
 - [國中會考國文作文怎麼寫？審題、立意、結構一次搞懂](https://www.tips-edu.com/blog/huikao-chinese-composition.html)
 
+## 免費測驗中心
+- [免費教育測驗中心](https://www.tips-edu.com/tests/): 幼兒園到高中四份免費線上測驗總覽，即測即得＋免費一對一解讀。
+- [新生入班評估（幼兒園～小三）](https://www.tips-edu.com/newstudent/start/): 家長填答，專注、語言、情緒、自理、學習興趣五大面向，參考 NAEYC 幼教發展指標。
+- [國中準備度檢測（小四～小六）](https://www.tips-edu.com/ready/start/): 六大能力評估小升國中銜接就緒度，參考 LASSI 學習策略量表。
+- [生涯興趣測驗（國中）](https://www.tips-edu.com/test/start/): 76 題 Holland 何倫碼分析，高中／高職適性判定與技高 15 群科排名，採 O*NET 架構。
+- [高中生涯定向測驗（高一～高三）](https://www.tips-edu.com/hs/start/): 選組傾向指數與大學 18 學群適配排名，對接選課與學習歷程規劃。
+
 ## 核心系統
 - KC 科基語測: AI 雙語學習與檢測系統，個人語言模型（PLM）、知識點蒸餾、能力雷達圖；曾獲金鼎獎入圍、教育部認證、多項發明專利，信效度經文藻外語大學研究驗證。
 
