@@ -520,9 +520,11 @@ const PS_C=[
  ["S","孩子表達不同意見時，我會先聽完他的理由"],
  ["S","就算方向冷門，只要孩子有熱情，我願意支持"],
  ["S","我常和孩子聊學校以外的事（興趣、朋友、心情）"],
- ["S","孩子遇到挫折時，我會先安撫情緒再談表現"]];
+ ["S","孩子遇到挫折時，我會先安撫情緒再談表現"],
+ ["T","比起短期成績，我更重視孩子長期的學習習慣與興趣"],
+ ["T","我希望能隨時掌握孩子的學習進度與具體數據"]];
 const PS_EXPECT=["自然組","社會組","尊重孩子，沒有特定期望"];
-let psA=new Array(6).fill(null), psC=new Array(8).fill(null), psExpect=null, psGroups=[], psNoPref=false;
+let psA=new Array(6).fill(null), psC=new Array(10).fill(null), psExpect=null, psGroups=[], psNoPref=false;
 
 const PS_STYLE=`<style>
 .psx,.psg{display:inline-block; margin:4px 6px 4px 0; padding:8px 14px; border:1.5px solid #ccd4e2; background:#fff; border-radius:20px; font-size:.85rem; cursor:pointer; font-family:inherit; color:#3a4358;}
@@ -579,7 +581,7 @@ function renderParentSurvey(){
   const grpBtns=GROUPS.map((g,i)=>`<button type="button" class="psg" id="psg${i}" onclick="toggleGroup(${i})">${g.n.replace("學群","")}</button>`).join("");
   rs.innerHTML=PS_STYLE+`
   <div class="card"><h2>👨‍👩‍👧 親子教育觀對照卷（家長填）</h2>
-   <p class="tagline">共 16 題，約 4 分鐘。沒有對錯，請依實際狀況作答；結果僅供顧問解讀報告時參考。</p></div>
+   <p class="tagline">共 18 題，約 4 分鐘。沒有對錯，請依實際狀況作答；結果僅供顧問解讀報告時參考。</p></div>
   <div class="card"><h3>Part 1｜您眼中的孩子</h3>${rowA}</div>
   <div class="card"><h3>Part 2｜您的期望</h3>
     <p style="font-weight:600; margin:6px 0;">7. 您期望孩子選哪個方向？</p><div id="psExpect">${expBtns}</div>
@@ -602,7 +604,7 @@ function submitParentSurvey(){
   if(!ok){ const e=document.getElementById("psErr"); e.style.display="block"; window.scrollTo(0,document.body.scrollHeight); return; }
   const d=leadData();
   const gsel=psNoPref?"無特定":psGroups.map(i=>GROUPS[i].n.replace("學群","")).join("+");
-  const pcode=`HSP1|${psA.join(",")}|${psExpect}|${gsel}|${psC.join(",")}`;
+  const pcode=`HSP2|${psA.join(",")}|${psExpect}|${gsel}|${psC.join(",")}`;
   const summary=`對照卷｜期望:${PS_EXPECT[psExpect]}｜學群:${gsel}｜代碼[${pcode}]`;
   submitToGoogleForm({...d, status:"對照卷完成", result:summary});
   showDone(true);

@@ -420,8 +420,49 @@ function showResults(){
   const summary=`入班評估｜專注${s.scores.focus} 語言${s.scores.lang} 情緒${s.scores.social} 自理${s.scores.self} 好奇${s.scores.curio}｜亮點:${s.strongest.map(x=>x.name).join("、")}｜陪伴:${s.gentlest.map(x=>x.name).join("、")}｜英語:${bg}｜代碼[${code}]`;
   submitToGoogleForm({...d, status:"已完成評估", result:summary});
   document.getElementById("screen-test").classList.add("hidden");
-  showDone();
+  showParentExtra();
   window.scrollTo(0,0);
+}
+/* ---- 家長教育觀（6 題，約 1 分鐘） ---- */
+const PSX_AGREE=["很不同意","不太同意","普通","還算同意","非常同意"];
+const PSX=[
+ ["D","我對孩子的學習表現有明確的標準與要求"],
+ ["D","孩子的生活作息與學習安排，主要由我來規定"],
+ ["S","孩子表達情緒或不同意見時，我會先聽完再回應"],
+ ["S","孩子嘗試失敗時，我會先安撫情緒、再談對錯"],
+ ["T","比起短期成績，我更重視孩子長期的學習習慣與興趣"],
+ ["T","我希望能隨時掌握孩子的學習進度與具體數據"]];
+let psx=new Array(6).fill(null);
+function pickPSX(i,v){
+  psx[i]=v;
+  PSX_AGREE.forEach((_,x)=>document.getElementById(`psx${i}v${x}`).classList.toggle("sel",x===v));
+  document.getElementById("psxq"+i).style.border="";
+}
+function showParentExtra(){
+  const rs=document.getElementById("screen-result");
+  const rows=PSX.map((it,i)=>{
+    const btns=PSX_AGREE.map((o,v)=>`<button type="button" onclick="pickPSX(${i},${v})" id="psx${i}v${v}">${o}</button>`).join("");
+    return `<div class="q" id="psxq${i}" style="padding:10px 8px; border-radius:10px;"><div class="q-text" style="font-weight:600; margin-bottom:8px;">${i+1}. ${it[1]}</div><div class="opts">${btns}</div></div>`;
+  }).join("");
+  rs.innerHTML=`
+  <div class="card"><h2>✅ 評估完成！最後 6 題：您的教育想法</h2>
+   <p class="tagline">約 1 分鐘。沒有對錯，這能幫助顧問用最適合您家庭的方式規劃與溝通。</p>
+   ${rows}
+   <div class="err" id="psxErr" style="display:none; margin:8px 0;">還有題目未作答（未作答的已標紅框）。</div>
+   <button class="btn" style="width:100%; font-size:1.05rem; margin-top:8px;" onclick="submitParentExtra()">完成</button>
+   <button class="btn secondary" style="width:100%; margin-top:8px;" onclick="showDone()">略過，直接完成</button>
+   <div class="note" style="margin-top:12px;">📚 <b>編製依據</b>：教養風格題採 Baumrind 理論（要求×回應雙軸），參考 PSDQ、PAQ 國際量表在地化改寫。僅供教育諮詢參考。</div>
+  </div>`;
+  rs.classList.remove("hidden");
+}
+function submitParentExtra(){
+  let ok=true;
+  psx.forEach((v,i)=>{ if(v===null){ document.getElementById("psxq"+i).style.border="1.5px solid #e05d5d"; ok=false; } });
+  if(!ok){ document.getElementById("psxErr").style.display="block"; return; }
+  const d=leadData();
+  const pcode=`NSP1|${psx.join(",")}`;
+  submitToGoogleForm({...d, status:"教育觀問卷完成", result:`教育觀｜代碼[${pcode}]`});
+  showDone();
 }
 function showDone(){
   const rs=document.getElementById("screen-result");

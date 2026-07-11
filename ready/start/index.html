@@ -408,10 +408,12 @@ const PS_C=[
  ["D","我對孩子的成績有明確的標準與要求"],
  ["D","孩子的作息和學習安排，主要由我來規定"],
  ["S","孩子表達不同意見時，我會先聽完他的理由"],
- ["S","孩子遇到挫折時，我會先安撫情緒再談表現"]];
+ ["S","孩子遇到挫折時，我會先安撫情緒再談表現"],
+ ["T","比起短期成績，我更重視孩子長期的學習習慣與興趣"],
+ ["T","我希望能隨時掌握孩子的學習進度與具體數據"]];
 const PS_PLAN=["全科班","單科補強","自主學習為主","還沒想好"];
 const PS_WORRY=["成績跟不上","3C 與手機","交友","作息與自律","沒有特別擔心"];
-let psA=new Array(6).fill(null), psC=new Array(4).fill(null), psPlan=null, psWorry=null;
+let psA=new Array(6).fill(null), psC=new Array(6).fill(null), psPlan=null, psWorry=null;
 
 const PS_STYLE=`<style>
 .psx{display:inline-block; margin:4px 6px 4px 0; padding:8px 14px; border:1.5px solid #ccd4e2; background:#fff; border-radius:20px; font-size:.85rem; cursor:pointer; font-family:inherit; color:#3a4358;}
@@ -453,7 +455,7 @@ function renderParentSurvey(){
   const worryBtns=PS_WORRY.map((t,i)=>`<button type="button" class="psx" id="pswo${i}" onclick="pickWorry(${i})">${t}</button>`).join("");
   rs.innerHTML=PS_STYLE+`
   <div class="card"><h2>👨‍👩‍👧 親子教育觀對照卷（家長填）</h2>
-   <p class="tagline">共 12 題，約 3 分鐘。沒有對錯，請依實際狀況作答；結果僅供顧問解讀報告時參考。</p></div>
+   <p class="tagline">共 14 題，約 3 分鐘。沒有對錯，請依實際狀況作答；結果僅供顧問解讀報告時參考。</p></div>
   <div class="card"><h3>Part 1｜您眼中的孩子</h3>${rowA}</div>
   <div class="card"><h3>Part 2｜您的規劃與想法</h3>
     <p style="font-weight:600; margin:6px 0;">7. 國中階段的學習安排，您目前的想法？</p><div>${planBtns}</div>
@@ -473,7 +475,7 @@ function submitParentSurvey(){
   if(psPlan===null||psWorry===null) ok=false;
   if(!ok){ const e=document.getElementById("psErr"); e.style.display="block"; window.scrollTo(0,document.body.scrollHeight); return; }
   const d=leadData();
-  const pcode=`RDP1|${psA.join(",")}|${psPlan}|${psWorry}|${psC.join(",")}`;
+  const pcode=`RDP2|${psA.join(",")}|${psPlan}|${psWorry}|${psC.join(",")}`;
   const summary=`對照卷｜安排:${PS_PLAN[psPlan]}｜擔心:${PS_WORRY[psWorry]}｜代碼[${pcode}]`;
   submitToGoogleForm({...d, status:"對照卷完成", result:summary});
   showDone(true);

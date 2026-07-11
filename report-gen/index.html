@@ -165,28 +165,38 @@ function rptShell(title, stu, body){
     <div class="foot"><span>TIPS 英典教育｜台中市南屯區黎明路一段295號｜0905-547839｜LINE @tipsedu</span><span>O*NET / CEEC / LASSI / Baumrind 架構在地化編製</span></div>
   </div>`;
 }
-/* 家長風格分析（D,S 各題 0-4） */
-function styleBlock(cD, cS, internal, maxPer){
+/* 家長風格分析（D,S 各題 0-4；cT 為理念題，可為空） */
+function styleBlock(cD, cS, cT, internal, tips){
   const dSum=cD.reduce((a,b)=>a+b,0), sSum=cS.reduce((a,b)=>a+b,0);
   const dMax=cD.length*4, sMax=cS.length*4;
+  const tSum=(cT&&cT.length)?cT.reduce((a,b)=>a+b,0):null;
   const spec = spectrum("期待與要求程度", dSum, dMax, "順其自然", "高度要求") +
                spectrum("回應與支持程度", sSum, sMax, "孩子自己來", "高度支持");
-  let html=`<h3 class="sec">家長教養互動風格（對照卷）</h3>${spec}`;
+  let html=`<h3 class="sec">家長教養互動風格</h3>${spec}`;
   if(internal){
     const hiD=dSum>=dMax*0.55, hiS=sSum>=sMax*0.55;
     const type= hiD&&hiS?"民主威信型":hiD&&!hiS?"專斷型":!hiD&&hiS?"寬容型":"低涉入型";
     const strat={
-      "民主威信型":"與機構理念高度相容。直接展示數據與規劃，邀請家長參與目標設定。",
+      "民主威信型":"與機構理念高度相容——直接展示數據與規劃，邀請家長參與目標設定。",
       "專斷型":"先給數據與成績結構，再帶入興趣與適性；避免一開始就挑戰家長的期望。",
-      "寬容型":"強調 TIPS 的進度透明與定期回報機制，補足結構面；孩子意願是切入點。",
-      "低涉入型":"以省心、可信賴為主軸溝通，報告解讀盡量具體、少作業。"}[type];
+      "寬容型":"強調 TIPS 的進度透明與定期回報機制，補足結構面；以孩子的意願為切入點。",
+      "低涉入型":"以省心、可信賴為主軸溝通，回報具體、頻率適中，減少要求家長配合的事項。"}[type];
     const base={"民主威信型":88,"專斷型":58,"寬容型":72,"低涉入型":45}[type];
-    const supp=cS[1]!==undefined?cS[1]:0;  // 支持適性題
-    const fit=Math.min(100, base + supp*3);
+    const supp=cS[1]!==undefined?cS[1]:0;
+    let fit=base + supp*3;
+    if(tSum!==null) fit += Math.round(tSum*1.5);
+    fit=Math.min(100,fit);
+    const tipLines=[strat].concat(tips||[]);
+    if(cT&&cT.length===2){
+      if(cT[0]<=1) tipLines.push("家長偏重短期成績——先講近期成績提升的具體路徑，再帶入長期規劃。");
+      if(cT[0]>=3) tipLines.push("家長重視長期培養——可直接以 12 年學習藍圖開場。");
+      if(cT[1]>=3) tipLines.push("家長重視數據回報——主動展示 KC 報表與固定回報節奏。");
+      if(cT[1]<=1) tipLines.push("家長不偏好盯數據——回報從簡，重點式訊息即可。");
+    }
     html+=`<div class="internal"><h4>🔒 內部參考（列印面談版時不會出現）</h4>
-      <table><tr><th>教養分型</th><th>要求軸</th><th>回應軸</th><th>TIPS 合拍度</th></tr>
-      <tr><td><b>${type}</b></td><td>${dSum}/${dMax}</td><td>${sSum}/${sMax}</td><td><b>${fit} / 100</b></td></tr></table>
-      <p style="font-size:.76rem; margin-top:4px;">💬 建議溝通策略：${strat}</p></div>`;
+      <table><tr><th>教養分型</th><th>要求軸</th><th>回應軸</th>${tSum!==null?"<th>理念契合</th>":""}<th>TIPS 合拍度</th></tr>
+      <tr><td><b>${type}</b></td><td>${dSum}/${dMax}</td><td>${sSum}/${sMax}</td>${tSum!==null?`<td>${tSum}/8</td>`:""}<td><b>${fit} / 100</b></td></tr></table>
+      <div style="font-size:.76rem; margin-top:6px;"><b>💬 溝通方向：</b><ul style="margin:4px 0 0 18px;">${tipLines.map(t=>`<li>${t}</li>`).join("")}</ul></div></div>`;
   }
   return html;
 }
@@ -199,10 +209,10 @@ function parseCodes(txt){
   // 也接受直接貼裸代碼
   txt.split(/[\n\r]+/).forEach(line=>{
     const t=line.trim();
-    if(/^(HSC1|HSP1|JHC1|JHP1|RDC1|RDP1|NSC1)\|/.test(t) && !found.includes(t)) found.push(t);
+    if(/^(HSC1|HSP1|HSP2|JHC1|JHP1|JHP2|RDC1|RDP1|RDP2|NSC1|NSP1)\|/.test(t) && !found.includes(t)) found.push(t);
   });
   const out={};
-  found.forEach(c=>{ const tag=c.split("|")[0]; out[tag]=c; });
+  found.forEach(c=>{ let tag=c.split("|")[0]; tag=tag.replace(/2$/,"1"); out[tag]=c; });
   if(Object.keys(out).length===0) parseLegacy(txt,out);
   return out;
 }
@@ -278,11 +288,66 @@ function renderHS(cc, pc, internal){
     `<h3 class="sec">選組傾向</h3><div class="verdict">${streamTxt}｜自然 ${nat}/32・社會 ${hum}/32｜區分性 D=${D.toFixed(1)}${D<4?"（偏低，興趣仍在探索中，排名僅供參考）":""}</div>`+
     expTable+
     `<h3 class="sec">大學 18 學群適配 Top4</h3><div class="grid2">${topCards}</div>`+
-    (pc?styleBlock(pC.slice(0,4),pC.slice(4),internal,4):"");
+    (pc?styleBlock(pC.slice(0,4),pC.slice(4,8),pC.slice(8),internal,hsTips(pA,riasec,pExpect,streamIdx,pGroups,ranked)):"");
   return rptShell("高中生涯定向報告"+(pc?"＋親子對照":""),
     `<span>學生：<b>${esc(name)}</b></span><span>年級：<b>${esc(grade)}</b></span><span>何倫碼：<b>${top3}</b></span><span>選組指數：<b>${streamIdx}</b></span>${pc?"":"<span style='color:#c0392b;'>（未填對照卷）</span>"}`, body);
 }
 
+/* ---- 溝通方向（內部）情境句 ---- */
+function gapTip(pA,riasec){
+  if(!pA) return null;
+  const g=R6.map((k,i)=>({k,g:pA[i]*10-riasec[k]})).sort((a,b)=>Math.abs(b.g)-Math.abs(a.g))[0];
+  if(Math.abs(g.g)>=12) return g.g<0
+    ? `家長低估孩子的「${R6NAME[g.k]}」——面談時安排孩子親口談這方面的經驗或展示成果。`
+    : `家長高估孩子的「${R6NAME[g.k]}」——用實測數據溫和校準期待，避免孩子被推向不合適的方向。`;
+  return null;
+}
+function hsTips(pA,riasec,pExpect,streamIdx,pGroups,ranked){
+  const tips=[];
+  const childDir= streamIdx>=54?"自然組": streamIdx<=46?"社會組":"均衡";
+  const pDir=pExpect===0?"自然組":pExpect===1?"社會組":null;
+  if(pDir && childDir!=="均衡" && pDir!==childDir) tips.push("親子選組方向相反——先讓孩子陳述測驗結果與想法，顧問居中翻譯，避免家長先表態定調。");
+  if(pGroups && pGroups!=="無特定"){
+    const top3n=ranked.slice(0,3).map(g=>g.n.replace("學群",""));
+    if(!pGroups.split("+").some(x=>top3n.includes(x))) tips.push("期望學群與實測無交集——把兩邊學群的科系、出路資料並列比較，聚焦「孩子做得久」的方向。");
+  }
+  const gt=gapTip(pA,riasec); if(gt) tips.push(gt);
+  return tips;
+}
+function jhTips(pA,riasec,pExpect,T,pGroups,ranked){
+  const tips=[];
+  const childDir= T<=-8?"普通高中": T>=8?"技術型高中（高職）":null;
+  const pDir=pExpect===0?"普通高中":pExpect===1?"技術型高中（高職）":null;
+  if(pDir && childDir && pDir!==childDir) tips.push("親子進路期望相反——先讓孩子談測驗結果，再以「群科→科大→出路」的完整路徑消除家長對技職（或普高）的資訊落差。");
+  if(pGroups && pGroups!=="無特定"){
+    const top3n=ranked.slice(0,3).map(g=>g.n.replace("群",""));
+    if(!pGroups.split("+").some(x=>top3n.includes(x))) tips.push("期望群科與實測無交集——並列比較兩邊群科的課程與升學路徑，讓資料說話。");
+  }
+  const gt=gapTip(pA,riasec); if(gt) tips.push(gt);
+  return tips;
+}
+function rdTips(pPlan,pWorry,vals,pA){
+  const tips=[];
+  const worryTip={0:"家長最擔心成績——以入班後的診斷與補強計畫回應，附具體時程。",
+    1:"家長最擔心 3C——說明到班時間結構與自律培養機制，比說教有效。",
+    2:"家長最擔心交友——強調小班氛圍與老師對孩子狀態的掌握。",
+    3:"家長最擔心作息自律——用時間管理向度的數據切入，給可執行的家庭作息建議。",
+    4:null}[pWorry];
+  if(worryTip) tips.push(worryTip);
+  const planTip={0:"家長傾向全科班——確認孩子弱項向度，避免過度安排造成反效果。",
+    1:"家長傾向單科補強——用六大能力數據幫他選對科目。",
+    2:"家長傾向自主學習——強調我們的進度透明與定期回報，作為自主學習的安全網。",
+    3:"家長還沒有明確規劃——這是最好的顧問切入點，從數據直接給方案。"}[pPlan];
+  if(planTip) tips.push(planTip);
+  if(pA){
+    const dims=["學習動機","時間管理","專注習慣","學習方法","考試心態","生活獨立"];
+    const g=vals.map((v,i)=>({i,g:pA[i]*8-v})).sort((a,b)=>Math.abs(b.g)-Math.abs(a.g))[0];
+    if(Math.abs(g.g)>=10) tips.push(g.g<0
+      ? `家長對「${dims[g.i]}」的評價比孩子自評低——面談時先肯定孩子的自我認知，再談落差。`
+      : `家長對「${dims[g.i]}」比孩子自評樂觀——提醒家長孩子自覺不足，需要支持而非施壓。`);
+  }
+  return tips;
+}
 function renderHSLegacy(L){
   const streamTxt= L.idx>=62?`自然組傾向明顯（${L.idx}）`: L.idx>=54?`偏自然組（${L.idx}）`: L.idx>46?`均衡型（${L.idx}）`: L.idx>38?`偏社會組（${L.idx}）`:`社會組傾向明顯（${L.idx}）`;
   const body=`<h3 class="sec">興趣何倫碼</h3><div style="margin:6px 0;"><span class="badge">${L.code3}</span>　<span style="font-size:.8rem;">區分性 D=${L.D}</span></div>
@@ -323,7 +388,7 @@ function renderJH(cc, pc, internal){
     `<h3 class="sec">高中／高職傾向</h3><div class="verdict">${dirTxt}｜學術 ${ac}/32・實作 ${pr}/32｜區分性 D=${D.toFixed(1)}${D<4?"（偏低，興趣仍在探索中，排名僅供參考）":""}</div>`+
     expTable+
     `<h3 class="sec">技高 15 群科適配 Top4</h3><div class="grid2">${topCards}</div>`+
-    (pc?styleBlock(pC.slice(0,4),pC.slice(4),internal,4):"");
+    (pc?styleBlock(pC.slice(0,4),pC.slice(4,8),pC.slice(8),internal,jhTips(pA,riasec,pExpect,T,pGroups,ranked)):"");
   return rptShell("生涯興趣測驗報告"+(pc?"＋親子對照":""),
     `<span>學生：<b>${esc(name)}</b></span><span>年級：<b>${esc(grade)}</b></span><span>何倫碼：<b>${top3}</b></span><span>傾向：<b>T=${T}</b></span>${pc?"":"<span style='color:#c0392b;'>（未填對照卷）</span>"}`, body);
 }
@@ -355,12 +420,12 @@ function renderRD(cc, pc, internal){
     `<h3 class="sec">六大能力：孩子自評${pA?" vs 家長觀察":""}（就緒指數 <span class="badge">${index}</span>）</h3>
      <div class="flex"><div style="text-align:center;">${radarDual(labels,vals,parentVals,32)}<div class="legend">─ <span class="c1">孩子自評</span>${pA?"　╌ <span class='c2'>家長觀察</span>":""}</div></div><div>${table}</div></div>`+
     planBlock+
-    (pc?styleBlock(pC.slice(0,2),pC.slice(2),internal,4):"");
+    (pc?styleBlock(pC.slice(0,2),pC.slice(2,4),pC.slice(4),internal,rdTips(pPlan,pWorry,vals,pA)):"");
   return rptShell("國中準備度檢測報告"+(pc?"＋親子對照":""),
     `<span>學生：<b>${esc(name)}</b></span><span>年級：<b>${esc(grade)}</b></span><span>就緒指數：<b>${index}/100</b></span>${pc?"":"<span style='color:#c0392b;'>（未填對照卷）</span>"}`, body);
 }
 
-function renderNS(cc){
+function renderNS(cc, pc, internal){
   const seg=cc.split("|");
   const name=seg[1], grade=seg[2];
   const vals=seg[3].split(",").map(Number);
@@ -373,8 +438,9 @@ function renderNS(cc){
     `<h3 class="sec">五大發展面向（家長觀察填答）</h3>
      <div class="flex"><div style="text-align:center;">${radarDual(labels,vals,null,18)}<div class="legend">─ <span class="c1">家長觀察</span></div></div>
      <div><table><tr><th>面向</th><th>分數</th><th>階段</th></tr>${rows}</table></div></div>
-     <h3 class="sec">英語與學習背景</h3><div class="verdict">${esc(bg)||"（未填）"}</div>`;
-  return rptShell("新生入班評估報告",
+     <h3 class="sec">英語與學習背景</h3><div class="verdict">${esc(bg)||"（未填）"}</div>`+
+     (pc?styleBlock(pc.split("|")[1].split(",").map(Number).slice(0,2), pc.split("|")[1].split(",").map(Number).slice(2,4), pc.split("|")[1].split(",").map(Number).slice(4,6), internal, []):"");
+  return rptShell("新生入班評估報告"+(pc?"＋家長教育觀":""),
     `<span>孩子：<b>${esc(name)}</b></span><span>年段：<b>${esc(grade)}</b></span><span>填答：<b>家長</b></span>`, body);
 }
 
@@ -389,7 +455,7 @@ function generate(){
     else if(codes.HSLEGACY) html=renderHSLegacy(codes.HSLEGACY);
     else if(codes.JHC1) html=renderJH(codes.JHC1, codes.JHP1||null, internal);
     else if(codes.RDC1) html=renderRD(codes.RDC1, codes.RDP1||null, internal);
-    else if(codes.NSC1) html=renderNS(codes.NSC1);
+    else if(codes.NSC1) html=renderNS(codes.NSC1, codes.NSP1||null, internal);
     else { err.textContent="找不到有效的報告代碼——請確認貼的是試算表「結果摘要」欄的完整內容（要包含「代碼[…]」）。"; err.style.display="block"; return; }
   }catch(e){
     err.textContent="代碼格式解析失敗："+e.message; err.style.display="block"; return;
