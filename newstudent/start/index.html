@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新生入班評估（幼兒園～小三）｜TIPS 英典教育</title>
+<meta name="description" content="TIPS 英典教育免費提供低年級新生入班評估：由家長觀察填答，從專注與持續、語言與溝通、情緒與社交、生活自理、學習興趣五大面向，了解孩子的發展面貌與英語起步的最佳方式。">
+<meta name="robots" content="noindex,nofollow">
+<style>
+  :root{
+    --ink:#1a2233; --muted:#5b6478; --bg:#faf7f2; --card:#ffffff;
+    --accent:#7c5cd6; --accent2:#e8873a; --warn:#e8873a; --line:#06c755;
+    --d1:#e05d5d; --d2:#e8873a; --d3:#12b5a5; --d4:#2f6fed; --d5:#7c5cd6;
+    --radius:14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; background:var(--bg); color:var(--ink); line-height:1.65;}
+  .wrap{max-width:860px; margin:0 auto; padding:24px 16px 80px;}
+  header.top{background:linear-gradient(135deg,#4a2a78,#7c5cd6); color:#fff; padding:28px 20px; border-radius:0 0 22px 22px;}
+  .brandbar{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+  .brand-logo{background:#fff; color:#4a2a78; font-weight:900; letter-spacing:2px; border-radius:8px; padding:4px 10px; font-size:1.05rem;}
+  .brand-sub{font-size:.8rem; opacity:.8;}
+  header.top h1{font-size:1.55rem; line-height:1.4;}
+  .hl{color:#ffd66b;}
+  .hero-stats{display:flex; gap:14px; margin-top:16px; flex-wrap:wrap;}
+  .hero-stat{background:rgba(255,255,255,.12); border-radius:10px; padding:8px 14px; font-size:.85rem;}
+  .hero-stat b{font-size:1.15rem; display:block;}
+  .card{background:var(--card); border-radius:var(--radius); padding:24px; margin-top:18px; box-shadow:0 2px 10px rgba(60,40,20,.06);}
+  .card h2{font-size:1.15rem; margin-bottom:12px; color:#4a2a78;}
+  .card h3{font-size:1.02rem; margin:14px 0 8px;}
+  .btn{display:inline-block; background:var(--accent); color:#fff; border:none; border-radius:10px; padding:12px 26px; font-size:1rem; cursor:pointer; font-family:inherit; transition:.15s;}
+  .btn:hover{filter:brightness(1.1);}
+  .btn.secondary{background:#efe9f9; color:#4a2a78;}
+  .field{margin:10px 0;}
+  .field label{font-size:.9rem; color:var(--muted); display:block; margin-bottom:4px;}
+  .field input, .field select{width:100%; padding:10px 12px; border:1px solid #d8cfc0; border-radius:8px; font-size:1rem; font-family:inherit; background:#fff;}
+  .lead-form{background:linear-gradient(135deg,#fdf6ec,#f4efff); border:1.5px solid #e3d5f5; border-radius:14px; padding:20px;}
+  .consent{font-size:.8rem; color:var(--muted); margin-top:10px; display:flex; gap:8px; align-items:flex-start;}
+  .consent input{margin-top:4px; width:auto;}
+  .err{color:#d33; font-size:.82rem; margin-top:3px; display:none;}
+  .tagline{font-size:.87rem; color:var(--muted);}
+  ul.tips{padding-left:20px; font-size:.95rem;}
+  ul.tips li{margin:5px 0;}
+  .progressbar{position:sticky; top:0; z-index:50; background:var(--bg); padding:10px 0 6px;}
+  .pb-track{height:10px; background:#e8e0d2; border-radius:6px; overflow:hidden;}
+  .pb-fill{height:100%; background:linear-gradient(90deg,var(--accent2),var(--accent)); width:0%; transition:width .25s;}
+  .pb-label{font-size:.8rem; color:var(--muted); margin-top:4px; text-align:right;}
+  .q-item{background:var(--card); border-radius:var(--radius); padding:16px 20px; margin-top:12px; box-shadow:0 1px 6px rgba(60,40,20,.05);}
+  .q-item.unanswered-flash{outline:2px solid var(--warn);}
+  .q-text{font-size:1rem; margin-bottom:10px;}
+  .q-num{color:var(--muted); font-size:.85rem; margin-right:6px;}
+  .opts{display:flex; gap:6px; flex-wrap:wrap;}
+  .opts button{flex:1 1 0; min-width:70px; padding:10px 6px; border:1.5px solid #d8cfc0; background:#fff; border-radius:9px; font-size:.88rem; cursor:pointer; font-family:inherit; color:#3a4358; transition:.12s;}
+  .opts button:hover{border-color:var(--accent);}
+  .opts button.sel{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600;}
+  .opts.vert{flex-direction:column;}
+  .opts.vert button{flex:none; width:100%; text-align:left; padding:12px 14px;}
+  .nav-row{display:flex; justify-content:space-between; margin-top:22px; gap:10px;}
+  .part-intro{border-left:5px solid var(--accent); padding-left:14px; margin-bottom:6px;}
+  .hidden{display:none;}
+  .score-row{display:flex; align-items:center; gap:10px; margin:8px 0;}
+  .score-label{width:170px; font-size:.9rem; font-weight:600;}
+  .score-track{flex:1;}
+  .score-val{width:60px; text-align:right; font-variant-numeric:tabular-nums; font-size:.9rem;}
+  .verdict{border-radius:12px; padding:16px 18px; margin:14px 0; font-size:.98rem; background:#f4efff; border-left:5px solid var(--accent);}
+  .dim-card{border:1px solid #eee2d6; border-radius:12px; padding:14px 16px; margin:10px 0;}
+  .dim-card b{font-size:1rem;}
+  .dim-card .lv{float:right; font-size:.85rem; font-weight:700;}
+  .dim-card p{font-size:.88rem; color:var(--muted); margin-top:4px;}
+  .bg-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px;}
+  .bg-item{background:#faf6ef; border:1px solid #eee2d6; border-radius:10px; padding:10px 14px; font-size:.9rem;}
+  .bg-item small{display:block; color:var(--muted); font-size:.78rem;}
+  .note{font-size:.85rem; color:var(--muted); background:#f5f0e8; border-radius:10px; padding:12px 14px; margin-top:14px;}
+  #radarBox{text-align:center; margin:10px 0;}
+  .cta-box{background:linear-gradient(135deg,#4a2a78,#7c5cd6); color:#fff; border-radius:14px; padding:22px; margin-top:16px;}
+  .cta-box h2{color:#fff;}
+  .cta-box .btn{background:var(--line); font-weight:700; font-size:1.05rem; text-decoration:none;}
+  .cta-contact{font-size:.9rem; opacity:.9; margin-top:12px; line-height:1.9;}
+  .line-float{position:fixed; right:16px; bottom:16px; z-index:99; background:var(--line); color:#fff; border-radius:30px; padding:12px 20px; font-weight:700; text-decoration:none; box-shadow:0 4px 14px rgba(0,0,0,.25); font-size:.95rem;}
+  @media print{
+    *{-webkit-print-color-adjust:exact !important; print-color-adjust:exact !important;}
+    body{background:#fff;}
+    .btn,.nav-row,.progressbar,#screen-intro,#noprint,.line-float{display:none !important;}
+    .card{box-shadow:none; border:1px solid #ddd; page-break-inside:avoid;}
+    header.top{background:#4a2a78 !important;}
+  }
+  @media (max-width:560px){
+    .opts button{min-width:22%; font-size:.8rem;}
+    .score-label{width:120px; font-size:.82rem;}
+    .bg-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brandbar"><span class="brand-logo">TIPS 英典教育</span><span class="brand-sub">KC INSIDE ‧ 智慧引擎驅動</span></div>
+  <h1>認識孩子的<span class="hl">起點</span>，<br>才能設計最好的開始</h1>
+  <p style="margin-top:8px;">給幼兒園大班～小三新生家長的入班評估問卷：由<b>家長觀察填答</b>，30 題約 8 分鐘，從五大發展面向＋英語學習背景，幫助 TIPS 為孩子安排最適合的入班方式與英語起步課程。<b>完全免費。</b></p>
+  <div class="hero-stats">
+    <div class="hero-stat"><b>30 題</b>五大面向</div>
+    <div class="hero-stat"><b>8 分鐘</b>家長填答</div>
+    <div class="hero-stat"><b>發展面貌</b>雷達圖分析</div>
+    <div class="hero-stat"><b>免費</b>入班評估試聽</div>
+  </div>
+</header>
+<div class="wrap">
+
+<!-- ============ INTRO ============ -->
+<div id="screen-intro">
+  <div class="card">
+    <h2>為什麼入班前先做這份評估？</h2>
+    <p>每個孩子的發展節奏都不一樣：有的孩子語言表達快、有的專注力特別好、有的需要多一點時間熟悉新環境——<b>沒有好壞，只有不同</b>。這份問卷由最了解孩子的您來填答，讓我們在孩子踏進教室之前，就先認識他的優勢和需要陪伴的地方，為他安排適合的班級、座位與引導方式，讓第一次上課就有好的開始。</p>
+    <p class="tagline" style="margin-top:8px;">※ 請依孩子「最近三個月的日常表現」作答，選擇最接近的頻率即可，沒有標準答案。</p>
+  </div>
+  <div class="card">
+    <h2>📝 填寫基本資料，開始評估</h2>
+    <div class="lead-form">
+      <div class="field">
+        <label>孩子姓名 *</label>
+        <input type="text" id="stuName" placeholder="請輸入孩子姓名">
+        <div class="err" id="errName">請填寫孩子姓名</div>
+      </div>
+      <div class="field">
+        <label>年級 *</label>
+        <select id="stuClass">
+          <option value="">請選擇年級</option>
+          <option>幼兒園中班</option>
+          <option>幼兒園大班</option>
+          <option>一年級（小一）</option>
+          <option>二年級（小二）</option>
+          <option>三年級（小三）</option>
+          <option>其他</option>
+        </select>
+        <div class="err" id="errClass">請選擇年級</div>
+      </div>
+      <div class="field">
+        <label>家長聯絡手機 *（評估結果與試聽安排通知用）</label>
+        <input type="tel" id="leadPhone" placeholder="09xxxxxxxx" maxlength="10">
+        <div class="err" id="errPhone">請填寫正確的手機號碼（09 開頭共 10 碼）</div>
+      </div>
+      <div class="field">
+        <label>LINE ID（選填，方便顧問聯繫）</label>
+        <input type="text" id="leadLine" placeholder="選填">
+      </div>
+      <label class="consent"><input type="checkbox" id="leadConsent">我同意 TIPS 英典教育蒐集以上資料，用於提供評估結果說明與課程資訊。<span class="err" id="errConsent" style="display:none;">請勾選同意</span></label>
+      <button class="btn" style="margin-top:14px; width:100%; font-size:1.1rem;" onclick="startTest()">🚀 開始評估（約 8 分鐘）</button>
+    </div>
+    <div class="note">📚 <b>編製依據</b>：本問卷向度架構參考美國多州入學準備度評估（KRA）之領域設計與「學習取向」研究構面，並依國際慣例採家長觀察填答，詳細說明見報告末。本問卷為<b>家長觀察式的參考工具</b>，不是兒童發展篩檢或診斷。若您對孩子的發展有疑慮，請洽小兒科醫師或各縣市「兒童發展聯合評估中心」。</div>
+  </div>
+</div>
+
+<!-- ============ TEST ============ -->
+<div id="screen-test" class="hidden">
+  <div class="progressbar">
+    <div class="pb-track"><div class="pb-fill" id="pbFill"></div></div>
+    <div class="pb-label" id="pbLabel"></div>
+  </div>
+  <div id="partIntro" class="card"></div>
+  <div id="qContainer"></div>
+  <div class="nav-row">
+    <button class="btn secondary" id="btnPrev" onclick="prevPage()">← 上一頁</button>
+    <button class="btn" id="btnNext" onclick="nextPage()">下一頁 →</button>
+  </div>
+</div>
+
+<!-- ============ RESULTS ============ -->
+<div id="screen-result" class="hidden"></div>
+
+<script>
+/* ================= TIPS 設定區 ================= */
+const TIPS_CONFIG = {
+  LINE_URL: "https://line.me/R/ti/p/@tipsedu",
+  LINE_ID: "@tipsedu",
+  PHONE: "0905-547839",
+  ADDRESS: "台中市南屯區黎明路一段295號",
+  FORM_ID: "1FAIpQLSc2tvkERO4Lpc0ikLrzcvfS8II8HweyGz5CO8UQofnbbQ-szw",   // 新生入班評估名單
+  ENTRY: { name:"565977198", grade:"578540007", phone:"1110006698", line:"365853382", status:"998593129", result:"1143590030" }
+};
+function submitToGoogleForm(fields){
+  if(!TIPS_CONFIG.FORM_ID) return;
+  try{
+    const url = `https://docs.google.com/forms/d/e/${TIPS_CONFIG.FORM_ID}/formResponse`;
+    const fd = new FormData();
+    for(const k in fields){ const id = TIPS_CONFIG.ENTRY[k]; if(id) fd.append(`entry.${id}`, fields[k]); }
+    fetch(url, {method:"POST", mode:"no-cors", body:fd});
+  }catch(e){}
+}
+function leadData(){
+  return {
+    name: document.getElementById("stuName").value.trim(),
+    grade: document.getElementById("stuClass").value,
+    phone: document.getElementById("leadPhone").value.trim(),
+    line: document.getElementById("leadLine").value.trim()
+  };
+}
+
+/* ================= 評估資料 =================
+   向度架構參考：入學準備度評估（Kindergarten Readiness / School Entry
+   Inventory）之家長觀察式設計，涵蓋學習取向、語言、社會情緒、
+   身體與自理等領域，改寫為台灣低年級情境之家長觀察題。 */
+const DIMS = [
+ {key:"focus", name:"專注與持續", color:"#e05d5d", icon:"🎯",
+  desc:"孩子投入一件事、聽懂指令並完成的能力。",
+  advice:"從孩子「喜歡的活動」開始練習做完再換：拼圖拼完、故事聽完。指令一次給一個，完成後再給下一個，並具體稱讚「你把它做完了」。上課型活動可先從 20 分鐘的短時段開始，慢慢拉長。"},
+ {key:"lang", name:"語言與溝通", color:"#e8873a", icon:"💬",
+  desc:"表達需求想法、聽懂與回應日常對話的能力。",
+  advice:"每天 10 分鐘親子共讀，讀完請孩子「說給你聽」剛剛發生什麼事。孩子講不完整時，不急著糾正，用完整句子重述一次給他聽即可。多給孩子和不同大人、小朋友對話的機會。"},
+ {key:"social", name:"情緒與社交", color:"#12b5a5", icon:"🤝",
+  desc:"與同伴相處、面對新環境與挫折時的情緒穩定度。",
+  advice:"進新環境前先「預告」：告訴孩子會看到什麼、老師是誰、什麼時候來接。情緒來的時候先幫他說出感覺（「你很生氣，因為…」），再教做法。多安排 2-3 人的小團體遊戲，練習輪流和等待。"},
+ {key:"self", name:"生活自理", color:"#2f6fed", icon:"🧺",
+  desc:"上廁所、吃飯、收拾等自己照顧自己的能力。",
+  advice:"挑一兩件目前由大人代勞的事完整交還給孩子（自己背書包、自己收玩具），做得慢沒關係，忍住不接手。把物品放在孩子拿得到、收得回去的固定位置，自理能力會跟著環境長出來。"},
+ {key:"curio", name:"學習興趣與好奇心", color:"#7c5cd6", icon:"🌟",
+  desc:"對新事物的好奇、探索與再嘗試的意願——最珍貴的學習底子。",
+  advice:"孩子問「為什麼」時，先回「你覺得呢？」再一起找答案。家裡放孩子隨手可拿的繪本，定期更換。孩子嘗試失敗時稱讚「你願意再試一次」，讓他知道過程比結果重要。"}
+];
+const ITEMS = [
+ // 專注與持續 (6)
+ ["focus","做喜歡的活動（拼圖、積木、畫畫）時，能持續投入 15 分鐘以上"],
+ ["focus","聽完指令後，能記住並完成兩個步驟的任務（例如：把書收好，再去洗手）"],
+ ["focus","別人跟他說話時，能停下手邊的事看著對方聽"],
+ ["focus","開始做一件事後，能做完才去做下一件"],
+ ["focus","在稍微吵雜的環境中，仍能繼續進行自己的活動"],
+ ["focus","進行靜態活動（聽故事、勞作）時能坐得住"],
+ // 語言與溝通 (6)
+ ["lang","能清楚說出自己的需求和想法（想要什麼、發生了什麼事）"],
+ ["lang","能聽懂日常對話，並且適當地回應"],
+ ["lang","喜歡聽故事，聽完能說出故事裡發生的事"],
+ ["lang","會主動問「為什麼」，或對新的詞彙感興趣"],
+ ["lang","能和不太熟的大人簡單對話（打招呼、回答問題）"],
+ ["lang","說話時能輪流，不會一直插話（或提醒後能等待）"],
+ // 情緒與社交 (6)
+ ["social","和其他小朋友一起玩時，能輪流和分享"],
+ ["social","生氣或難過時，能用說的表達，而不是只有哭鬧"],
+ ["social","到新環境（新教室、新老師），短時間內能安定下來"],
+ ["social","被糾正或提醒時，能接受並調整自己的行為"],
+ ["social","在大人陪伴下，願意嘗試沒做過的事"],
+ ["social","與家長短暫分開時（上學、託顧），情緒能保持穩定"],
+ // 生活自理 (6)
+ ["self","能自己上廁所、洗手"],
+ ["self","能自己吃飯，不需要大人餵"],
+ ["self","能自己穿脫外套和鞋子"],
+ ["self","會收拾自己玩過的玩具或用過的物品"],
+ ["self","身體不舒服時，能說出來（哪裡痛、想睡覺）"],
+ ["self","對自己的物品有概念（知道哪些是自己的、會記得帶回家）"],
+ // 學習興趣與好奇心 (6)
+ ["curio","對新事物表現出好奇（會湊過去看、動手摸、問問題）"],
+ ["curio","喜歡翻閱繪本或圖書（還不識字也算）"],
+ ["curio","學會新東西時會很開心，想展示給家人看"],
+ ["curio","會主動模仿大人做事（假裝煮飯、學大人說話）"],
+ ["curio","對數字、形狀、顏色或文字符號感興趣"],
+ ["curio","遇到有點難的事（拼圖拼不出來），願意再試一次"]
+];
+const OPTS = ["很少","偶爾","經常","總是"];
+
+/* ---- 英語學習背景（不計分，供顧問了解起點） ---- */
+const BG_QUESTIONS = [
+ {key:"exp", q:"孩子目前的英語接觸經驗是？", opts:[
+   "幾乎沒有接觸過","幼兒園有上過一些","上過美語班／有家教","家中有英語環境（常聽常說）"]},
+ {key:"react", q:"孩子平常聽到英語（兒歌、卡通、繪本）的反應是？", opts:[
+   "會排斥或沒興趣","沒有特別反應","有興趣、會跟著聽","很喜歡，會主動跟著說"]},
+ {key:"read", q:"家裡的親子共讀習慣（任何語言都算）？", opts:[
+   "幾乎沒有","偶爾（每月幾次）","每週幾次","幾乎每天"]},
+ {key:"goal", q:"您對孩子學英語最主要的期待是？", opts:[
+   "培養興趣、不排斥就好","打好基礎、銜接學校課程","提前起步、超前學習","長期能力與檢定目標"]}
+];
+let bgAnswers = new Array(BG_QUESTIONS.length).fill(null);
+
+/* ================= 流程 ================= */
+const PAGE_SIZE = 6;
+const TOTAL = ITEMS.length;            // 30
+const dimPages = TOTAL / PAGE_SIZE;    // 5
+const totalPages = dimPages + 1;       // 6（最後一頁：英語背景）
+
+let answers = new Array(TOTAL).fill(null);
+let page = 0;
+
+function startTest(){
+  const d = leadData();
+  let ok = true;
+  const show=(id,bad)=>{document.getElementById(id).style.display=bad?"block":"none"; if(bad) ok=false;};
+  show("errName", !d.name);
+  show("errClass", !d.grade);
+  show("errPhone", !/^09\d{8}$/.test(d.phone));
+  const consent=document.getElementById("leadConsent").checked;
+  show("errConsent", !consent);
+  if(!ok) return;
+  submitToGoogleForm({...d, status:"開始評估（未完成）", result:""});
+  document.getElementById("screen-intro").classList.add("hidden");
+  document.getElementById("screen-test").classList.remove("hidden");
+  page=0; renderPage(); window.scrollTo(0,0);
+}
+function renderPage(){
+  if(page < dimPages){
+    const dim = DIMS[page];
+    document.getElementById("partIntro").innerHTML =
+      `<div class="part-intro"><h2>${dim.icon} 第 ${page+1}／${totalPages} 部分：${dim.name}</h2><p class="tagline">${dim.desc}　請依孩子最近三個月的日常表現，選出最接近的頻率。</p></div>`;
+    const start = page*PAGE_SIZE, end = start+PAGE_SIZE;
+    let html="";
+    for(let gi=start; gi<end; gi++){
+      html += `<div class="q-item" id="q${gi}">
+        <div class="q-text"><span class="q-num">${gi+1}.</span><b>${ITEMS[gi][1]}</b></div>
+        <div class="opts">`+
+        OPTS.map((o,v)=>`<button type="button" class="${answers[gi]===v?'sel':''}" onclick="pick(${gi},${v})">${o}</button>`).join("")+
+        `</div></div>`;
+    }
+    document.getElementById("qContainer").innerHTML = html;
+  } else {
+    document.getElementById("partIntro").innerHTML =
+      `<div class="part-intro"><h2>🔤 第 ${totalPages}／${totalPages} 部分：英語學習背景</h2><p class="tagline">最後 4 題！這部分不計分，是為了讓顧問了解孩子的英語起點，安排最適合的起步課程。</p></div>`;
+    let html="";
+    BG_QUESTIONS.forEach((bq,bi)=>{
+      html += `<div class="q-item" id="bq${bi}">
+        <div class="q-text"><span class="q-num">${TOTAL+bi+1}.</span><b>${bq.q}</b></div>
+        <div class="opts vert">`+
+        bq.opts.map((o,v)=>`<button type="button" class="${bgAnswers[bi]===v?'sel':''}" onclick="pickBG(${bi},${v})">${o}</button>`).join("")+
+        `</div></div>`;
+    });
+    document.getElementById("qContainer").innerHTML = html;
+  }
+  document.getElementById("btnPrev").style.visibility = page===0?"hidden":"visible";
+  document.getElementById("btnNext").textContent = (page===totalPages-1)?"看結果 →":"下一頁 →";
+  updateProgress(); window.scrollTo(0,0);
+}
+function pick(gi,v){
+  answers[gi]=v;
+  document.getElementById("q"+gi).querySelectorAll(".opts button").forEach((b,idx)=>b.classList.toggle("sel",idx===v));
+  updateProgress();
+}
+function pickBG(bi,v){
+  bgAnswers[bi]=v;
+  document.getElementById("bq"+bi).querySelectorAll(".opts button").forEach((b,idx)=>b.classList.toggle("sel",idx===v));
+  updateProgress();
+}
+function updateProgress(){
+  const grand = TOTAL + BG_QUESTIONS.length;
+  const done = answers.filter(a=>a!==null).length + bgAnswers.filter(a=>a!==null).length;
+  document.getElementById("pbFill").style.width=(done/grand*100)+"%";
+  document.getElementById("pbLabel").textContent=`已完成 ${done} / ${grand} 題　（第 ${page+1} / ${totalPages} 頁）`;
+}
+function prevPage(){ if(page>0){page--; renderPage();} }
+function nextPage(){
+  if(page < dimPages){
+    const start=page*PAGE_SIZE, end=start+PAGE_SIZE;
+    for(let gi=start; gi<end; gi++){
+      if(answers[gi]===null){
+        const el=document.getElementById("q"+gi);
+        el.classList.add("unanswered-flash");
+        el.scrollIntoView({behavior:"smooth", block:"center"});
+        setTimeout(()=>el.classList.remove("unanswered-flash"),1800);
+        return;
+      }
+    }
+    page++; renderPage();
+  } else {
+    for(let bi=0; bi<BG_QUESTIONS.length; bi++){
+      if(bgAnswers[bi]===null){
+        const el=document.getElementById("bq"+bi);
+        el.classList.add("unanswered-flash");
+        el.scrollIntoView({behavior:"smooth", block:"center"});
+        setTimeout(()=>el.classList.remove("unanswered-flash"),1800);
+        return;
+      }
+    }
+    showResults();
+  }
+}
+
+/* ================= 計分 ================= */
+function computeScores(){
+  const scores={};
+  DIMS.forEach(d=>scores[d.key]=0);
+  ITEMS.forEach((it,i)=>{ scores[it[0]] += answers[i]; });   // 每向度 0-18
+  const sorted = DIMS.slice().sort((a,b)=>scores[b.key]-scores[a.key]);
+  const matureCount = DIMS.filter(d=>scores[d.key]>=14).length;
+  const growCount = DIMS.filter(d=>scores[d.key]<9).length;
+  return {scores, strongest:sorted.slice(0,2), gentlest:sorted.slice(-2).reverse(), matureCount, growCount};
+}
+function levelOf(v){ return v>=14?["亮點優勢","#12b5a5"]:(v>=9?["穩定發展","#e8873a"]:["慢慢來","#e05d5d"]); }
+
+/* ================= 圖表（SVG，列印安全） ================= */
+function barSVG(pct,color){
+  const w=pct>0?Math.max(pct,3).toFixed(1):0;
+  return `<svg viewBox="0 0 100 14" preserveAspectRatio="none" width="100%" height="16" style="display:block;"><rect width="100" height="14" rx="4" fill="#efe8db"/>${w?`<rect width="${w}" height="14" rx="4" fill="${color}"/>`:""}</svg>`;
+}
+function radarSVG(scores){
+  const n=DIMS.length, cx=160, cy=150, rMax=105;
+  const pt=(i,val)=>{const ang=-Math.PI/2+i*(2*Math.PI/n); const r=rMax*val; return [(cx+r*Math.cos(ang)).toFixed(1),(cy+r*Math.sin(ang)).toFixed(1)];};
+  let grid="";
+  for(let ring=1; ring<=4; ring++){ grid+=`<polygon points="${DIMS.map((_,i)=>pt(i,ring/4).join(",")).join(" ")}" fill="none" stroke="#e0d6c6" stroke-width="1"/>`; }
+  let axes="", labels="";
+  DIMS.forEach((d,i)=>{
+    const [x,y]=pt(i,1); axes+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#e0d6c6" stroke-width="1"/>`;
+    const [lx,ly]=pt(i,1.28);
+    labels+=`<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="${d.color}">${d.name} ${scores[d.key]}</text>`;
+  });
+  const poly=DIMS.map((d,i)=>pt(i,scores[d.key]/18).join(",")).join(" ");
+  return `<svg viewBox="0 0 320 300" width="320" height="300" role="img" aria-label="五大發展面向雷達圖">${grid}${axes}<polygon points="${poly}" fill="rgba(124,92,214,.22)" stroke="#7c5cd6" stroke-width="2.5"/>${labels}</svg>`;
+}
+
+/* ================= 結果 ================= */
+function showResults(){
+  const s=computeScores();
+  const name=document.getElementById("stuName").value.trim()||"小朋友";
+  const cls=document.getElementById("stuClass").value;
+  const dateStr=new Date().toLocaleDateString("zh-TW");
+  let verdict;
+  if(s.matureCount>=4){ verdict=`${name}在多數面向都已展現相當成熟的表現（${s.matureCount} 項亮點優勢），是很有本錢的學習起點。入班後可以放心給孩子多一點挑戰與表現機會，讓優勢帶著他起飛。`; }
+  else if(s.growCount===0){ verdict=`${name}的五大面向都在穩定發展中，發展面貌均衡。每個孩子都有自己的節奏，這個階段最重要的是「好的開始經驗」——在對的環境裡，孩子的成長速度常常超乎想像。`; }
+  else { verdict=`${name}有自己的發展節奏：有的面向已經上路，有的面向正在慢慢起步——<b>這很正常，也正是入班評估的價值</b>。我們會依這份面貌為孩子安排適合的引導方式，讓他在有安全感的節奏裡，一步一步累積「我可以」的經驗。`; }
+  const bars = DIMS.map(d=>{
+    const v=s.scores[d.key]; const [lv,lc]=levelOf(v);
+    return `<div class="score-row"><div class="score-label" style="color:${d.color}">${d.icon} ${d.name}</div><div class="score-track">${barSVG(v/18*100,d.color)}</div><div class="score-val">${v} / 18</div><div style="width:64px; font-size:.8rem; font-weight:700; color:${lc}">${lv}</div></div>`;
+  }).join("");
+  const gentleCards = s.gentlest.filter(d=>s.scores[d.key]<14).map(d=>{
+    const [lv,lc]=levelOf(s.scores[d.key]);
+    return `<div class="dim-card"><span class="lv" style="color:${lc}">${lv}</span><b>${d.icon} ${d.name}</b><p>${d.advice}</p></div>`;
+  }).join("") || `<p class="tagline">五大面向都已是亮點優勢，太棒了！可以放心讓孩子接受更多元的學習刺激。</p>`;
+  const bgCards = BG_QUESTIONS.map((bq,bi)=>
+    `<div class="bg-item"><small>${bq.q}</small><b>${bq.opts[bgAnswers[bi]]}</b></div>`).join("");
+  const html=`
+  <div class="card">
+    <h2>📋 新生入班評估報告</h2>
+    <p class="tagline">${name}（${cls}）｜評估日期：${dateStr}｜家長觀察填答 ${TOTAL}＋${BG_QUESTIONS.length} 題</p>
+  </div>
+  <div class="card">
+    <h2>1️⃣ 五大發展面貌</h2>
+    <div id="radarBox">${radarSVG(s.scores)}</div>
+    ${bars}
+    <div class="verdict">${verdict}</div>
+    <p class="tagline">※「慢慢來」不是落後，是「這個面向需要多一點陪伴和練習」。低年級孩子的發展差異本來就大，重點是找對方法。</p>
+  </div>
+  <div class="card">
+    <h2>2️⃣ 亮點與陪伴重點</h2>
+    <p>💪 <b>孩子的亮點</b>：${s.strongest.map(d=>d.icon+d.name).join("、")}——請常常具體地稱讚這些表現，孩子會把「被看見的優點」越長越大。</p>
+    <h3>🌱 需要多一點陪伴的面向（附居家做法）</h3>
+    ${gentleCards}
+  </div>
+  <div class="card">
+    <h2>3️⃣ 英語學習背景</h2>
+    <div class="bg-grid">${bgCards}</div>
+    <p class="tagline" style="margin-top:10px;">這部分不評分——它幫助顧問了解孩子的英語起點與您的期待，安排最適合的起步方式。</p>
+  </div>
+  <div class="cta-box" id="noprint">
+    <h2>🎁 下一步：帶著這份報告，來預約入班評估試聽</h2>
+    <p style="margin-top:8px;">紙上的評估看「面貌」，教室裡的評估看「互動」。把這份報告的「結果摘要」貼回 TIPS 官方 LINE，顧問將為您安排：<b>免費入班評估＋試聽課</b>——由老師實際和孩子互動，搭配這份報告，為孩子設計最適合的起步方式。</p>
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+      <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" style="text-decoration:none;">💬 加 LINE 預約評估試聽（${TIPS_CONFIG.LINE_ID}）</a>
+      <button class="btn secondary" onclick="copySummary()">📋 複製結果摘要傳給顧問</button>
+    </div>
+    <div class="cta-contact">📞 ${TIPS_CONFIG.PHONE}　📍 ${TIPS_CONFIG.ADDRESS}</div>
+  </div>
+  <div class="card">
+    <h2>4️⃣ 給家長的話</h2>
+    <ul class="tips">
+      <li>這份報告是「認識孩子的地圖」，不是成績單——低年級孩子的每個面向都還在快速長大。</li>
+      <li>優勢面向請多讓孩子發揮；「慢慢來」的面向一次陪伴一項就好，穩定練習比全面開工有效。</li>
+      <li>好的第一次經驗最重要：孩子第一次上課喜歡上學、喜歡老師，後面的學習就成功了一半。</li>
+      <li>若您對孩子的發展（語言、動作、社交）有持續的疑慮，建議洽小兒科醫師或各縣市「兒童發展聯合評估中心」進一步了解，早了解早安心。</li>
+    </ul>
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+      <button class="btn" onclick="window.print()">🖨 列印 / 存成 PDF</button>
+      <button class="btn secondary" onclick="location.reload()">↺ 重新填答</button>
+    </div>
+    <div class="note">📚 <b>編製依據</b>：本問卷之五大面向架構參考美國多州（馬里蘭、俄亥俄、南卡羅來納等州）採用之入學準備度評估 <a href="https://ed.sc.gov/tests/elementary/kindergarten-readiness-assessment-kra/" target="_blank" rel="noopener">KRA（Kindergarten Readiness Assessment）</a>之領域設計——「Social Foundations（社會情緒基礎）→ 情緒與社交」「Language and Literacy（語言與讀寫）→ 語言與溝通」「Physical Well-being（身體與自理）→ 生活自理」，並納入入學準備度研究中公認關鍵的「Approaches to Learning（學習取向）」構面，拆為「專注與持續」「學習興趣與好奇心」兩向度。依國際評估慣例，此年齡層採<b>教師或家長觀察式填答</b>（不採幼兒自填），故本問卷由家長作答。題目為 TIPS 英典教育參考上述架構、針對台灣低年級生活情境自行編寫之觀察題，並非上述工具之翻譯或授權版本。<b>本工具為入班安排之參考輔助，並非兒童發展篩檢或醫療診斷</b>；若對孩子發展有持續疑慮，請洽小兒科醫師或各縣市「兒童發展聯合評估中心」。</div>
+  </div>`;
+  document.getElementById("screen-test").classList.add("hidden");
+  const rs=document.getElementById("screen-result");
+  rs.innerHTML=html; rs.classList.remove("hidden");
+  window.__last={s,name,cls,dateStr};
+  const d=leadData();
+  const summary=`入班評估｜專注${s.scores.focus} 語言${s.scores.lang} 情緒${s.scores.social} 自理${s.scores.self} 好奇${s.scores.curio}（各0-18）｜亮點:${s.strongest.map(x=>x.name).join("、")}｜陪伴:${s.gentlest.map(x=>x.name).join("、")}｜英語:${BG_QUESTIONS.map((bq,bi)=>bq.opts[bgAnswers[bi]]).join("/")}`;
+  submitToGoogleForm({...d, status:"已完成評估", result:summary});
+  window.scrollTo(0,0);
+}
+function copySummary(){
+  const {s,name,cls,dateStr}=window.__last;
+  const lines=[
+    `【新生入班評估結果】`,
+    `姓名：${name}（${cls}）　日期：${dateStr}`,
+    `五大面向（0-18）：專注與持續=${s.scores.focus}　語言與溝通=${s.scores.lang}　情緒與社交=${s.scores.social}　生活自理=${s.scores.self}　學習興趣=${s.scores.curio}`,
+    `亮點優勢：${s.strongest.map(x=>x.name).join("、")}`,
+    `陪伴重點：${s.gentlest.map(x=>x.name).join("、")}`,
+    `英語背景：${BG_QUESTIONS.map((bq,bi)=>`${bq.opts[bgAnswers[bi]]}`).join("／")}`
+  ].join("\n");
+  navigator.clipboard.writeText(lines).then(()=>alert("已複製結果摘要！加 LINE 後直接貼上傳給顧問，即可預約免費入班評估與試聽。"));
+}
+</script>
+<a class="line-float" id="lineFloat" href="https://line.me/R/ti/p/@tipsedu" target="_blank">💬 LINE 諮詢</a>
+<script>document.getElementById("lineFloat").href = TIPS_CONFIG.LINE_URL;</script>
+</body>
+</html>
