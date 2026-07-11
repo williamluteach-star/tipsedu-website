@@ -413,89 +413,32 @@ function radarSVG(scores){
 /* ================= 結果 ================= */
 function showResults(){
   const s=computeScores();
-  const name=document.getElementById("stuName").value.trim()||"小朋友";
-  const cls=document.getElementById("stuClass").value;
-  const dateStr=new Date().toLocaleDateString("zh-TW");
-  let verdict;
-  if(s.matureCount>=4){ verdict=`${name}在多數面向都已展現相當成熟的表現（${s.matureCount} 項亮點優勢），是很有本錢的學習起點。入班後可以放心給孩子多一點挑戰與表現機會，讓優勢帶著他起飛。`; }
-  else if(s.growCount===0){ verdict=`${name}的五大面向都在穩定發展中，發展面貌均衡。每個孩子都有自己的節奏，這個階段最重要的是「好的開始經驗」——在對的環境裡，孩子的成長速度常常超乎想像。`; }
-  else { verdict=`${name}有自己的發展節奏：有的面向已經上路，有的面向正在慢慢起步——<b>這很正常，也正是入班評估的價值</b>。我們會依這份面貌為孩子安排適合的引導方式，讓他在有安全感的節奏裡，一步一步累積「我可以」的經驗。`; }
-  const bars = DIMS.map(d=>{
-    const v=s.scores[d.key]; const [lv,lc]=levelOf(v);
-    return `<div class="score-row"><div class="score-label" style="color:${d.color}">${d.icon} ${d.name}</div><div class="score-track">${barSVG(v/18*100,d.color)}</div><div class="score-val">${v} / 18</div><div style="width:64px; font-size:.8rem; font-weight:700; color:${lc}">${lv}</div></div>`;
-  }).join("");
-  const gentleCards = s.gentlest.filter(d=>s.scores[d.key]<14).map(d=>{
-    const [lv,lc]=levelOf(s.scores[d.key]);
-    return `<div class="dim-card"><span class="lv" style="color:${lc}">${lv}</span><b>${d.icon} ${d.name}</b><p>${d.advice}</p></div>`;
-  }).join("") || `<p class="tagline">五大面向都已是亮點優勢，太棒了！可以放心讓孩子接受更多元的學習刺激。</p>`;
-  const bgCards = BG_QUESTIONS.map((bq,bi)=>
-    `<div class="bg-item"><small>${bq.q}</small><b>${bq.opts[bgAnswers[bi]]}</b></div>`).join("");
-  const html=`
-  <div class="card">
-    <h2>📋 新生入班評估報告</h2>
-    <p class="tagline">${name}（${cls}）｜評估日期：${dateStr}｜家長觀察填答 ${TOTAL}＋${BG_QUESTIONS.length} 題</p>
-  </div>
-  <div class="card">
-    <h2>1️⃣ 五大發展面貌</h2>
-    <div id="radarBox">${radarSVG(s.scores)}</div>
-    ${bars}
-    <div class="verdict">${verdict}</div>
-    <p class="tagline">※「慢慢來」不是落後，是「這個面向需要多一點陪伴和練習」。低年級孩子的發展差異本來就大，重點是找對方法。</p>
-  </div>
-  <div class="card">
-    <h2>2️⃣ 亮點與陪伴重點</h2>
-    <p>💪 <b>孩子的亮點</b>：${s.strongest.map(d=>d.icon+d.name).join("、")}——請常常具體地稱讚這些表現，孩子會把「被看見的優點」越長越大。</p>
-    <h3>🌱 需要多一點陪伴的面向（附居家做法）</h3>
-    ${gentleCards}
-  </div>
-  <div class="card">
-    <h2>3️⃣ 英語學習背景</h2>
-    <div class="bg-grid">${bgCards}</div>
-    <p class="tagline" style="margin-top:10px;">這部分不評分——它幫助顧問了解孩子的英語起點與您的期待，安排最適合的起步方式。</p>
-  </div>
-  <div class="cta-box" id="noprint">
-    <h2>🎁 下一步：帶著這份報告，來預約入班評估試聽</h2>
-    <p style="margin-top:8px;">紙上的評估看「面貌」，教室裡的評估看「互動」。把這份報告的「結果摘要」貼回 TIPS 官方 LINE，顧問將為您安排：<b>免費入班評估＋試聽課</b>——由老師實際和孩子互動，搭配這份報告，為孩子設計最適合的起步方式。</p>
-    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-      <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" style="text-decoration:none;">💬 加 LINE 預約評估試聽（${TIPS_CONFIG.LINE_ID}）</a>
-      <button class="btn secondary" onclick="copySummary()">📋 複製結果摘要傳給顧問</button>
-    </div>
-    <div class="cta-contact">📞 ${TIPS_CONFIG.PHONE}　📍 ${TIPS_CONFIG.ADDRESS}</div>
-  </div>
-  <div class="card">
-    <h2>4️⃣ 給家長的話</h2>
-    <ul class="tips">
-      <li>這份報告是「認識孩子的地圖」，不是成績單——低年級孩子的每個面向都還在快速長大。</li>
-      <li>優勢面向請多讓孩子發揮；「慢慢來」的面向一次陪伴一項就好，穩定練習比全面開工有效。</li>
-      <li>好的第一次經驗最重要：孩子第一次上課喜歡上學、喜歡老師，後面的學習就成功了一半。</li>
-      <li>若您對孩子的發展（語言、動作、社交）有持續的疑慮，建議洽小兒科醫師或各縣市「兒童發展聯合評估中心」進一步了解，早了解早安心。</li>
-    </ul>
-    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
-      <button class="btn" onclick="window.print()">🖨 列印 / 存成 PDF</button>
-      <button class="btn secondary" onclick="location.reload()">↺ 重新填答</button>
-    </div>
-    <div class="note">📚 <b>編製依據</b>：本問卷之五大面向架構參考美國多州（馬里蘭、俄亥俄、南卡羅來納等州）採用之入學準備度評估 <a href="https://ed.sc.gov/tests/elementary/kindergarten-readiness-assessment-kra/" target="_blank" rel="noopener">KRA（Kindergarten Readiness Assessment）</a>之領域設計——「Social Foundations（社會情緒基礎）→ 情緒與社交」「Language and Literacy（語言與讀寫）→ 語言與溝通」「Physical Well-being（身體與自理）→ 生活自理」，並納入入學準備度研究中公認關鍵的「Approaches to Learning（學習取向）」構面，拆為「專注與持續」「學習興趣與好奇心」兩向度。依國際評估慣例，此年齡層採<b>教師或家長觀察式填答</b>（不採幼兒自填），故本問卷由家長作答。題目為 TIPS 英典教育參考上述架構、針對台灣低年級生活情境自行編寫之觀察題，並非上述工具之翻譯或授權版本。<b>本工具為入班安排之參考輔助，並非兒童發展篩檢或醫療診斷</b>；若對孩子發展有持續疑慮，請洽小兒科醫師或各縣市「兒童發展聯合評估中心」。</div>
-  </div>`;
-  document.getElementById("screen-test").classList.add("hidden");
-  const rs=document.getElementById("screen-result");
-  rs.innerHTML=html; rs.classList.remove("hidden");
-  window.__last={s,name,cls,dateStr};
   const d=leadData();
-  const summary=`入班評估｜專注${s.scores.focus} 語言${s.scores.lang} 情緒${s.scores.social} 自理${s.scores.self} 好奇${s.scores.curio}（各0-18）｜亮點:${s.strongest.map(x=>x.name).join("、")}｜陪伴:${s.gentlest.map(x=>x.name).join("、")}｜英語:${BG_QUESTIONS.map((bq,bi)=>bq.opts[bgAnswers[bi]]).join("/")}`;
+  const scoreStr=DIMS.map(x=>s.scores[x.key]).join(",");
+  const bg=BG_QUESTIONS.map((bq,bi)=>bq.opts[bgAnswers[bi]]).join("/");
+  const code=`NSC1|${d.name}|${d.grade}|${scoreStr}|${bg}`;
+  const summary=`入班評估｜專注${s.scores.focus} 語言${s.scores.lang} 情緒${s.scores.social} 自理${s.scores.self} 好奇${s.scores.curio}｜亮點:${s.strongest.map(x=>x.name).join("、")}｜陪伴:${s.gentlest.map(x=>x.name).join("、")}｜英語:${bg}｜代碼[${code}]`;
   submitToGoogleForm({...d, status:"已完成評估", result:summary});
+  document.getElementById("screen-test").classList.add("hidden");
+  showDone();
   window.scrollTo(0,0);
 }
-function copySummary(){
-  const {s,name,cls,dateStr}=window.__last;
-  const lines=[
-    `【新生入班評估結果】`,
-    `姓名：${name}（${cls}）　日期：${dateStr}`,
-    `五大面向（0-18）：專注與持續=${s.scores.focus}　語言與溝通=${s.scores.lang}　情緒與社交=${s.scores.social}　生活自理=${s.scores.self}　學習興趣=${s.scores.curio}`,
-    `亮點優勢：${s.strongest.map(x=>x.name).join("、")}`,
-    `陪伴重點：${s.gentlest.map(x=>x.name).join("、")}`,
-    `英語背景：${BG_QUESTIONS.map((bq,bi)=>`${bq.opts[bgAnswers[bi]]}`).join("／")}`
-  ].join("\n");
-  navigator.clipboard.writeText(lines).then(()=>alert("已複製結果摘要！加 LINE 後直接貼上傳給顧問，即可預約免費入班評估與試聽。"));
+function showDone(){
+  const rs=document.getElementById("screen-result");
+  rs.innerHTML=`
+  <div class="card" style="text-align:center; padding:36px 24px;">
+    <div style="font-size:3rem;">🎉</div>
+    <h2 style="margin-top:6px;">恭喜完成！專屬報告已產出</h2>
+    <p style="margin-top:12px;">評估報告已送達 TIPS 顧問端。因為每個孩子的發展面貌都不同，<b>由老師當面為您解讀最準確</b>，也能直接建議最適合的起步方式。</p>
+    <div class="note" style="text-align:left; margin-top:14px;">📋 報告內容包含：五大面向雷達圖、發展亮點與陪伴重點、英語起步的個別化建議</div>
+    <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+      <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" style="text-decoration:none;">📅 加 LINE 預約看報告（${TIPS_CONFIG.LINE_ID}）</a>
+      <a class="btn secondary" href="tel:0905547839" style="text-decoration:none;">📞 直接來電 ${TIPS_CONFIG.PHONE}</a>
+    </div>
+    <p class="tagline" style="margin-top:14px;">TIPS 英典教育｜${TIPS_CONFIG.ADDRESS}</p>
+  </div>`;
+  rs.classList.remove("hidden");
+  window.scrollTo(0,0);
 }
 </script>
 <a class="line-float" id="lineFloat" href="https://line.me/R/ti/p/@tipsedu" target="_blank">💬 LINE 諮詢</a>

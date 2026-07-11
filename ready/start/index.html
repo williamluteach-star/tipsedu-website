@@ -381,86 +381,120 @@ function radarSVG(scores){
   return `<svg viewBox="0 0 320 300" width="320" height="300" role="img" aria-label="六大能力雷達圖">${grid}${axes}<polygon points="${poly}" fill="rgba(18,181,165,.25)" stroke="#12b5a5" stroke-width="2.5"/>${labels}</svg>`;
 }
 
-/* ================= 結果 ================= */
+/* ================= 結果 → 家長對照卷 → 完成 ================= */
 function showResults(){
   const s=computeScores();
-  const name=document.getElementById("stuName").value.trim()||"同學";
-  const cls=document.getElementById("stuClass").value;
-  const dateStr=new Date().toLocaleDateString("zh-TW");
-  let verdict, vClass;
-  if(s.index>=75){ vClass="hi"; verdict=`<b>國中就緒型（就緒指數 ${s.index}）</b><br>${name}的整體準備度很好，六大能力多數已達國中需求。接下來的重點是「維持節奏＋學科超前」：習慣面已經穩了，建議把力氣放在國中課程的先修銜接，讓開學後直接進入領先群。`; }
-  else if(s.index>=50){ vClass="mid"; verdict=`<b>穩定發展型（就緒指數 ${s.index}）</b><br>${name}有不錯的基礎，但部分能力還在發展中。距離上國中還有準備時間，現在開始針對下方標示「發展中／需暖身」的面向逐一補強，開學前完全來得及到位。`; }
-  else { vClass="lo"; verdict=`<b>需要暖身型（就緒指數 ${s.index}）</b><br>${name}目前的學習習慣還停留在「國小模式」，直接進入國中容易在第一學期出現適應落差。好消息是：這些都是「習慣」而不是「天賦」，用對方法、給足時間，每一項都能練起來——下方的建議就是暖身菜單。`; }
-  const bars = DIMS.map(d=>{
-    const v=s.scores[d.key]; const [lv,lc]=levelOf(v);
-    return `<div class="score-row"><div class="score-label" style="color:${d.color}">${d.icon} ${d.name}</div><div class="score-track">${barSVG(v/32*100,d.color)}</div><div class="score-val">${v} / 32</div><div style="width:56px; font-size:.8rem; font-weight:700; color:${lc}">${lv}</div></div>`;
-  }).join("");
-  const weakCards = s.weakest.filter(d=>s.scores[d.key]<24).map(d=>{
-    const [lv,lc]=levelOf(s.scores[d.key]);
-    return `<div class="dim-card"><span class="lv" style="color:${lc}">${lv}</span><b>${d.icon} ${d.name}</b><p>${d.advice}</p></div>`;
-  }).join("") || `<p class="tagline">六大能力均已達「已就緒」水準，太棒了！可將重點放在學科先修。</p>`;
-  const html=`
-  <div class="card">
-    <h2>📋 國中準備度檢測報告</h2>
-    <p class="tagline">${name}（${cls}）｜檢測日期：${dateStr}｜共 ${TOTAL} 題</p>
-  </div>
-  <div class="card">
-    <h2>1️⃣ 六大能力剖面</h2>
-    <div id="radarBox">${radarSVG(s.scores)}</div>
-    ${bars}
-    <h3>就緒指數</h3>
-    <div class="index-badge">${s.index} <span style="font-size:1rem; font-weight:500;">/ 100</span></div>
-    <div class="verdict ${vClass}">${verdict}</div>
-  </div>
-  <div class="card">
-    <h2>2️⃣ 優勢與暖身重點</h2>
-    <p>💪 <b>相對優勢</b>：${s.strongest.map(d=>d.icon+d.name).join("、")}——這是${name}進入國中的本錢，請家長具體點名稱讚，讓孩子知道自己「已經準備好的部分」。</p>
-    <h3>🔧 優先暖身（附具體做法）</h3>
-    ${weakCards}
-  </div>
-  <div class="cta-box" id="noprint">
-    <h2>🎁 習慣面看完了，學科面呢？</h2>
-    <p style="margin-top:8px;">這份報告測的是「學習習慣與心態」的就緒度；<b>學科程度</b>（英文、數學跟不跟得上國中）則需要實際檢測。把這份報告的「結果摘要」貼回 TIPS 官方 LINE，顧問將為您安排：<b>免費報告解讀＋KC 系統學科程度檢測</b>，兩份數據合起來，就是孩子完整的國中銜接地圖。</p>
-    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-      <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" style="text-decoration:none;">💬 加 LINE 預約免費解讀（${TIPS_CONFIG.LINE_ID}）</a>
-      <button class="btn secondary" onclick="copySummary()">📋 複製結果摘要傳給顧問</button>
-    </div>
-    <div class="cta-contact">📞 ${TIPS_CONFIG.PHONE}　📍 ${TIPS_CONFIG.ADDRESS}</div>
-  </div>
-  <div class="card">
-    <h2>3️⃣ 給家長的話</h2>
-    <ul class="tips">
-      <li>這份報告是「暖身菜單」不是成績單——重點不在分數高低，而在<b>還有時間準備</b>。</li>
-      <li>一次只練一個習慣：從「需暖身」裡挑一項，穩定一個月再換下一項，比六項一起改有效得多。</li>
-      <li>習慣的養成需要家長「忍住不代勞」：讓孩子自己記聯絡簿、自己整理書包，忘記帶東西的自然後果是最好的老師。</li>
-      <li>小六下學期建議重測一次，比較兩次雷達圖的變化，孩子會從進步中長出信心。</li>
-    </ul>
-    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
-      <button class="btn" onclick="window.print()">🖨 列印 / 存成 PDF</button>
-      <button class="btn secondary" onclick="location.reload()">↺ 重新檢測</button>
-    </div>
-    <div class="note">📚 <b>編製依據</b>：本檢測之六大向度架構參考美國 <a href="https://www.hhpublishing.com/ap/_assessments/LASSI-3rd-Edition.html" target="_blank" rel="noopener">LASSI 學習與讀書策略量表</a>（Learning and Study Strategies Inventory，H&amp;H Publishing，另有高中版 LASSI-HS）之「動機、時間管理、專注、學習輔助策略、焦慮」等構面，並依台灣國中新生學習適應研究常見之生活適應面向，增列「生活獨立」向度。題目為 TIPS 英典教育參考上述架構、針對台灣小五小六生活情境自行編寫之自評題，並非上述工具之翻譯或授權版本。<b>本工具為探索參考輔助，非標準化心理測驗</b>，重大教育決定建議搭配 TIPS 顧問解讀、KC 系統學科檢測與學校老師的觀察一起評估。</div>
-  </div>`;
-  document.getElementById("screen-test").classList.add("hidden");
-  const rs=document.getElementById("screen-result");
-  rs.innerHTML=html; rs.classList.remove("hidden");
-  window.__last={s,name,cls,dateStr};
   const d=leadData();
-  const summary=`就緒指數${s.index}/100｜動機${s.scores.mot} 時間${s.scores.time} 專注${s.scores.focus} 方法${s.scores.strategy} 心態${s.scores.mind} 獨立${s.scores.self}（各0-32）｜優勢:${s.strongest.map(x=>x.name).join("、")}｜暖身:${s.weakest.map(x=>x.name).join("、")}`;
+  const scoreStr=DIMS.map(x=>s.scores[x.key]).join(",");
+  const code=`RDC1|${d.name}|${d.grade}|${scoreStr}`;
+  const summary=`就緒指數${s.index}/100｜動機${s.scores.mot} 時間${s.scores.time} 專注${s.scores.focus} 方法${s.scores.strategy} 心態${s.scores.mind} 獨立${s.scores.self}｜優勢:${s.strongest.map(x=>x.name).join("、")}｜暖身:${s.weakest.map(x=>x.name).join("、")}｜代碼[${code}]`;
   submitToGoogleForm({...d, status:"已完成檢測", result:summary});
+  document.getElementById("screen-test").classList.add("hidden");
+  showParentIntro();
   window.scrollTo(0,0);
 }
-function copySummary(){
-  const {s,name,cls,dateStr}=window.__last;
-  const lines=[
-    `【國中準備度檢測結果】`,
-    `姓名：${name}（${cls}）　日期：${dateStr}`,
-    `就緒指數：${s.index} / 100`,
-    `六大能力（0-32）：學習動機=${s.scores.mot}　時間管理=${s.scores.time}　專注習慣=${s.scores.focus}　學習方法=${s.scores.strategy}　考試心態=${s.scores.mind}　生活獨立=${s.scores.self}`,
-    `相對優勢：${s.strongest.map(x=>x.name).join("、")}`,
-    `優先暖身：${s.weakest.map(x=>x.name).join("、")}`
-  ].join("\n");
-  navigator.clipboard.writeText(lines).then(()=>alert("已複製結果摘要！加 LINE 後直接貼上傳給顧問，即可預約免費解讀。"));
+
+/* ---- 親子教育觀對照卷（家長填，12題） ---- */
+const PS_FIT=["很不符合","不太符合","普通","還算符合","非常符合"];
+const PS_AGREE=["很不同意","不太同意","普通","還算同意","非常同意"];
+const PS_A=[
+ ["mot","孩子主動想學新東西，不需要人催"],
+ ["time","孩子能自己安排時間，功課不用一直盯"],
+ ["focus","孩子寫功課能專心，不容易分心"],
+ ["strategy","孩子有自己的一套讀書方法"],
+ ["mind","孩子面對考試不會過度緊張，考差能調適"],
+ ["self","孩子生活上大多能自己打理"]];
+const PS_C=[
+ ["D","我對孩子的成績有明確的標準與要求"],
+ ["D","孩子的作息和學習安排，主要由我來規定"],
+ ["S","孩子表達不同意見時，我會先聽完他的理由"],
+ ["S","孩子遇到挫折時，我會先安撫情緒再談表現"]];
+const PS_PLAN=["全科班","單科補強","自主學習為主","還沒想好"];
+const PS_WORRY=["成績跟不上","3C 與手機","交友","作息與自律","沒有特別擔心"];
+let psA=new Array(6).fill(null), psC=new Array(4).fill(null), psPlan=null, psWorry=null;
+
+const PS_STYLE=`<style>
+.psx{display:inline-block; margin:4px 6px 4px 0; padding:8px 14px; border:1.5px solid #ccd4e2; background:#fff; border-radius:20px; font-size:.85rem; cursor:pointer; font-family:inherit; color:#3a4358;}
+.psx.on{background:#12b5a5; border-color:#12b5a5; color:#fff; font-weight:700;}
+.q.miss{border:1.5px solid #e05d5d; border-radius:10px;}
+</style>`;
+
+function showParentIntro(){
+  const rs=document.getElementById("screen-result");
+  rs.innerHTML=`
+  <div class="card" style="text-align:center;">
+    <h2>✅ 檢測完成！最後一步</h2>
+    <p style="margin-top:10px;">請把手機<b>交給爸爸或媽媽</b>，填一份約 3 分鐘的「親子教育觀對照卷」。<br>顧問會把家長的觀察與孩子的自評交叉對照，解讀報告時更精準。</p>
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+      <button class="btn" onclick="renderParentSurvey()">👨‍👩‍👧 我是家長，開始填寫</button>
+      <button class="btn secondary" onclick="showDone(false)">家長不在旁邊，先完成</button>
+    </div>
+    <p class="tagline" style="margin-top:10px;">略過也沒關係——之後到班看報告時可以現場補填。</p>
+  </div>`;
+  rs.classList.remove("hidden");
+}
+function qRowPS(part,i,text,opts,offset){
+  const btns=opts.map((o,v)=>`<button type="button" onclick="pickPS('${part}',${i},${v})" id="ps${part}${i}v${v}">${o}</button>`).join("");
+  return `<div class="q" id="ps${part}${i}" style="padding:10px 8px;"><div class="q-text" style="font-weight:600; margin-bottom:8px;">${offset+i}. ${text}</div><div class="opts">${btns}</div></div>`;
+}
+function pickPS(part,i,v){
+  (part==="A"?psA:psC)[i]=v;
+  const opts=(part==="A"?PS_FIT:PS_AGREE);
+  opts.forEach((_,x)=>document.getElementById(`ps${part}${i}v${x}`).classList.toggle("sel",x===v));
+  document.getElementById(`ps${part}${i}`).classList.remove("miss");
+}
+function pickPlan(i){ psPlan=i; PS_PLAN.forEach((_,x)=>document.getElementById("pspl"+x).classList.toggle("on",x===i)); }
+function pickWorry(i){ psWorry=i; PS_WORRY.forEach((_,x)=>document.getElementById("pswo"+x).classList.toggle("on",x===i)); }
+function renderParentSurvey(){
+  const rs=document.getElementById("screen-result");
+  const rowA=PS_A.map((it,i)=>qRowPS("A",i,it[1],PS_FIT,1)).join("");
+  const rowC=PS_C.map((it,i)=>qRowPS("C",i,it[1],PS_AGREE,9)).join("");
+  const planBtns=PS_PLAN.map((t,i)=>`<button type="button" class="psx" id="pspl${i}" onclick="pickPlan(${i})">${t}</button>`).join("");
+  const worryBtns=PS_WORRY.map((t,i)=>`<button type="button" class="psx" id="pswo${i}" onclick="pickWorry(${i})">${t}</button>`).join("");
+  rs.innerHTML=PS_STYLE+`
+  <div class="card"><h2>👨‍👩‍👧 親子教育觀對照卷（家長填）</h2>
+   <p class="tagline">共 12 題，約 3 分鐘。沒有對錯，請依實際狀況作答；結果僅供顧問解讀報告時參考。</p></div>
+  <div class="card"><h3>Part 1｜您眼中的孩子</h3>${rowA}</div>
+  <div class="card"><h3>Part 2｜您的規劃與想法</h3>
+    <p style="font-weight:600; margin:6px 0;">7. 國中階段的學習安排，您目前的想法？</p><div>${planBtns}</div>
+    <p style="font-weight:600; margin:14px 0 6px;">8. 孩子上國中後您最擔心的是？</p><div>${worryBtns}</div></div>
+  <div class="card"><h3>Part 3｜教育想法</h3>${rowC}</div>
+  <div class="card">
+   <div class="err" id="psErr" style="display:none; margin-bottom:10px;">還有題目未作答，請往上檢查（未作答的題目已標紅框）。</div>
+   <button class="btn" style="width:100%; font-size:1.05rem;" onclick="submitParentSurvey()">送出對照卷</button>
+   <div class="note" style="margin-top:12px;">📚 <b>編製依據</b>：能力觀察題與孩子自評採同一 LASSI 學習策略向度（家長觀察版）；教養風格題採 Baumrind 理論並參考 PSDQ、PAQ 國際量表在地化改寫；規劃題參考 OECD PISA 家長問卷。本卷為教育諮詢的對話工具，非臨床診斷量表。</div>
+  </div>`;
+  window.scrollTo(0,0);
+}
+function submitParentSurvey(){
+  let ok=true;
+  psA.forEach((v,i)=>{ if(v===null){ document.getElementById("psA"+i).classList.add("miss"); ok=false; } });
+  psC.forEach((v,i)=>{ if(v===null){ document.getElementById("psC"+i).classList.add("miss"); ok=false; } });
+  if(psPlan===null||psWorry===null) ok=false;
+  if(!ok){ const e=document.getElementById("psErr"); e.style.display="block"; window.scrollTo(0,document.body.scrollHeight); return; }
+  const d=leadData();
+  const pcode=`RDP1|${psA.join(",")}|${psPlan}|${psWorry}|${psC.join(",")}`;
+  const summary=`對照卷｜安排:${PS_PLAN[psPlan]}｜擔心:${PS_WORRY[psWorry]}｜代碼[${pcode}]`;
+  submitToGoogleForm({...d, status:"對照卷完成", result:summary});
+  showDone(true);
+}
+function showDone(parentDone){
+  const rs=document.getElementById("screen-result");
+  rs.innerHTML=`
+  <div class="card" style="text-align:center; padding:36px 24px;">
+    <div style="font-size:3rem;">🎉</div>
+    <h2 style="margin-top:6px;">恭喜完成！專屬報告已產出</h2>
+    <p style="margin-top:12px;">報告已送達 TIPS 顧問端。因為內容包含多項交叉分析，<b>由老師當面為您解讀最準確</b>，也能直接給出銜接國中的具體建議。</p>
+    <div class="note" style="text-align:left; margin-top:14px;">📋 報告內容包含：六大能力雷達圖、就緒指數、優勢與暖身重點${parentDone?"、親子認知落差對照":""}</div>
+    ${parentDone?"":`<p class="tagline" style="margin-top:8px;">家長對照卷這次先跳過沒關係，到班看報告時可以現場補填。</p>`}
+    <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+      <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" style="text-decoration:none;">📅 加 LINE 預約看報告（${TIPS_CONFIG.LINE_ID}）</a>
+      <a class="btn secondary" href="tel:0905547839" style="text-decoration:none;">📞 直接來電 ${TIPS_CONFIG.PHONE}</a>
+    </div>
+    <p class="tagline" style="margin-top:14px;">TIPS 英典教育｜${TIPS_CONFIG.ADDRESS}</p>
+  </div>`;
+  rs.classList.remove("hidden");
+  window.scrollTo(0,0);
 }
 </script>
 <a class="line-float" id="lineFloat" href="https://line.me/R/ti/p/@tipsedu" target="_blank">💬 LINE 諮詢</a>

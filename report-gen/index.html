@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TIPS 報告產生器（內部工具）</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; background:#e8ebf2; color:#1a2233; line-height:1.55; font-size:15px;}
+  .panel{max-width:820px; margin:18px auto; background:#fff; border-radius:12px; padding:20px 24px; box-shadow:0 2px 10px rgba(20,30,60,.08);}
+  .panel h1{font-size:1.15rem; color:#20315c; margin-bottom:8px;}
+  textarea{width:100%; min-height:110px; border:1.5px solid #ccd4e2; border-radius:8px; padding:10px; font-size:.85rem; font-family:inherit;}
+  .row{display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-top:10px;}
+  .btn{background:#2f6fed; color:#fff; border:none; border-radius:9px; padding:11px 22px; font-size:.95rem; font-weight:800; cursor:pointer; font-family:inherit;}
+  .btn.sec{background:#eef3ff; color:#2f6fed;}
+  label.mode{font-size:.9rem; font-weight:700; cursor:pointer;}
+  .hint{font-size:.78rem; color:#5b6478; margin-top:6px;}
+  .errbox{display:none; background:#fdecec; color:#c0392b; border-radius:8px; padding:8px 12px; font-size:.85rem; margin-top:10px;}
+  /* ===== 報告 ===== */
+  .a4{max-width:820px; margin:18px auto; background:#fff; padding:34px 42px; box-shadow:0 2px 12px rgba(20,30,60,.12);}
+  .rpt-head{display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid #20315c; padding-bottom:10px;}
+  .logo{font-weight:900; font-size:1.1rem; letter-spacing:2px; color:#20315c;}
+  .logo small{display:block; font-weight:500; font-size:.66rem; color:#5b6478; letter-spacing:1px;}
+  .rpt-title{text-align:right;}
+  .rpt-title h2{font-size:1.15rem; color:#20315c;}
+  .rpt-title .sub{font-size:.68rem; color:#5b6478;}
+  .stu-row{display:flex; gap:16px; flex-wrap:wrap; margin:10px 0; font-size:.83rem; background:#f4f6fa; border-radius:8px; padding:7px 12px;}
+  .stu-row b{color:#2f6fed;}
+  h3.sec{font-size:.95rem; color:#20315c; border-left:5px solid #2f6fed; padding-left:8px; margin:14px 0 8px;}
+  table{width:100%; border-collapse:collapse; font-size:.78rem; margin:6px 0;}
+  th,td{border:1px solid #d8deea; padding:4px 8px; text-align:left;}
+  th{background:#eef3ff; color:#20315c;}
+  .badge{display:inline-block; background:#20315c; color:#fff; font-weight:800; letter-spacing:4px; border-radius:8px; padding:2px 12px 2px 16px; font-size:1rem;}
+  .gap-hi{background:#fdecec; color:#c0392b; font-weight:700;}
+  .gap-ok{color:#0a8f43;}
+  .verdict{background:#e5f7f5; border-left:5px solid #12b5a5; border-radius:8px; padding:7px 12px; font-size:.8rem; margin:8px 0;}
+  .warn{background:#fdf6e8; border-left:5px solid #e8a020;}
+  .internal{background:#f1f3f7; border:1.5px dashed #8a94a8; border-radius:10px; padding:12px 14px; margin:12px 0;}
+  .internal h4{font-size:.85rem; color:#5b6478; margin-bottom:6px;}
+  .note-box{border:1.5px dashed #b9c3d6; border-radius:8px; min-height:84px; padding:8px 12px; font-size:.72rem; color:#8a93a8; margin:6px 0;}
+  .foot{margin-top:12px; border-top:1.5px solid #d8deea; padding-top:7px; font-size:.65rem; color:#5b6478; display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  .gcard{border:1px solid #d8deea; border-radius:8px; padding:7px 10px; font-size:.74rem;}
+  .gcard b{color:#20315c;} .gcard .pct{float:right; color:#2f6fed; font-weight:800;}
+  .flex{display:flex; gap:16px; flex-wrap:wrap;} .flex>div{flex:1; min-width:250px;}
+  .legend{font-size:.68rem; color:#5b6478; text-align:center;}
+  .legend .c1{color:#2f6fed; font-weight:700;} .legend .c2{color:#e8873a; font-weight:700;}
+  .spec{margin:6px 0;}
+  .spec .lab{font-size:.75rem; font-weight:700; margin-bottom:2px;}
+  @media print{
+    body{background:#fff;}
+    .panel, .noprint{display:none !important;}
+    .a4{box-shadow:none; margin:0; padding:10mm 12mm; max-width:none;}
+    @page{size:A4; margin:8mm;}
+  }
+</style>
+</head>
+<body>
+
+<div class="panel">
+  <h1>🔒 TIPS 報告產生器（內部工具，請勿外流網址）</h1>
+  <p class="hint">從試算表複製「結果摘要」欄整格貼上即可（孩子那筆＋對照卷那筆可以一起貼，系統會自動抓「代碼[…]」）。支援：高中定向 HSC／國中興趣 JHC／準備度 RDC／入班評估 NSC＋各對照卷代碼。</p>
+  <textarea id="codeInput" placeholder="把試算表的結果摘要貼在這裡（可多筆一起貼）…"></textarea>
+  <div class="row">
+    <label class="mode"><input type="radio" name="mode" value="talk" checked> 面談版（可給家長看）</label>
+    <label class="mode"><input type="radio" name="mode" value="internal"> 內部版（含分型與合拍度）</label>
+    <button class="btn" onclick="generate()">產生報告</button>
+    <button class="btn sec" onclick="window.print()">🖨 列印</button>
+  </div>
+  <div class="errbox" id="errBox"></div>
+</div>
+
+<div id="report"></div>
+
+<script>
+/* ================= 資料 ================= */
+const HS_GROUPS = [
+ {n:"資訊學群", codes:["I","R"], majors:"資訊工程、資訊管理、人工智慧", subj:"數A・自然（物理）", fit:"邏輯強、對程式與新科技好奇", path:"學習歷程：程式專題、APCS 檢定、資訊競賽。出路：軟體工程師、AI 工程師——台灣起薪最高的學群之一"},
+ {n:"工程學群", codes:["R","I"], majors:"電機、機械、材料、化工、土木", subj:"數A・物理・化學", fit:"動手又動腦、喜歡解決具體問題", path:"學習歷程：實作專題、科展、機器人競賽。出路：半導體、電子與製造業核心人才"},
+ {n:"數理化學群", codes:["I","R"], majors:"數學、物理、化學、統計", subj:"數A・物理・化學", fit:"喜歡抽象推理、追求理論本質", path:"學習歷程：小論文、數理競賽、探究與實作報告。出路：研究、資料科學、精算、教職"},
+ {n:"醫藥衛生學群", codes:["I","S"], majors:"醫學、藥學、護理、物治、醫技", subj:"數A・物理・化學・生物", fit:"對生命科學有興趣、想照顧他人", path:"學習歷程：醫療志工、生物探究專題。出路：醫師、藥師、護理師、治療師——證照型穩定職涯"},
+ {n:"生命科學學群", codes:["I","R"], majors:"生命科學、生物科技、農業化學", subj:"數A・化學・生物", fit:"對生物與生命現象好奇、喜歡實驗", path:"學習歷程：生物實驗專題、科展。出路：生技產業、製藥研發、學術研究"},
+ {n:"生物資源學群", codes:["R","I"], majors:"農藝、園藝、森林、動物科學、獸醫", subj:"自然（生物・化學）", fit:"愛好自然戶外、喜歡動植物", path:"學習歷程：生態觀察紀錄、農場實作。出路：獸醫、農業科技、生態保育"},
+ {n:"地球與環境學群", codes:["I","R"], majors:"地質、大氣、海洋、環境工程", subj:"數A・自然", fit:"對地球科學與環境議題有熱情", path:"學習歷程：環境議題探究、地科觀測專題。出路：環工技師、氣象、永續與 ESG 領域"},
+ {n:"建築與設計學群", codes:["A","R"], majors:"建築、都市計畫、工業設計、室內設計", subj:"依校系：數A/B・術科", fit:"美感與空間能力兼具、想做出作品", path:"學習歷程：作品集、設計競賽、空間觀察筆記。出路：建築師、設計師、遊戲美術"},
+ {n:"藝術學群", codes:["A","S"], majors:"音樂、美術、戲劇、舞蹈、電影", subj:"術科為主・國英", fit:"創作慾強、追求獨特表達", path:"學習歷程：作品集、展演經歷。出路：創作者、表演藝術、藝術行政與策展"},
+ {n:"社會與心理學群", codes:["S","I"], majors:"心理、社會、社工、人類學", subj:"數B・社會", fit:"對人與社會現象好奇、想助人", path:"學習歷程：志工服務、社會議題探究。出路：心理師、社工師、人資、使用者研究"},
+ {n:"大眾傳播學群", codes:["A","E"], majors:"新聞、廣告、廣電、公關", subj:"國英・社會", fit:"喜歡創作內容、影響大眾", path:"學習歷程：自媒體作品、校刊採訪、影音創作。出路：媒體、行銷、內容產業"},
+ {n:"外語學群", codes:["A","S"], majors:"英文、日文、歐語、翻譯", subj:"國英（英文是核心）", fit:"喜歡語言與跨文化交流", path:"學習歷程：語言檢定（英檢、日檢）、國際交流經驗。出路：外商、國際貿易、翻譯、觀光"},
+ {n:"文史哲學群", codes:["A","I"], majors:"中文、歷史、哲學、台文", subj:"國英・社會", fit:"喜歡閱讀思辨、文字表達力強", path:"學習歷程：小論文、文學創作、閱讀報告。出路：編輯出版、文化行政、教育、內容策展"},
+ {n:"教育學群", codes:["S","E"], majors:"教育、幼教、特教、體育", subj:"依校系：國英・數B", fit:"喜歡教導與陪伴他人成長", path:"學習歷程：營隊帶隊、家教與服務學習。出路：教師、教育科技、企業培訓"},
+ {n:"法政學群", codes:["E","S"], majors:"法律、政治、公共行政、外交", subj:"國英・社會・數B", fit:"重視公平正義、口語與思辨力強", path:"學習歷程：模擬聯合國、辯論、公民行動方案。出路：律師、司法官、公職、國際事務"},
+ {n:"管理學群", codes:["E","C"], majors:"企管、行銷、國企、資管、運輸管理", subj:"數B・國英", fit:"有企圖心、喜歡規劃與領導", path:"學習歷程：社團幹部、商業競賽、專案企劃。出路：行銷企劃、產品經理、創業"},
+ {n:"財經學群", codes:["C","E"], majors:"財金、會計、經濟、風險管理", subj:"數A/B（多數採計數學）", fit:"對數字敏感、做事有條理", path:"學習歷程：投資研究專題、數學能力證明。出路：金融業、會計師、財務分析"},
+ {n:"遊憩與運動學群", codes:["S","R"], majors:"體育、運動科學、休閒管理、觀光", subj:"依校系：術科・國英", fit:"活力充沛、喜歡帶動他人", path:"學習歷程：運動代表隊、活動企劃經驗。出路：教練、運動產業、觀光休閒業"}
+];
+const JH_GROUPS = [
+ {n:"機械群", codes:["R","I"], majors:"機械科、模具科、製圖科、機電科", fit:"喜歡機械設計製造、動手操作、電腦繪圖", path:"升學：科大機械／自動化工程；出路：精密機械、半導體設備——台灣製造業的核心人才"},
+ {n:"動力機械群", codes:["R","I"], majors:"汽車科、飛機修護科、軌道車輛科", fit:"對引擎動力機械有興趣、空間邏輯推理佳", path:"升學：科大車輛／航空維修；出路：汽車廠、航空公司維修、捷運與鐵道系統"},
+ {n:"電機與電子群", codes:["I","R"], majors:"資訊科、電子科、電機科、冷凍空調科", fit:"數學邏輯推理強、對電腦與新科技好奇", path:"升學：科大電機／電子／資工；出路：半導體、電子業——技職體系薪資前段班"},
+ {n:"化工群", codes:["I","R"], majors:"化工科、紡織科、染整科", fit:"喜歡化學實驗操作、對化工產業有興趣", path:"升學：科大化工／材料；出路：化工廠、製藥、材料研發與檢驗"},
+ {n:"土木與建築群", codes:["R","I"], majors:"建築科、土木科、空間測繪科、消防工程科", fit:"數理與空間能力佳、具美感、喜歡思考分析", path:"升學：科大土木／建築／室內設計；出路：營造工程、建築師事務所、室內設計"},
+ {n:"商業與管理群", codes:["E","C"], majors:"商經科、國貿科、會計科、資處科、電商科", fit:"對商業銷售與服務有興趣、語文數學能力佳", path:"升學：科大企管／行銷／財金；出路：企業行政、電商營運、金融服務"},
+ {n:"外語群", codes:["S","E"], majors:"應用英語科、應用日語科", fit:"喜歡學外語、接觸異國文化、喜歡溝通", path:"升學：科大應用外語；出路：國際貿易、觀光旅遊、航空地勤"},
+ {n:"農業群", codes:["R","I"], majors:"園藝科、森林科、畜產保健科、野生動物保育科", fit:"愛好自然戶外、喜歡觀察動植物", path:"升學：科大農業／景觀／動物科技；出路：休閒農場、動物照護、景觀園藝"},
+ {n:"食品群", codes:["I","R"], majors:"食品加工科、烘焙科、水產食品科", fit:"對食品製作、加工與檢驗有興趣、有創意", path:"升學：科大食品科學／烘焙；出路：食品廠、烘焙業、食品檢驗機構"},
+ {n:"家政群", codes:["S","A"], majors:"幼保科、美容科、服裝科、時尚造型科", fit:"有創意美感、善體人意、喜歡與人合作", path:"升學：科大幼保／時尚造型／服裝；出路：幼兒園、美容美髮、時尚產業"},
+ {n:"餐旅群", codes:["S","E"], majors:"餐飲管理科、觀光事業科", fit:"喜歡烹飪烘焙、導覽服務、對餐旅有熱情", path:"升學：科大餐旅／觀光；出路：飯店、餐飲業、旅行社與觀光產業"},
+ {n:"水產群", codes:["R","I"], majors:"漁業科、水產養殖科", fit:"喜歡海洋與水中生物、愛好自然觀察", path:"升學：科大水產養殖／海洋科技；出路：養殖漁業、水產貿易、海洋保育"},
+ {n:"海事群", codes:["R","E"], majors:"航海科、輪機科", fit:"喜愛海洋與船舶、空間能力佳、有領導特質", path:"升學：科大航海／輪機；出路：商船船員、港務公司——起薪為技職體系最高之一"},
+ {n:"設計群", codes:["A","R"], majors:"廣告設計科、多媒體設計科、室內設計科", fit:"對美感與空間有興趣、想用作品表達想法", path:"升學：科大視覺傳達／多媒體設計；出路：設計公司、遊戲美術、接案設計師"},
+ {n:"藝術群", codes:["A","S"], majors:"音樂科、舞蹈科、美術科、表演藝術科", fit:"創意與觀察力強、喜歡表演與藝術表達", path:"升學：藝術大學／科大表演藝術；出路：劇團、音樂教學、演藝與策展"}
+];
+const RD_DIMS=[["mot","學習動機","#e05d5d"],["time","時間管理","#e8873a"],["focus","專注習慣","#eab308"],["strategy","學習方法","#12b5a5"],["mind","考試心態","#2f6fed"],["self","生活獨立","#7c5cd6"]];
+const NS_DIMS=[["focus","專注與持續","#e05d5d"],["lang","語言與溝通","#e8873a"],["social","情緒與社交","#12b5a5"],["self","生活自理","#2f6fed"],["curio","學習興趣與好奇心","#7c5cd6"]];
+const R6=["R","I","A","S","E","C"];
+const R6NAME={R:"實用型 R",I:"研究型 I",A:"藝術型 A",S:"社會型 S",E:"企業型 E",C:"事務型 C"};
+const HS_EXPECT=["自然組","社會組","尊重孩子，沒有特定期望"];
+const JH_EXPECT=["普通高中","技術型高中（高職）","都可以，看孩子適合"];
+const RD_PLAN=["全科班","單科補強","自主學習為主","還沒想好"];
+const RD_WORRY=["成績跟不上","3C 與手機","交友","作息與自律","沒有特別擔心"];
+const PS_STYLE_Q={D:["成績有明確標準與要求","讀書計畫由家長規定","未達期望會明確表達不滿","重大決定由父母把關"],
+                  S:["會先聽完孩子的理由","願意支持冷門但有熱情的方向","常聊課業以外的事","先安撫情緒再談表現"]};
+
+/* ================= 工具 ================= */
+function gm(riasec,g){ return Math.round(((riasec[g.codes[0]]*2 + riasec[g.codes[1]])/120)*100); }
+function esc(s){ return String(s).replace(/[<>&"]/g, c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c])); }
+function today(){ return new Date().toLocaleDateString("zh-TW"); }
+function radarDual(labels, childVals, parentVals, maxV){
+  const n=labels.length, cx=150, cy=140, rMax=95;
+  const pt=(i,val)=>{const a=-Math.PI/2+i*(2*Math.PI/n); const r=rMax*Math.max(0,Math.min(1,val)); return [(cx+r*Math.cos(a)).toFixed(1),(cy+r*Math.sin(a)).toFixed(1)];};
+  let grid="";
+  for(let ring=1;ring<=4;ring++) grid+=`<polygon points="${labels.map((_,i)=>pt(i,ring/4).join(",")).join(" ")}" fill="none" stroke="#dfe6f2"/>`;
+  let axes="",lab="";
+  labels.forEach((L,i)=>{ const [x,y]=pt(i,1); axes+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#dfe6f2"/>`;
+    const [lx,ly]=pt(i,1.28); lab+=`<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="700" fill="${L[1]}">${L[0]} ${childVals[i]}</text>`; });
+  const p1=labels.map((_,i)=>pt(i,childVals[i]/maxV).join(",")).join(" ");
+  let p2="";
+  if(parentVals) p2=`<polygon points="${labels.map((_,i)=>pt(i,parentVals[i]/maxV).join(",")).join(" ")}" fill="rgba(232,135,58,.14)" stroke="#e8873a" stroke-width="2" stroke-dasharray="5 4"/>`;
+  return `<svg viewBox="0 0 300 280" width="300" height="280">${grid}${axes}<polygon points="${p1}" fill="rgba(47,111,237,.2)" stroke="#2f6fed" stroke-width="2.5"/>${p2}${lab}</svg>`;
+}
+function bar(pct,color){ const w=pct>0?Math.max(pct,3):0; return `<svg viewBox="0 0 100 12" preserveAspectRatio="none" width="100%" height="13" style="display:block;"><rect width="100" height="12" rx="4" fill="#e8ecf4"/>${w?`<rect width="${w}" height="12" rx="4" fill="${color}"/>`:""}</svg>`; }
+function spectrum(label,val,maxV,left,right){
+  const pct=Math.round(val/maxV*100);
+  return `<div class="spec"><div class="lab">${label}</div>
+    <svg viewBox="0 0 300 38" width="100%" height="38" preserveAspectRatio="none">
+      <rect x="6" y="6" width="288" height="8" rx="4" fill="#e8ecf4"/>
+      <rect x="6" y="6" width="${Math.max(6,pct*2.88)}" height="8" rx="4" fill="#2f6fed"/>
+      <circle cx="${6+pct*2.88}" cy="10" r="6" fill="#20315c"/>
+      <text x="6" y="32" font-size="10" fill="#5b6478">${left}</text>
+      <text x="294" y="32" font-size="10" fill="#5b6478" text-anchor="end">${right}</text>
+    </svg></div>`;
+}
+function rptShell(title, stu, body){
+  return `<div class="a4">
+    <div class="rpt-head">
+      <div class="logo">TIPS 英典教育<small>KC INSIDE・${title}</small></div>
+      <div class="rpt-title"><h2>${title}</h2><div class="sub">產出日期 ${today()}｜僅供教育諮詢使用，非臨床診斷</div></div>
+    </div>
+    <div class="stu-row">${stu}</div>
+    ${body}
+    <h3 class="sec">顧問建議（面談時填寫）</h3>
+    <div class="note-box">&nbsp;</div>
+    <div class="foot"><span>TIPS 英典教育｜台中市南屯區黎明路一段295號｜0905-547839｜LINE @tipsedu</span><span>O*NET / CEEC / LASSI / Baumrind 架構在地化編製</span></div>
+  </div>`;
+}
+/* 家長風格分析（D,S 各題 0-4） */
+function styleBlock(cD, cS, internal, maxPer){
+  const dSum=cD.reduce((a,b)=>a+b,0), sSum=cS.reduce((a,b)=>a+b,0);
+  const dMax=cD.length*4, sMax=cS.length*4;
+  const spec = spectrum("期待與要求程度", dSum, dMax, "順其自然", "高度要求") +
+               spectrum("回應與支持程度", sSum, sMax, "孩子自己來", "高度支持");
+  let html=`<h3 class="sec">家長教養互動風格（對照卷）</h3>${spec}`;
+  if(internal){
+    const hiD=dSum>=dMax*0.55, hiS=sSum>=sMax*0.55;
+    const type= hiD&&hiS?"民主威信型":hiD&&!hiS?"專斷型":!hiD&&hiS?"寬容型":"低涉入型";
+    const strat={
+      "民主威信型":"與機構理念高度相容。直接展示數據與規劃，邀請家長參與目標設定。",
+      "專斷型":"先給數據與成績結構，再帶入興趣與適性；避免一開始就挑戰家長的期望。",
+      "寬容型":"強調 TIPS 的進度透明與定期回報機制，補足結構面；孩子意願是切入點。",
+      "低涉入型":"以省心、可信賴為主軸溝通，報告解讀盡量具體、少作業。"}[type];
+    const base={"民主威信型":88,"專斷型":58,"寬容型":72,"低涉入型":45}[type];
+    const supp=cS[1]!==undefined?cS[1]:0;  // 支持適性題
+    const fit=Math.min(100, base + supp*3);
+    html+=`<div class="internal"><h4>🔒 內部參考（列印面談版時不會出現）</h4>
+      <table><tr><th>教養分型</th><th>要求軸</th><th>回應軸</th><th>TIPS 合拍度</th></tr>
+      <tr><td><b>${type}</b></td><td>${dSum}/${dMax}</td><td>${sSum}/${sMax}</td><td><b>${fit} / 100</b></td></tr></table>
+      <p style="font-size:.76rem; margin-top:4px;">💬 建議溝通策略：${strat}</p></div>`;
+  }
+  return html;
+}
+
+/* ================= 解析 ================= */
+function parseCodes(txt){
+  const found=[];
+  const re=/代碼\[([^\]]+)\]/g; let m;
+  while((m=re.exec(txt))!==null) found.push(m[1]);
+  // 也接受直接貼裸代碼
+  txt.split(/[\n\r]+/).forEach(line=>{
+    const t=line.trim();
+    if(/^(HSC1|HSP1|JHC1|JHP1|RDC1|RDP1|NSC1)\|/.test(t) && !found.includes(t)) found.push(t);
+  });
+  const out={};
+  found.forEach(c=>{ const tag=c.split("|")[0]; out[tag]=c; });
+  return out;
+}
+
+/* ================= 各測驗報告 ================= */
+function riasecSection(riasec, pA, top3code){
+  const labels=R6.map(k=>[k, {R:"#e05d5d",I:"#7c5cd6",A:"#e8873a",S:"#12b5a5",E:"#2f6fed",C:"#8a6d3b"}[k]]);
+  const childVals=R6.map(k=>riasec[k]);
+  const parentVals=pA?pA.map(v=>v*10):null;
+  let table="";
+  if(pA){
+    const rows=R6.map((k,i)=>{
+      const gap=pA[i]*10-riasec[k];
+      const cls=Math.abs(gap)>=12?"gap-hi":(Math.abs(gap)<=6?"gap-ok":"");
+      const note=Math.abs(gap)>=12?(gap>0?"家長高估":"家長低估"):(Math.abs(gap)<=6?"一致":"");
+      return `<tr><td>${R6NAME[k]}</td><td>${riasec[k]}</td><td>${pA[i]*10}</td><td class="${cls}">${gap>0?"+":""}${gap} ${note}</td></tr>`;
+    }).join("");
+    const biggest=R6.map((k,i)=>({k,g:pA[i]*10-riasec[k]})).sort((a,b)=>Math.abs(b.g)-Math.abs(a.g))[0];
+    const hint=Math.abs(biggest.g)>=12?`<div class="verdict warn">💡 對談重點：家長明顯${biggest.g>0?"高估":"低估"}孩子的 <b>${R6NAME[biggest.k]}</b>（落差 ${Math.abs(biggest.g)}）。建議面談時讓孩子自己談這一面的實際經驗。</div>`:`<div class="verdict">✔ 家長對孩子的觀察與實測大致一致，親子溝通基礎良好。</div>`;
+    table=`<table><tr><th>類型</th><th>孩子實測(0-40)</th><th>家長觀察(換算)</th><th>落差</th></tr>${rows}</table>${hint}`;
+  }
+  return `<h3 class="sec">興趣六型剖面${pA?"：孩子實測 vs 家長眼中的孩子":""}（何倫碼 <span class="badge">${top3code}</span>）</h3>
+    <div class="flex"><div style="text-align:center;">${radarDual(labels,childVals,parentVals,40)}
+    <div class="legend">─ <span class="c1">孩子實測</span>${pA?"　╌ <span class='c2'>家長觀察</span>":""}</div></div>
+    <div>${table||R6.map(k=>`<div style="display:flex; align-items:center; gap:8px; margin:4px 0;"><div style="width:76px; font-size:.76rem; font-weight:700;">${R6NAME[k]}</div><div style="flex:1;">${bar(riasec[k]/40*100,"#2f6fed")}</div><div style="width:44px; font-size:.74rem; text-align:right;">${riasec[k]}/40</div></div>`).join("")}</div></div>`;
+}
+
+function renderHS(cc, pc, internal){
+  const [_,name,grade,scores,nh]=cc.split("|");
+  const vals=scores.split(",").map(Number);
+  const riasec={}; R6.forEach((k,i)=>riasec[k]=vals[i]);
+  const [nat,hum]=nh.split(",").map(Number);
+  const streamIdx=Math.round(50+(nat-hum)*50/32);
+  const sorted=R6.slice().sort((a,b)=>riasec[b]-riasec[a]||R6.indexOf(a)-R6.indexOf(b));
+  const X=sorted.map(t=>riasec[t]); const D=((X[0]-X[1])+(X[0]-X[3]))/2;
+  const top3=sorted.slice(0,3).join("");
+  const ranked=HS_GROUPS.map(g=>({...g,pct:gm(riasec,g)})).sort((a,b)=>b.pct-a.pct);
+  let pA=null,pExpect=null,pGroups=null,pC=null;
+  if(pc){ const seg=pc.split("|"); pA=seg[1].split(",").map(Number); pExpect=Number(seg[2]); pGroups=seg[3]; pC=seg[4].split(",").map(Number); }
+  const streamTxt= streamIdx>=62?`自然組傾向明顯（${streamIdx}）`: streamIdx>=54?`偏自然組（${streamIdx}）`: streamIdx>46?`均衡型（${streamIdx}）`: streamIdx>38?`偏社會組（${streamIdx}）`:`社會組傾向明顯（${streamIdx}）`;
+  const childDir= streamIdx>=54?"自然組": streamIdx<=46?"社會組":"均衡";
+  let expTable="";
+  if(pc){
+    const pDir=pExpect===0?"自然組":pExpect===1?"社會組":"尊重孩子";
+    const dirMatch= pExpect===2?"✔ 家長開放":(pDir===childDir?"✔ 一致":(childDir==="均衡"?"△ 孩子均衡型，方向皆可":"✘ 方向相反——面談重點"));
+    const top3n=ranked.slice(0,3).map(g=>g.n.replace("學群",""));
+    const pg=pGroups==="無特定"?"沒有特定期望":pGroups;
+    const gOverlap= pGroups==="無特定"?"✔ 家長開放": pGroups.split("+").some(x=>top3n.includes(x))?"✔ 有交集":"△ 無交集——面談重點";
+    expTable=`<h3 class="sec">方向對照：孩子實測 vs 家長期望</h3>
+    <table><tr><th>項目</th><th>孩子實測</th><th>家長期望</th><th>對照</th></tr>
+    <tr><td>組別</td><td>${streamTxt}</td><td>${pDir}</td><td class="${dirMatch.startsWith("✘")?"gap-hi":"gap-ok"}">${dirMatch}</td></tr>
+    <tr><td>學群</td><td>${ranked.slice(0,3).map((g,i)=>`${i+1}.${g.n}${g.pct}%`).join("　")}</td><td>${pg}</td><td class="${gOverlap.startsWith("△")?"gap-hi":"gap-ok"}">${gOverlap}</td></tr></table>`;
+  }
+  const topCards=ranked.slice(0,4).map((g,i)=>`<div class="gcard"><b>TOP${i+1}　${g.n}</b><span class="pct">${g.pct}%</span><br>${g.majors}｜採計：${g.subj}</div>`).join("");
+  const body=
+    riasecSection(riasec,pA,top3)+
+    `<h3 class="sec">選組傾向</h3><div class="verdict">${streamTxt}｜自然 ${nat}/32・社會 ${hum}/32｜區分性 D=${D.toFixed(1)}${D<4?"（偏低，興趣仍在探索中，排名僅供參考）":""}</div>`+
+    expTable+
+    `<h3 class="sec">大學 18 學群適配 Top4</h3><div class="grid2">${topCards}</div>`+
+    (pc?styleBlock(pC.slice(0,4),pC.slice(4),internal,4):"");
+  return rptShell("高中生涯定向報告"+(pc?"＋親子對照":""),
+    `<span>學生：<b>${esc(name)}</b></span><span>年級：<b>${esc(grade)}</b></span><span>何倫碼：<b>${top3}</b></span><span>選組指數：<b>${streamIdx}</b></span>${pc?"":"<span style='color:#c0392b;'>（未填對照卷）</span>"}`, body);
+}
+
+function renderJH(cc, pc, internal){
+  const [_,name,grade,scores,ap]=cc.split("|");
+  const vals=scores.split(",").map(Number);
+  const riasec={}; R6.forEach((k,i)=>riasec[k]=vals[i]);
+  const [ac,pr]=ap.split(",").map(Number);
+  const T=pr-ac;
+  const sorted=R6.slice().sort((a,b)=>riasec[b]-riasec[a]||R6.indexOf(a)-R6.indexOf(b));
+  const X=sorted.map(t=>riasec[t]); const D=((X[0]-X[1])+(X[0]-X[3]))/2;
+  const top3=sorted.slice(0,3).join("");
+  const ranked=JH_GROUPS.map(g=>({...g,pct:gm(riasec,g)})).sort((a,b)=>b.pct-a.pct);
+  let pA=null,pExpect=null,pGroups=null,pC=null;
+  if(pc){ const seg=pc.split("|"); pA=seg[1].split(",").map(Number); pExpect=Number(seg[2]); pGroups=seg[3]; pC=seg[4].split(",").map(Number); }
+  const dirTxt= T<=-8?`偏普通高中（T=${T}）`: T>=8?`偏技術型高中（T=${T}）`:`中間帶（T=${T}），普高技高皆可發展`;
+  const childDir= T<=-8?"普通高中": T>=8?"技術型高中（高職）":"中間帶";
+  let expTable="";
+  if(pc){
+    const pDir=JH_EXPECT[pExpect];
+    const dirMatch= pExpect===2?"✔ 家長開放":(pDir===childDir?"✔ 一致":(childDir==="中間帶"?"△ 孩子中間帶，方向皆可":"✘ 方向相反——面談重點"));
+    const top3n=ranked.slice(0,3).map(g=>g.n.replace("群",""));
+    const pg=pGroups==="無特定"?"沒有特定期望":pGroups;
+    const gOverlap= pGroups==="無特定"?"✔ 家長開放": pGroups.split("+").some(x=>top3n.includes(x))?"✔ 有交集":"△ 無交集——面談重點";
+    expTable=`<h3 class="sec">方向對照：孩子實測 vs 家長期望</h3>
+    <table><tr><th>項目</th><th>孩子實測</th><th>家長期望</th><th>對照</th></tr>
+    <tr><td>進路</td><td>${dirTxt}</td><td>${pDir}</td><td class="${dirMatch.startsWith("✘")?"gap-hi":"gap-ok"}">${dirMatch}</td></tr>
+    <tr><td>群科</td><td>${ranked.slice(0,3).map((g,i)=>`${i+1}.${g.n}${g.pct}%`).join("　")}</td><td>${pg}</td><td class="${gOverlap.startsWith("△")?"gap-hi":"gap-ok"}">${gOverlap}</td></tr></table>`;
+  }
+  const topCards=ranked.slice(0,4).map((g,i)=>`<div class="gcard"><b>TOP${i+1}　${g.n}</b><span class="pct">${g.pct}%</span><br>${g.majors}</div>`).join("");
+  const body=
+    riasecSection(riasec,pA,top3)+
+    `<h3 class="sec">高中／高職傾向</h3><div class="verdict">${dirTxt}｜學術 ${ac}/32・實作 ${pr}/32｜區分性 D=${D.toFixed(1)}${D<4?"（偏低，興趣仍在探索中，排名僅供參考）":""}</div>`+
+    expTable+
+    `<h3 class="sec">技高 15 群科適配 Top4</h3><div class="grid2">${topCards}</div>`+
+    (pc?styleBlock(pC.slice(0,4),pC.slice(4),internal,4):"");
+  return rptShell("生涯興趣測驗報告"+(pc?"＋親子對照":""),
+    `<span>學生：<b>${esc(name)}</b></span><span>年級：<b>${esc(grade)}</b></span><span>何倫碼：<b>${top3}</b></span><span>傾向：<b>T=${T}</b></span>${pc?"":"<span style='color:#c0392b;'>（未填對照卷）</span>"}`, body);
+}
+
+function renderRD(cc, pc, internal){
+  const [_,name,grade,scores]=cc.split("|");
+  const vals=scores.split(",").map(Number);
+  const total=vals.reduce((a,b)=>a+b,0);
+  const index=Math.round(total/192*100);
+  let pA=null,pPlan=null,pWorry=null,pC=null;
+  if(pc){ const seg=pc.split("|"); pA=seg[1].split(",").map(Number); pPlan=Number(seg[2]); pWorry=Number(seg[3]); pC=seg[4].split(",").map(Number); }
+  const labels=RD_DIMS.map(d=>[d[1].slice(0,2), d[2]]);
+  const parentVals=pA?pA.map(v=>v*8):null;
+  let table;
+  if(pA){
+    const rows=RD_DIMS.map((d,i)=>{
+      const gap=pA[i]*8-vals[i];
+      const cls=Math.abs(gap)>=10?"gap-hi":(Math.abs(gap)<=5?"gap-ok":"");
+      const note=Math.abs(gap)>=10?(gap>0?"家長較樂觀":"家長較保守"):(Math.abs(gap)<=5?"一致":"");
+      return `<tr><td>${d[1]}</td><td>${vals[i]}/32</td><td>${pA[i]*8}/32</td><td class="${cls}">${gap>0?"+":""}${gap} ${note}</td></tr>`;
+    }).join("");
+    table=`<table><tr><th>能力</th><th>孩子自評</th><th>家長觀察(換算)</th><th>認知落差</th></tr>${rows}</table>`;
+  } else {
+    table=RD_DIMS.map((d,i)=>`<div style="display:flex; align-items:center; gap:8px; margin:4px 0;"><div style="width:76px; font-size:.76rem; font-weight:700;">${d[1]}</div><div style="flex:1;">${bar(vals[i]/32*100,d[2])}</div><div style="width:44px; font-size:.74rem; text-align:right;">${vals[i]}/32</div></div>`).join("");
+  }
+  let planBlock="";
+  if(pc) planBlock=`<h3 class="sec">家長的規劃與擔心</h3><table><tr><th>國中學習安排傾向</th><th>最擔心</th></tr><tr><td>${RD_PLAN[pPlan]}</td><td>${RD_WORRY[pWorry]}</td></tr></table>`;
+  const body=
+    `<h3 class="sec">六大能力：孩子自評${pA?" vs 家長觀察":""}（就緒指數 <span class="badge">${index}</span>）</h3>
+     <div class="flex"><div style="text-align:center;">${radarDual(labels,vals,parentVals,32)}<div class="legend">─ <span class="c1">孩子自評</span>${pA?"　╌ <span class='c2'>家長觀察</span>":""}</div></div><div>${table}</div></div>`+
+    planBlock+
+    (pc?styleBlock(pC.slice(0,2),pC.slice(2),internal,4):"");
+  return rptShell("國中準備度檢測報告"+(pc?"＋親子對照":""),
+    `<span>學生：<b>${esc(name)}</b></span><span>年級：<b>${esc(grade)}</b></span><span>就緒指數：<b>${index}/100</b></span>${pc?"":"<span style='color:#c0392b;'>（未填對照卷）</span>"}`, body);
+}
+
+function renderNS(cc){
+  const seg=cc.split("|");
+  const name=seg[1], grade=seg[2];
+  const vals=seg[3].split(",").map(Number);
+  const bg=seg[4]||"";
+  const labels=NS_DIMS.map(d=>[d[1].slice(0,2), d[2]]);
+  const rows=NS_DIMS.map((d,i)=>{
+    const lv=vals[i]>=14?["亮點優勢","#12b5a5"]:(vals[i]>=9?["穩定發展","#e8873a"]:["慢慢來","#e05d5d"]);
+    return `<tr><td>${d[1]}</td><td>${vals[i]}/18</td><td style="color:${lv[1]}; font-weight:700;">${lv[0]}</td></tr>`;}).join("");
+  const body=
+    `<h3 class="sec">五大發展面向（家長觀察填答）</h3>
+     <div class="flex"><div style="text-align:center;">${radarDual(labels,vals,null,18)}<div class="legend">─ <span class="c1">家長觀察</span></div></div>
+     <div><table><tr><th>面向</th><th>分數</th><th>階段</th></tr>${rows}</table></div></div>
+     <h3 class="sec">英語與學習背景</h3><div class="verdict">${esc(bg)||"（未填）"}</div>`;
+  return rptShell("新生入班評估報告",
+    `<span>孩子：<b>${esc(name)}</b></span><span>年段：<b>${esc(grade)}</b></span><span>填答：<b>家長</b></span>`, body);
+}
+
+/* ================= 主流程 ================= */
+function generate(){
+  const err=document.getElementById("errBox"); err.style.display="none";
+  const codes=parseCodes(document.getElementById("codeInput").value);
+  const internal=document.querySelector('input[name="mode"]:checked').value==="internal";
+  let html="";
+  try{
+    if(codes.HSC1) html=renderHS(codes.HSC1, codes.HSP1||null, internal);
+    else if(codes.JHC1) html=renderJH(codes.JHC1, codes.JHP1||null, internal);
+    else if(codes.RDC1) html=renderRD(codes.RDC1, codes.RDP1||null, internal);
+    else if(codes.NSC1) html=renderNS(codes.NSC1);
+    else { err.textContent="找不到有效的報告代碼——請確認貼的是試算表「結果摘要」欄的完整內容（要包含「代碼[…]」）。"; err.style.display="block"; return; }
+  }catch(e){
+    err.textContent="代碼格式解析失敗："+e.message; err.style.display="block"; return;
+  }
+  document.getElementById("report").innerHTML=html;
+  window.scrollTo(0,document.querySelector(".a4").offsetTop-10);
+}
+</script>
+</body>
+</html>

@@ -488,114 +488,142 @@ function gaugeSVG(idx){
   </svg>`;
 }
 
-/* ================= 結果 ================= */
+/* ================= 結果 → 家長對照卷 → 完成 ================= */
 function showResults(){
   const s=computeScores();
-  const name=document.getElementById("stuName").value.trim()||"同學";
-  const cls=document.getElementById("stuClass").value;
-  const dateStr=new Date().toLocaleDateString("zh-TW");
-  const code3=s.top3.join("");
-  const t1=TYPES[s.top3[0]], t2=TYPES[s.top3[1]];
-  const pairKey=[s.top3[0],s.top3[1]].sort().join("");
-  const pair=PAIRS[pairKey];
-  /* 區分性解讀 */
-  let diffTxt, flat=false;
-  if(s.D>=8) diffTxt=`<b>區分性高（D=${s.D.toFixed(1)}）</b>：興趣輪廓清楚，測驗結果的參考價值高，可以放心以首碼方向為主軸規劃。`;
-  else if(s.D>=4) diffTxt=`<b>區分性中等（D=${s.D.toFixed(1)}）</b>：已有明顯偏好，建議搭配下方學群排名與實際課程體驗進一步聚焦。`;
-  else { diffTxt=`<b>區分性低（D=${s.D.toFixed(1)}）</b>：六型分數相當接近（平坦剖面），代表興趣還在探索中。以下結果僅供初步參考，建議多參加營隊、講座與大學參訪來累積判斷素材。`; flat=true; }
-  /* 選組解讀 */
-  let streamTxt;
-  if(s.streamIdx>=62) streamTxt=`<b>自然組傾向明顯（指數 ${s.streamIdx}）</b>：你對數理與科學探究的胃口大於人文社會。選組建議以<b>自然組</b>為主，學測選考組合可朝「數A＋自然」規劃；高二三把主力放在數學與自然科的深化。`;
-  else if(s.streamIdx>=54) streamTxt=`<b>偏自然組（指數 ${s.streamIdx}）</b>：整體偏向自然，但人文社會也有一定興趣。若下方學群排名前段是理工醫農，放心選自然組；若前段出現商管法政，可考慮「自然組＋數B 備援」的彈性策略。`;
-  else if(s.streamIdx>46) streamTxt=`<b>均衡型（指數 ${s.streamIdx}）</b>：自然與人文社會傾向相當——這不是缺點，而是選擇彈性大。建議<b>以學群目標反推選組</b>：先從下方排名挑出最有感的 2-3 個學群，查它們採計的學測科目，再決定組別。`;
-  else if(s.streamIdx>38) streamTxt=`<b>偏社會組（指數 ${s.streamIdx}）</b>：整體偏向人文社會，但保有一定的數理能力。多數商管財經校系仍採計數學（數B），建議社會組但<b>數學不能放</b>。`;
-  else streamTxt=`<b>社會組傾向明顯（指數 ${s.streamIdx}）</b>：你的能量在語文、社會與人際領域。選組建議以<b>社會組</b>為主，把國英社讀深，並及早累積閱讀、寫作與專題探究的學習歷程。`;
-  const gradeNote = cls==="高一" ? "你正處在選組的黃金決策期——這份報告請帶著和導師、家長討論，並在高一下學期結束前定案。"
-                  : "已經選組的你，這份報告用來驗證方向＋規劃學群目標與學習歷程檔案；若結果與現在的組別落差很大，及早找輔導老師討論轉組或跨域策略。";
-  /* 六型長條 */
-  const bars=["R","I","A","S","E","C"].map(k=>{
-    return `<div class="score-row"><div class="score-label" style="color:${TYPES[k].colorHex}">${TYPES[k].name}</div><div class="score-track">${barSVG(s.riasec[k]/40*100,TYPES[k].colorHex)}</div><div class="score-val">${s.riasec[k]} / 40</div></div>`;
-  }).join("");
-  /* 學群排名 */
-  const ranks=s.gmatch.map(g=>`<div class="grank"><div class="gname">${g.n}</div><div class="gbar">${barSVG(g.pct,'#2f6fed')}</div><div class="gpct">${g.pct}%</div></div>`).join("");
-  const topCards=s.gmatch.slice(0,3).map((g,i)=>`
-    <div class="group-card"><span class="pct">${g.pct}% 適配</span><b>TOP${i+1}　${g.n}</b>
-      <p>📚 代表科系：${g.majors}<br>🧭 適合特質：${g.fit}<br>✏️ 學測常見採計：${g.subj}<br>🚀 ${g.path}</p>
-    </div>`).join("");
-  const html=`
-  <div class="card">
-    <h2>📋 高中生涯定向報告</h2>
-    <p class="tagline">${name}（${cls}）｜測驗日期：${dateStr}｜共 ${TOTAL} 題</p>
-  </div>
-  <div class="card">
-    <h2>1️⃣ 你的興趣六型剖面（Holland 何倫碼）</h2>
-    <div id="radarBox">${radarSVG(s.riasec)}</div>
-    ${bars}
-    <h3>你的興趣三碼</h3>
-    <div class="code-badge">${code3}</div>
-    <p><b>首碼 ${t1.name}</b>：${t1.desc}<br><span class="tagline">性格關鍵字：${t1.traits}</span></p>
-    <p style="margin-top:6px;">🎓 <b>對應學群方向</b>：${t1.u}</p>
-    <p style="margin-top:6px;">💡 <b>讀書策略</b>：${t1.study}</p>
-    ${pair?`<div class="note">🧩 <b>${s.top3[0]}＋${s.top3[1]} 組合——「${pair.n}」</b>：${pair.d}</div>`:""}
-    <div class="note">📐 ${diffTxt}</div>
-  </div>
-  <div class="card">
-    <h2>2️⃣ 選組傾向分析</h2>
-    <div id="gaugeBox">${gaugeSVG(s.streamIdx)}</div>
-    <div class="verdict">${streamTxt}</div>
-    <p class="tagline">📌 ${gradeNote}</p>
-  </div>
-  <div class="card">
-    <h2>3️⃣ 大學 18 學群適配排名</h2>
-    <p class="tagline">依你的何倫碼與各學群典型碼計算適配度（大考中心十八學群分類）。${flat?"<b>提醒：你的區分性偏低，排名差距僅供參考。</b>":""}</p>
-    <h3>🏆 最適配的 3 個學群</h3>
-    ${topCards}
-    <h3 style="margin-top:16px;">完整排名</h3>
-    ${ranks}
-  </div>
-  <div class="cta-box" id="noprint">
-    <h2>🎁 方向有了，下一步是把武器磨利</h2>
-    <p style="margin-top:8px;">不管選哪一組、哪個學群，<b>英文都是學測與個人申請的共同關鍵科目</b>。把這份報告的「結果摘要」貼回 TIPS 官方 LINE，顧問將為您安排：<b>免費報告解讀＋KC 系統英文程度檢測</b>——先確認方向，再用數據補強最該補的科目。</p>
-    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-      <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" style="text-decoration:none;">💬 加 LINE 預約免費解讀（${TIPS_CONFIG.LINE_ID}）</a>
-      <button class="btn secondary" onclick="copySummary()">📋 複製結果摘要傳給顧問</button>
-    </div>
-    <div class="cta-contact">📞 ${TIPS_CONFIG.PHONE}　📍 ${TIPS_CONFIG.ADDRESS}</div>
-  </div>
-  <div class="card">
-    <h2>4️⃣ 給家長的話</h2>
-    <ul class="tips">
-      <li>選組是「機率的選擇」不是「一生的判決」——大學轉系、跨域雙主修都是可行路徑，但選對組能省下最多力氣。</li>
-      <li>興趣三碼和學群排名是<b>對話的起點</b>：請孩子挑 2-3 個有感的學群，一起上 ColleGo! 查實際校系與採計科目。</li>
-      <li>學習歷程檔案重「一致性」：方向定了之後，社團、自主學習、小論文往同一個學群累積，比什麼都做一點更有說服力。</li>
-      <li>高一下、高二下各重測一次，觀察三碼是否穩定——穩定的興趣才值得重押。</li>
-    </ul>
-    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
-      <button class="btn" onclick="window.print()">🖨 列印 / 存成 PDF</button>
-      <button class="btn secondary" onclick="location.reload()">↺ 重新測驗</button>
-    </div>
-    <div class="note">📚 <b>編製依據</b>：本測驗第一部分改編自美國勞工部 <a href="https://www.onetcenter.org/IP.html" target="_blank" rel="noopener">O*NET Interest Profiler</a>（CC 授權）之 60 題短式量表，採 Holland 六型碼理論；解讀方式（三碼、區分性 D 值）參考<a href="https://career.ceec.edu.tw/StudentSection/Introduce" target="_blank" rel="noopener">大考中心興趣量表</a>解釋架構；學群對照採大考中心<a href="https://www.ceec.edu.tw/files/file_pool/1/0K230544049294394181/%E5%8D%81%E5%85%AB%E5%AD%B8%E7%BE%A4%E5%8F%8A%E5%85%B6%E5%AD%B8%E9%A1%9E%E5%B0%8D%E7%85%A7%E8%A1%A8.pdf" target="_blank" rel="noopener">十八學群分類</a>，選組傾向題為 TIPS 參考 108 課綱選修制度自行編寫。<b>本工具為探索參考，非標準化心理測驗</b>，重大升學決定請務必搭配學校正式測驗（如大考中心興趣量表）與輔導老師專業意見。</div>
-  </div>`;
-  document.getElementById("screen-test").classList.add("hidden");
-  const rs=document.getElementById("screen-result");
-  rs.innerHTML=html; rs.classList.remove("hidden");
-  window.__last={s,name,cls,dateStr,code3};
   const d=leadData();
-  const summary=`高中定向｜何倫碼${code3}｜D值${s.D.toFixed(1)}｜選組指數${s.streamIdx}（自然${s.nat}/社會${s.hum}）｜學群Top3:${s.gmatch.slice(0,3).map(g=>g.n+g.pct+"%").join("、")}`;
+  const code3=s.top3.join("");
+  const scoreStr=["R","I","A","S","E","C"].map(k=>s.riasec[k]).join(",");
+  const code=`HSC1|${d.name}|${d.grade}|${scoreStr}|${s.nat},${s.hum}`;
+  const summary=`高中定向｜何倫碼${code3}｜D${s.D.toFixed(1)}｜選組${s.streamIdx}｜Top3:${s.gmatch.slice(0,3).map(g=>g.n+g.pct+"%").join("、")}｜代碼[${code}]`;
   submitToGoogleForm({...d, status:"已完成測驗", result:summary});
+  document.getElementById("screen-test").classList.add("hidden");
+  showParentIntro();
   window.scrollTo(0,0);
 }
-function copySummary(){
-  const {s,name,cls,dateStr,code3}=window.__last;
-  const lines=[
-    `【高中生涯定向測驗結果】`,
-    `姓名：${name}（${cls}）　日期：${dateStr}`,
-    `何倫碼三碼：${code3}（R${s.riasec.R} I${s.riasec.I} A${s.riasec.A} S${s.riasec.S} E${s.riasec.E} C${s.riasec.C}，各0-40）`,
-    `區分性 D 值：${s.D.toFixed(1)}`,
-    `選組傾向指數：${s.streamIdx}（自然${s.nat}／社會${s.hum}，各0-32）`,
-    `學群適配 Top3：${s.gmatch.slice(0,3).map((g,i)=>`${i+1}.${g.n} ${g.pct}%`).join("　")}`
-  ].join("\n");
-  navigator.clipboard.writeText(lines).then(()=>alert("已複製結果摘要！加 LINE 後直接貼上傳給顧問，即可預約免費解讀。"));
+
+/* ---- 親子教育觀對照卷（家長填） ---- */
+const PS_LIKE=["很不像","有點不像","普通","有點像","非常像"];
+const PS_AGREE=["很不同意","不太同意","普通","還算同意","非常同意"];
+const PS_A=[
+ ["R","孩子喜歡動手做、組裝或操作器材，勝過坐著讀書"],
+ ["I","孩子好奇心強，遇到問題喜歡追根究柢"],
+ ["A","孩子有想像力，喜歡創作——畫畫、音樂、寫作或設計"],
+ ["S","孩子貼心、喜歡幫助別人，擅長與人相處"],
+ ["E","孩子有主見，喜歡帶頭、說服別人、爭取表現"],
+ ["C","孩子做事有條理，喜歡規律、按部就班"]];
+const PS_C=[
+ ["D","我對孩子的成績有明確的標準與要求"],
+ ["D","孩子的讀書計畫和時間安排，主要由我來規定"],
+ ["D","孩子沒達到我的期望時，我會明確表達不滿"],
+ ["D","重大決定（選組、選科系）最終應該由父母把關"],
+ ["S","孩子表達不同意見時，我會先聽完他的理由"],
+ ["S","就算方向冷門，只要孩子有熱情，我願意支持"],
+ ["S","我常和孩子聊學校以外的事（興趣、朋友、心情）"],
+ ["S","孩子遇到挫折時，我會先安撫情緒再談表現"]];
+const PS_EXPECT=["自然組","社會組","尊重孩子，沒有特定期望"];
+let psA=new Array(6).fill(null), psC=new Array(8).fill(null), psExpect=null, psGroups=[], psNoPref=false;
+
+const PS_STYLE=`<style>
+.psx,.psg{display:inline-block; margin:4px 6px 4px 0; padding:8px 14px; border:1.5px solid #ccd4e2; background:#fff; border-radius:20px; font-size:.85rem; cursor:pointer; font-family:inherit; color:#3a4358;}
+.psx.on,.psg.on{background:#2f6fed; border-color:#2f6fed; color:#fff; font-weight:700;}
+.q.miss{border:1.5px solid #e05d5d; border-radius:10px;}
+</style>`;
+
+function showParentIntro(){
+  const rs=document.getElementById("screen-result");
+  rs.innerHTML=`
+  <div class="card" style="text-align:center;">
+    <h2>✅ 測驗完成！最後一步</h2>
+    <p style="margin-top:10px;">請把手機<b>交給爸爸或媽媽</b>，填一份約 4 分鐘的「親子教育觀對照卷」。<br>顧問會把家長的觀點與孩子的測驗結果交叉對照，解讀報告時更精準。</p>
+    <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+      <button class="btn" onclick="renderParentSurvey()">👨‍👩‍👧 我是家長，開始填寫</button>
+      <button class="btn secondary" onclick="showDone(false)">家長不在旁邊，先完成</button>
+    </div>
+    <p class="tagline" style="margin-top:10px;">略過也沒關係——之後到班看報告時可以現場補填。</p>
+  </div>`;
+  rs.classList.remove("hidden");
+}
+
+function qRowPS(part,i,text,opts,offset){
+  const btns=opts.map((o,v)=>`<button type="button" onclick="pickPS('${part}',${i},${v})" id="ps${part}${i}v${v}">${o}</button>`).join("");
+  return `<div class="q" id="ps${part}${i}" style="padding:10px 8px;"><div class="q-text" style="font-weight:600; margin-bottom:8px;">${offset+i}. ${text}</div><div class="opts">${btns}</div></div>`;
+}
+function pickPS(part,i,v){
+  (part==="A"?psA:psC)[i]=v;
+  const opts=(part==="A"?PS_LIKE:PS_AGREE);
+  opts.forEach((_,x)=>document.getElementById(`ps${part}${i}v${x}`).classList.toggle("sel",x===v));
+  document.getElementById(`ps${part}${i}`).classList.remove("miss");
+}
+function pickExpect(i){
+  psExpect=i;
+  PS_EXPECT.forEach((_,x)=>document.getElementById("psx"+x).classList.toggle("on",x===i));
+}
+function toggleGroup(i){
+  psNoPref=false; document.getElementById("psNoPref").classList.remove("on");
+  const at=psGroups.indexOf(i);
+  if(at>=0) psGroups.splice(at,1);
+  else { if(psGroups.length>=3){ alert("最多選 3 個學群"); return; } psGroups.push(i); }
+  document.getElementById("psg"+i).classList.toggle("on",psGroups.indexOf(i)>=0);
+}
+function toggleNoPref(){
+  psNoPref=!psNoPref;
+  if(psNoPref){ psGroups.forEach(i=>document.getElementById("psg"+i).classList.remove("on")); psGroups=[]; }
+  document.getElementById("psNoPref").classList.toggle("on",psNoPref);
+}
+function renderParentSurvey(){
+  const rs=document.getElementById("screen-result");
+  const rowA=PS_A.map((it,i)=>qRowPS("A",i,it[1],PS_LIKE,1)).join("");
+  const rowC=PS_C.map((it,i)=>qRowPS("C",i,it[1],PS_AGREE,9)).join("");
+  const expBtns=PS_EXPECT.map((t,i)=>`<button type="button" class="psx" id="psx${i}" onclick="pickExpect(${i})">${t}</button>`).join("");
+  const grpBtns=GROUPS.map((g,i)=>`<button type="button" class="psg" id="psg${i}" onclick="toggleGroup(${i})">${g.n.replace("學群","")}</button>`).join("");
+  rs.innerHTML=PS_STYLE+`
+  <div class="card"><h2>👨‍👩‍👧 親子教育觀對照卷（家長填）</h2>
+   <p class="tagline">共 16 題，約 4 分鐘。沒有對錯，請依實際狀況作答；結果僅供顧問解讀報告時參考。</p></div>
+  <div class="card"><h3>Part 1｜您眼中的孩子</h3>${rowA}</div>
+  <div class="card"><h3>Part 2｜您的期望</h3>
+    <p style="font-weight:600; margin:6px 0;">7. 您期望孩子選哪個方向？</p><div id="psExpect">${expBtns}</div>
+    <p style="font-weight:600; margin:14px 0 6px;">8. 您期望孩子往哪些學群發展？（最多選 3 個）</p>
+    <div id="psGroupsBox">${grpBtns}<button type="button" class="psg" id="psNoPref" onclick="toggleNoPref()">沒有特定期望</button></div></div>
+  <div class="card"><h3>Part 3｜教育想法</h3>${rowC}</div>
+  <div class="card">
+   <div class="err" id="psErr" style="display:none; margin-bottom:10px;">還有題目未作答，請往上檢查（未作答的題目已標紅框）。</div>
+   <button class="btn" style="width:100%; font-size:1.05rem;" onclick="submitParentSurvey()">送出對照卷</button>
+   <div class="note" style="margin-top:12px;">📚 <b>編製依據</b>：教養風格題採 Baumrind 理論（要求×回應雙軸，Maccoby &amp; Martin 擴展），題目參考 PSDQ（Robinson et al.）與 PAQ（Buri）國際量表並依台灣家庭情境在地化改寫；期望題參考 OECD PISA 家長問卷教育期望題組。本卷為教育諮詢的對話工具，非臨床診斷量表。</div>
+  </div>`;
+  window.scrollTo(0,0);
+}
+function submitParentSurvey(){
+  let ok=true;
+  psA.forEach((v,i)=>{ if(v===null){ document.getElementById("psA"+i).classList.add("miss"); ok=false; } });
+  psC.forEach((v,i)=>{ if(v===null){ document.getElementById("psC"+i).classList.add("miss"); ok=false; } });
+  if(psExpect===null){ ok=false; }
+  if(!psNoPref && psGroups.length===0){ ok=false; }
+  if(!ok){ const e=document.getElementById("psErr"); e.style.display="block"; window.scrollTo(0,document.body.scrollHeight); return; }
+  const d=leadData();
+  const gsel=psNoPref?"無特定":psGroups.map(i=>GROUPS[i].n.replace("學群","")).join("+");
+  const pcode=`HSP1|${psA.join(",")}|${psExpect}|${gsel}|${psC.join(",")}`;
+  const summary=`對照卷｜期望:${PS_EXPECT[psExpect]}｜學群:${gsel}｜代碼[${pcode}]`;
+  submitToGoogleForm({...d, status:"對照卷完成", result:summary});
+  showDone(true);
+}
+function showDone(parentDone){
+  const rs=document.getElementById("screen-result");
+  rs.innerHTML=`
+  <div class="card" style="text-align:center; padding:36px 24px;">
+    <div style="font-size:3rem;">🎉</div>
+    <h2 style="margin-top:6px;">恭喜完成！專屬報告已產出</h2>
+    <p style="margin-top:12px;">報告已送達 TIPS 顧問端。因為內容包含多項交叉分析，<b>由老師當面為您解讀最準確</b>，也能直接給出下一步的具體建議。</p>
+    <div class="note" style="text-align:left; margin-top:14px;">📋 報告內容包含：興趣六型雷達圖、選組傾向指數、大學 18 學群適配排名${parentDone?"、親子觀點對照分析":""}</div>
+    ${parentDone?"":`<p class="tagline" style="margin-top:8px;">家長對照卷這次先跳過沒關係，到班看報告時可以現場補填。</p>`}
+    <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+      <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" style="text-decoration:none;">📅 加 LINE 預約看報告（${TIPS_CONFIG.LINE_ID}）</a>
+      <a class="btn secondary" href="tel:0905547839" style="text-decoration:none;">📞 直接來電 ${TIPS_CONFIG.PHONE}</a>
+    </div>
+    <p class="tagline" style="margin-top:14px;">TIPS 英典教育｜${TIPS_CONFIG.ADDRESS}</p>
+  </div>`;
+  rs.classList.remove("hidden");
+  window.scrollTo(0,0);
 }
 </script>
 <a class="line-float" id="lineFloat" href="https://line.me/R/ti/p/@tipsedu" target="_blank">💬 LINE 諮詢</a>
