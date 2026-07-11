@@ -142,14 +142,15 @@ function radarDual(labels, childVals, parentVals, maxV){
 }
 function bar(pct,color){ const w=pct>0?Math.max(pct,3):0; return `<svg viewBox="0 0 100 12" preserveAspectRatio="none" width="100%" height="13" style="display:block;"><rect width="100" height="12" rx="4" fill="#e8ecf4"/>${w?`<rect width="${w}" height="12" rx="4" fill="${color}"/>`:""}</svg>`; }
 function spectrum(label,val,maxV,left,right){
-  const pct=Math.round(val/maxV*100);
+  const pct=Math.max(0,Math.min(1,val/maxV));
+  const x=8+pct*584;
   return `<div class="spec"><div class="lab">${label}</div>
-    <svg viewBox="0 0 300 38" width="100%" height="38" preserveAspectRatio="none">
-      <rect x="6" y="6" width="288" height="8" rx="4" fill="#e8ecf4"/>
-      <rect x="6" y="6" width="${Math.max(6,pct*2.88)}" height="8" rx="4" fill="#2f6fed"/>
-      <circle cx="${6+pct*2.88}" cy="10" r="6" fill="#20315c"/>
-      <text x="6" y="32" font-size="10" fill="#5b6478">${left}</text>
-      <text x="294" y="32" font-size="10" fill="#5b6478" text-anchor="end">${right}</text>
+    <svg viewBox="0 0 600 42" width="100%" style="display:block; max-width:640px;">
+      <rect x="8" y="8" width="584" height="9" rx="4.5" fill="#e8ecf4"/>
+      <rect x="8" y="8" width="${Math.max(9,pct*584)}" height="9" rx="4.5" fill="#2f6fed"/>
+      <circle cx="${x}" cy="12.5" r="7" fill="#20315c"/>
+      <text x="8" y="36" font-size="13" fill="#5b6478">${left}</text>
+      <text x="592" y="36" font-size="13" fill="#5b6478" text-anchor="end">${right}</text>
     </svg></div>`;
 }
 function rptShell(title, stu, body){
