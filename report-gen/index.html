@@ -65,6 +65,7 @@
   <div class="row">
     <label class="mode"><input type="radio" name="mode" value="talk" checked> 面談版（可給家長看）</label>
     <label class="mode"><input type="radio" name="mode" value="internal"> 內部版（含分型與合拍度）</label>
+    <label class="mode"><input type="radio" name="mode" value="growth"> 📈 成長軌跡（同一學生歷次測驗，由舊到新貼）</label>
     <button class="btn" onclick="generate()">產生報告</button>
     <button class="btn sec" onclick="window.print()">🖨 列印</button>
   </div>
@@ -215,6 +216,7 @@ function parseCodes(txt){
   const out={};
   found.forEach(c=>{ let tag=c.split("|")[0]; tag=tag.replace(/2$/,"1"); out[tag]=c; });
   if(Object.keys(out).length===0) parseLegacy(txt,out);
+  out.__all=found;
   return out;
 }
 /* ---- 舊格式相容（改版前的結果摘要，無代碼） ---- */
@@ -778,14 +780,85 @@ function renderNS(cc, pc, internal){
     `<span>孩子：<b>${esc(name)}</b></span><span>年段：<b>${esc(grade)}</b></span><span>填答：<b>家長</b></span>`, body);
 }
 
+/* ================= 成長軌跡（縱貫） ================= */
+function gwParse(c){
+  const seg=c.split("|"); const tag=seg[0].replace(/2$/,"1");
+  if(tag==="NSC1"){ const v=seg[3].split(",").map(Number);
+    return {tag, stage:1, label:"新生入班評估", grade:seg[2], name:seg[1],
+      key:`五面向：專注${v[0]} 語言${v[1]} 情緒${v[2]} 自理${v[3]} 好奇${v[4]}（各0-18）`}; }
+  if(tag==="RDC1"){ const v=seg[3].split(",").map(Number); const idx=Math.round(v.reduce((a,b)=>a+b,0)/192*100);
+    return {tag, stage:2, label:"國中準備度檢測", grade:seg[2], name:seg[1], rd:v, idx,
+      key:`就緒指數 ${idx}/100｜最弱：${RD_DIMS[v.indexOf(Math.min(...v))][1]}`}; }
+  if(tag==="JHC1"){ const v=seg[3].split(",").map(Number); const riasec={}; R6.forEach((k,i)=>riasec[k]=v[i]);
+    const sorted=R6.slice().sort((a,b)=>riasec[b]-riasec[a]||R6.indexOf(a)-R6.indexOf(b));
+    const [ac,pr]=seg[4].split(",").map(Number);
+    return {tag, stage:3, label:"生涯興趣測驗（國中）", grade:seg[2], name:seg[1], riasec, code3:sorted.slice(0,3).join(""),
+      key:`何倫碼 ${sorted.slice(0,3).join("")}｜T=${pr-ac}（${pr-ac>=8?"偏技高":pr-ac<=-8?"偏普高":"中間帶"}）`}; }
+  if(tag==="HSC1"){ const v=seg[3].split(",").map(Number); const riasec={}; R6.forEach((k,i)=>riasec[k]=v[i]);
+    const sorted=R6.slice().sort((a,b)=>riasec[b]-riasec[a]||R6.indexOf(a)-R6.indexOf(b));
+    const [nat,hum]=seg[4].split(",").map(Number); const idx=Math.round(50+(nat-hum)*50/32);
+    const top=HS_GROUPS.map(g=>({n:g.n,pct:gm(riasec,g)})).sort((a,b)=>b.pct-a.pct)[0];
+    return {tag, stage:4, label:"高中生涯定向測驗", grade:seg[2], name:seg[1], riasec, code3:sorted.slice(0,3).join(""),
+      key:`何倫碼 ${sorted.slice(0,3).join("")}｜選組指數 ${idx}｜學群首選：${top.n} ${top.pct}%`}; }
+  return null;
+}
+function renderGrowth(allCodes, internal){
+  const parsed=allCodes.map(gwParse).filter(Boolean);
+  if(parsed.length<2) return null;
+  parsed.sort((a,b)=>a.stage-b.stage);
+  const name=parsed[parsed.length-1].name||parsed[0].name;
+  // 時間軸
+  const tl=parsed.map((p,i)=>`<tr><td style="width:24px; font-weight:800; color:#2f6fed;">${i+1}</td><td>${p.label}</td><td>${esc(p.grade)}</td><td>${p.key}</td></tr>`).join("");
+  let body=`<h3 class="sec">學習軌跡時間軸（共 ${parsed.length} 次測評）</h3>
+    <table><tr><th></th><th>測驗</th><th>年級</th><th>關鍵結果</th></tr>${tl}</table>`;
+  // 何倫碼穩定性
+  const hCodes=parsed.filter(p=>p.code3);
+  if(hCodes.length>=2){
+    const first=hCodes[0].code3, last=hCodes[hCodes.length-1].code3;
+    const stable= first[0]===last[0] ? (first.slice(0,2)===last.slice(0,2)?"前兩碼一致——興趣高度穩定，方向值得重押":"首碼一致——核心興趣穩定")
+                 : (last.includes(first[0])?"首碼仍在前三——興趣微調中，屬正常發展":"首碼改變——興趣仍在探索，建議以最近一次為主並持續驗證");
+    body+=`<h3 class="sec">何倫碼穩定性</h3>
+      <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin:6px 0;">
+        ${hCodes.map(p=>`<div style="text-align:center;"><div class="badge">${p.code3}</div><div style="font-size:.68rem; color:#5b6478; margin-top:3px;">${p.label.replace("測驗","").replace("（國中）","")}<br>${esc(p.grade)}</div></div>`).join('<div style="font-size:1.2rem; color:#8a94a8;">→</div>')}
+      </div><div class="verdict">📌 ${stable}</div>`;
+    // RIASEC 疊圖（最早 vs 最新）
+    const a=hCodes[0], b=hCodes[hCodes.length-1];
+    const labels=R6.map(k=>[k,{R:"#e05d5d",I:"#7c5cd6",A:"#e8873a",S:"#12b5a5",E:"#2f6fed",C:"#8a6d3b"}[k]]);
+    body+=`<div class="flex"><div style="text-align:center;">${radarDual(labels,R6.map(k=>b.riasec[k]),R6.map(k=>a.riasec[k]),40)}
+      <div class="legend">─ <span class="c1">${b.label}（${esc(b.grade)}）</span>　╌ <span class="c2">${a.label}（${esc(a.grade)}）</span></div></div>
+      <div><table><tr><th>類型</th><th>${esc(a.grade)}</th><th>${esc(b.grade)}</th><th>變化</th></tr>
+      ${R6.map(k=>{const d=b.riasec[k]-a.riasec[k]; return `<tr><td>${R6NAME[k]}</td><td>${a.riasec[k]}</td><td>${b.riasec[k]}</td><td class="${Math.abs(d)>=8?'gap-hi':''}">${d>0?"+":""}${d}</td></tr>`;}).join("")}
+      </table></div></div>`;
+  }
+  // 準備度前後測
+  const rds=parsed.filter(p=>p.rd);
+  if(rds.length>=2){
+    const a=rds[0], b=rds[rds.length-1];
+    const labels=RD_DIMS.map(d=>[d[1].slice(0,2),d[2]]);
+    body+=`<h3 class="sec">準備度前後測（就緒指數 ${a.idx} → ${b.idx}，${b.idx-a.idx>=0?"+":""}${b.idx-a.idx}）</h3>
+      <div class="flex"><div style="text-align:center;">${radarDual(labels,b.rd,a.rd,32)}
+      <div class="legend">─ <span class="c1">後測（${esc(b.grade)}）</span>　╌ <span class="c2">前測（${esc(a.grade)}）</span></div></div>
+      <div><table><tr><th>能力</th><th>前測</th><th>後測</th><th>變化</th></tr>
+      ${RD_DIMS.map((d,i)=>{const df=b.rd[i]-a.rd[i]; return `<tr><td>${d[1]}</td><td>${a.rd[i]}</td><td>${b.rd[i]}</td><td class="${df>=4?'gap-ok':(df<=-4?'gap-hi':'')}">${df>0?"+":""}${df}</td></tr>`;}).join("")}
+      </table><div class="verdict">${b.idx-a.idx>=5?"✔ 整體就緒度明顯提升——把進步最大的向度說給孩子聽，強化自我效能。":(b.idx-a.idx<=-5?"⚠ 就緒度下滑——面談時先了解這段期間發生什麼（課業壓力、作息、環境變動）。":"整體持平——聚焦個別向度的消長。")}</div></div>`;
+  }
+  if(internal) body+=`<div class="internal"><h4>🔒 內部備註</h4><p style="font-size:.76rem;">縱貫比較的前提是「同一工具、同一填答者」；跨工具（如入班評估 vs 準備度）僅作時間軸敘事，不做分數比較。孩子的分數變化 ±4 以內視為測量誤差範圍。</p></div>`;
+  return rptShell("12 年學習藍圖・成長軌跡報告",
+    `<span>學生：<b>${esc(name)}</b></span><span>測評次數：<b>${parsed.length}</b></span><span>期間：<b>${esc(parsed[0].grade)} → ${esc(parsed[parsed.length-1].grade)}</b></span>`, body);
+}
 /* ================= 主流程 ================= */
 function generate(){
   const err=document.getElementById("errBox"); err.style.display="none";
   const codes=parseCodes(document.getElementById("codeInput").value);
-  const internal=document.querySelector('input[name="mode"]:checked').value==="internal";
+  const modeVal=document.querySelector('input[name="mode"]:checked').value;
+  const internal=modeVal==="internal";
   let html="";
   try{
-    if(codes.HSC1) html=renderHS(codes.HSC1, codes.HSP1||null, internal);
+    if(modeVal==="growth"){
+      html=renderGrowth(codes.__all||[], true);
+      if(!html){ err.textContent="成長軌跡需要同一位學生至少 2 筆不同時間的測驗代碼（由舊到新貼上「已完成」那幾筆的結果摘要）。"; err.style.display="block"; return; }
+    }
+    else if(codes.HSC1) html=renderHS(codes.HSC1, codes.HSP1||null, internal);
     else if(codes.HSLEGACY) html=renderHSLegacy(codes.HSLEGACY);
     else if(codes.JHC1) html=renderJH(codes.JHC1, codes.JHP1||null, internal);
     else if(codes.RDC1) html=renderRD(codes.RDC1, codes.RDP1||null, internal);
