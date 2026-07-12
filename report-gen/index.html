@@ -671,6 +671,7 @@ function renderJH(cc, pc, internal){
     `<h3 class="sec">高中／高職傾向</h3><div class="verdict">${dirTxt}｜學術 ${ac}/32・實作 ${pr}/32｜區分性 D=${D.toFixed(1)}${D<4?"（偏低，興趣仍在探索中，排名僅供參考）":""}</div>`+
     expTable+
     `<h3 class="sec">技高 15 群科適配 Top4</h3><div class="grid2">${topCards}</div>`+
+    `<div class="verdict warn">📢 <b>制度快訊（116 學年度起）</b>：四技二專統測改為<b>自主選考</b>——單群類考生至少選考 2 科（含 1 科專業科目）、跨群類至少 3 科；四技甄選入學第一階段參採統測科目降為<b>最多 4 科</b>，117 學年起篩選倍率再由 3 倍放寬至 4 倍。整體方向是「考得少、採得準」：<b>群科選得對，孩子就能把時間集中在真正加分的科目上</b>。本報告的群科適配排名可作為選擇起點，建議搭配 TIPS 顧問一對一解讀。</div>`+
     (pc?styleBlock(pC.slice(0,4),pC.slice(4,8),pC.slice(8),internal,jhTips(pA,riasec,pExpect,T,pGroups,ranked)):"")+
     answerAppendix([
       (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("孩子作答｜Part 1 興趣 60 題",itemsRows(HSQ_P1,HSQ_P1O,a,0)):null;})(),
