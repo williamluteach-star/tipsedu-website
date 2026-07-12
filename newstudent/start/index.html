@@ -421,7 +421,7 @@ function showResults(){
   const __flat=(new Set(answers)).size<=1;
   const __fast=__secs!==null && __secs<90;
   const qflag=(__fast||__flat)?[__fast?`快答${__secs}s`:null,__flat?"全同選項":null].filter(Boolean).join("+"):"OK";
-const code=`NSC1|${d.name}|${d.grade}|${scoreStr}|${bg}|Q:${qflag}`;
+const code=`NSC1|${d.name}|${d.grade}|${scoreStr}|${bg}|Q:${qflag}|ANS:${answers.join("")}`;
   const summary=`入班評估｜專注${s.scores.focus} 語言${s.scores.lang} 情緒${s.scores.social} 自理${s.scores.self} 好奇${s.scores.curio}｜亮點:${s.strongest.map(x=>x.name).join("、")}｜陪伴:${s.gentlest.map(x=>x.name).join("、")}｜英語:${bg}｜代碼[${code}]`;
   submitToGoogleForm({...d, status:"已完成評估", result:summary});
   document.getElementById("screen-test").classList.add("hidden");

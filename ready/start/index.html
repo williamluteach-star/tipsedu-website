@@ -391,7 +391,7 @@ function showResults(){
   const __flat=(new Set(answers)).size<=1;
   const __fast=__secs!==null && __secs<120;
   const qflag=(__fast||__flat)?[__fast?`快答${__secs}s`:null,__flat?"全同選項":null].filter(Boolean).join("+"):"OK";
-const code=`RDC1|${d.name}|${d.grade}|${scoreStr}|Q:${qflag}`;
+const code=`RDC1|${d.name}|${d.grade}|${scoreStr}|Q:${qflag}|ANS:${answers.join("")}`;
   const summary=`就緒指數${s.index}/100｜動機${s.scores.mot} 時間${s.scores.time} 專注${s.scores.focus} 方法${s.scores.strategy} 心態${s.scores.mind} 獨立${s.scores.self}｜優勢:${s.strongest.map(x=>x.name).join("、")}｜暖身:${s.weakest.map(x=>x.name).join("、")}｜代碼[${code}]`;
   submitToGoogleForm({...d, status:"已完成檢測", result:summary});
   document.getElementById("screen-test").classList.add("hidden");

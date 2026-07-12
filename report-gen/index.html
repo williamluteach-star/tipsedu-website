@@ -291,7 +291,13 @@ function renderHS(cc, pc, internal){
     `<h3 class="sec">選組傾向</h3><div class="verdict">${streamTxt}｜自然 ${nat}/32・社會 ${hum}/32｜區分性 D=${D.toFixed(1)}${D<4?"（偏低，興趣仍在探索中，排名僅供參考）":""}</div>`+
     expTable+
     `<h3 class="sec">大學 18 學群適配 Top4</h3><div class="grid2">${topCards}</div>`+
-    (pc?styleBlock(pC.slice(0,4),pC.slice(4,8),pC.slice(8),internal,hsTips(pA,riasec,pExpect,streamIdx,pGroups,ranked)):"");
+    (pc?styleBlock(pC.slice(0,4),pC.slice(4,8),pC.slice(8),internal,hsTips(pA,riasec,pExpect,streamIdx,pGroups,ranked)):"")+
+    answerAppendix([
+      (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("孩子作答｜Part 1 興趣 60 題",itemsRows(HSQ_P1,HSQ_P1O,a,0)):null;})(),
+      (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("孩子作答｜Part 2 選組傾向 16 題",itemsRows(HSQ_P2,HSQ_P2O,a,60)):null;})(),
+      pA?detailTable("家長對照卷｜眼中的孩子",pairRows(PS_A_TXT,pA,PS_LIKE_O)):null,
+      pC?detailTable("家長對照卷｜教育想法",pairRows(PS_C10_TXT,pC,PS_AGREE_O)):null
+    ],internal);
   return rptShell("高中生涯定向報告"+(pc?"＋親子對照":""),
     `<span>學生：<b>${esc(name)}</b></span><span>年級：<b>${esc(grade)}</b></span><span>何倫碼：<b>${top3}</b></span><span>選組指數：<b>${streamIdx}</b></span>${pc?"":"<span style='color:#c0392b;'>（未填對照卷）</span>"}`, body);
 }
@@ -300,6 +306,271 @@ function qWarn(seg,internal){
   const q=(seg||"").replace(/^Q:/,"");
   if(!internal || !q || q==="OK") return "";
   return `<div class="verdict warn" style="border-left-color:#e05d5d; background:#fdecec;">⚠ <b>作答品質旗標：${q}</b>——作答過快或全程同一選項，結果參考價值可能偏低，建議安排重測後再據以規劃。</div>`;
+}
+/* ---- 題庫（逐題明細用） ---- */
+const HSQ_P1=[
+ ["R","製作木工作品（例如書架、櫃子）"],
+ ["R","砌磚或鋪設磁磚"],
+ ["R","修理家用電器"],
+ ["R","在養殖場飼養魚類"],
+ ["R","組裝電子零件"],
+ ["R","開車運送包裹到公司和住家"],
+ ["R","檢測產品零件的品質"],
+ ["R","修理和安裝門鎖"],
+ ["R","操作機器製造產品"],
+ ["R","參與消防救災工作"],
+ ["I","研發一種新藥"],
+ ["I","研究減少水污染的方法"],
+ ["I","進行化學實驗"],
+ ["I","研究行星的運行"],
+ ["I","用顯微鏡檢驗血液樣本"],
+ ["I","調查火災發生的原因"],
+ ["I","研發更準確的天氣預測方法"],
+ ["I","在生物實驗室做研究"],
+ ["I","發明糖的替代品"],
+ ["I","做實驗室檢測來判斷疾病"],
+ ["A","寫小說或劇本"],
+ ["A","演奏樂器"],
+ ["A","作曲或編曲"],
+ ["A","畫畫、繪製插圖"],
+ ["A","為電影製作特效"],
+ ["A","為舞台劇設計繪製佈景"],
+ ["A","為電影或電視節目寫腳本"],
+ ["A","表演舞蹈（街舞、爵士舞等）"],
+ ["A","在樂團裡唱歌或表演"],
+ ["A","剪輯影片"],
+ ["S","教別人運動健身的方法"],
+ ["S","幫助有心事或情緒困擾的人"],
+ ["S","給別人生涯規劃的建議"],
+ ["S","協助病人做復健治療"],
+ ["S","在公益團體擔任志工"],
+ ["S","教小朋友打球或運動"],
+ ["S","學手語幫助聽障人士溝通"],
+ ["S","協助帶領班級或團體活動"],
+ ["S","在幼兒園照顧小朋友"],
+ ["S","在學校擔任老師教課"],
+ ["E","研究並買賣股票或基金"],
+ ["E","替公司談判商業合約"],
+ ["E","管理一家商店"],
+ ["E","經營美髮沙龍或美容工作室"],
+ ["E","管理公司裡的一個部門"],
+ ["E","自己創業當老闆"],
+ ["E","在法庭上為當事人辯護"],
+ ["E","行銷推廣新的服裝品牌"],
+ ["E","在百貨公司銷售商品"],
+ ["E","經營一家服飾店"],
+ ["C","用電腦軟體製作表格整理資料"],
+ ["C","校對文件和表格中的錯誤"],
+ ["C","為很多台電腦安裝設定軟體"],
+ ["C","用計算機處理數據帳目"],
+ ["C","記錄貨物進出的資料"],
+ ["C","計算員工的薪資"],
+ ["C","用行動裝置盤點商品庫存"],
+ ["C","記錄每月的收款帳目"],
+ ["C","管理倉庫的庫存紀錄"],
+ ["C","為公司整理、分類和寄送文件"]
+];
+const HSQ_P2=[
+ ["N","比起社會科，我對數學和自然科的內容更有胃口"],
+ ["H","讀歷史、公民議題或文學作品時，我特別起勁"],
+ ["N","解出一題複雜的數學或物理題，讓我很有成就感"],
+ ["H","分析社會議題、表達自己的觀點，讓我很有成就感"],
+ ["N","我想弄懂事物運作的原理（程式、機械、人體、宇宙）"],
+ ["H","我對人的行為、文化和社會現象特別好奇"],
+ ["N","做實驗、寫程式或處理數據時，我可以非常專注"],
+ ["H","寫作、做簡報或上台表達，是我的相對強項"],
+ ["N","未來我想從事科技、醫療、工程或科學研究相關工作"],
+ ["H","未來我想從事商管、法政、傳播、教育或文化相關工作"],
+ ["N","我可以接受高二三花大量時間在數學、物理、化學上"],
+ ["H","我可以接受高二三花大量時間在國英文與社會科上"],
+ ["N","圖表、公式和邏輯推演，對我來說比較直覺"],
+ ["H","文字、故事和人際脈絡，對我來說比較直覺"],
+ ["N","選加深加廣課程時，我會優先選自然科學類"],
+ ["H","選加深加廣課程時，我會優先選人文社會類"]
+];
+const HSQ_P1O=["很不喜歡","不喜歡","不確定","喜歡","很喜歡"];
+const HSQ_P2O=["非常不符合","不符合","一半一半","符合","非常符合"];
+const JHQ_P2=[
+ ["AC","我可以長時間坐著專心讀書，不會覺得太痛苦"],
+ ["PR","我喜歡動手做東西，完成具體的作品讓我特別有成就感"],
+ ["AC","我對國文、英文、數學、自然、社會這些學科本身有興趣（不只是為了考試）"],
+ ["PR","上實作類課程（生活科技、家政、資訊、美術）時，我比在一般課堂上更投入"],
+ ["AC","我喜歡研究抽象的概念和理論，例如數學證明、科學原理或歷史脈絡"],
+ ["PR","我已經有明確想投入的領域（例如餐飲、設計、機械、美容、電機、寵物等）"],
+ ["AC","我還不確定未來想做什麼，想先廣泛學習各種科目，之後再決定方向"],
+ ["PR","比起閱讀課本，透過實際操作和練習，我學得更快、記得更牢"],
+ ["AC","我願意為了考大學的目標，接受三年以學科為主的高中生活"],
+ ["PR","我希望及早學會一技之長，取得專業技能或證照"],
+ ["AC","遇到不懂的知識，我會想追根究底弄清楚「為什麼」"],
+ ["PR","長時間坐著聽課讓我很難專注，我更適合「做中學」"],
+ ["AC","我的目標是進入一般大學鑽研學問或專業（例如醫學、法律、理工、人文）"],
+ ["PR","如果能學自己喜歡的專業，我願意早點確定方向，不必每一科都深入讀"],
+ ["AC","比起做出實際作品，解出一道難題或寫出一篇好文章更讓我有成就感"],
+ ["PR","我對為了考試而讀的學科感到疲乏，但對特定領域的知識很有熱情"]
+];
+const JHQ_P2O=["非常不符合","不符合","一半一半","符合","非常符合"];
+const RDQ=[
+ // 學習動機 (8)
+ ["mot","我知道自己為什麼要讀書，不只是因為大人要求"],
+ ["mot","我對升上國中的新課程期待多於害怕"],
+ ["mot","遇到不會的題目，我會想辦法弄懂而不是跳過"],
+ ["mot","我有想達成的目標（例如想進的學校、想學好的科目）"],
+ ["mot","就算沒有人盯，我也會把該做的功課做完"],
+ ["mot","我覺得學新東西是有趣的事"],
+ ["mot","成績退步時，我會想找出原因"],
+ ["mot","為了目標，我願意少玩一點"],
+ // 時間管理 (8)
+ ["time","我會自己記得功課和考試的日期，不用大人提醒"],
+ ["time","寫功課前，我會先想好先做哪一項"],
+ ["time","我通常能在睡覺前完成所有功課"],
+ ["time","我可以控制自己用手機／平板的時間"],
+ ["time","放假時我也會安排讀書的時間"],
+ ["time","我很少把功課拖到最後一刻才做"],
+ ["time","我的書包和書桌大致整齊，找東西很快"],
+ ["time","答應的事情我通常能準時做到"],
+ // 專注習慣 (8)
+ ["focus","上課時我能專心聽講 20 分鐘以上"],
+ ["focus","寫功課時，我不容易被旁邊的聲音吸走注意力"],
+ ["focus","讀書時我會把手機放到別的地方"],
+ ["focus","我有固定的讀書位置"],
+ ["focus","一件事沒做完，我不會跳去做別的"],
+ ["focus","老師上課講過的重點，我通常記得住"],
+ ["focus","我可以自己一個人安靜讀書 30 分鐘以上"],
+ ["focus","我睡眠充足，上課很少想睡覺"],
+ // 學習方法 (8)
+ ["strategy","我會用自己的話整理課本重點"],
+ ["strategy","我有做筆記的習慣（畫重點、寫摘要都算）"],
+ ["strategy","背東西時我會用方法（口訣、圖像、分段），不是硬背"],
+ ["strategy","考完試我會看錯在哪裡，把不會的弄懂"],
+ ["strategy","讀不懂的地方，我會主動問人或查資料"],
+ ["strategy","我會先大概翻過明天要上的內容"],
+ ["strategy","我知道自己哪些科目強、哪些科目弱"],
+ ["strategy","複習時我會先從不熟的部分開始"],
+ // 考試心態 (8)
+ ["mind","考試前一天我能正常吃飯睡覺，不會太緊張"],
+ ["mind","考試遇到不會的題目，我會先跳過，不會慌掉"],
+ ["mind","成績不理想時，我難過一下就能重新出發"],
+ ["mind","我敢在課堂上舉手發問或回答"],
+ ["mind","被糾正時，我聽得進去，不會只顧著生氣"],
+ ["mind","到新環境（新班級、新老師），我適應得算快"],
+ ["mind","我不會因為別人成績比我好就覺得自己很差"],
+ ["mind","壓力大的時候，我有讓自己放鬆的方法"],
+ // 生活獨立 (8)
+ ["self","我每天自己整理書包和用品"],
+ ["self","我自己起床上學，很少遲到"],
+ ["self","我能自己走路或搭車往返學校（或正在練習）"],
+ ["self","大人不在家時，我能照顧好自己的吃飯和作息"],
+ ["self","我的零用錢會自己想過怎麼用"],
+ ["self","學校的通知和聯絡事項，我會主動告訴家長"],
+ ["self","我會主動幫忙做家事"],
+ ["self","遇到問題我會先自己想辦法，再找大人幫忙"]
+];
+const RDQ_O=["非常不符合","不太符合","一半一半","大致符合","非常符合"];
+const NSQ=[
+ // 專注與持續 (6)
+ ["focus","做喜歡的活動（拼圖、積木、畫畫）時，能持續投入 15 分鐘以上"],
+ ["focus","聽完指令後，能記住並完成兩個步驟的任務（例如：把書收好，再去洗手）"],
+ ["focus","別人跟他說話時，能停下手邊的事看著對方聽"],
+ ["focus","開始做一件事後，能做完才去做下一件"],
+ ["focus","在稍微吵雜的環境中，仍能繼續進行自己的活動"],
+ ["focus","進行靜態活動（聽故事、勞作）時能坐得住"],
+ // 語言與溝通 (6)
+ ["lang","能清楚說出自己的需求和想法（想要什麼、發生了什麼事）"],
+ ["lang","能聽懂日常對話，並且適當地回應"],
+ ["lang","喜歡聽故事，聽完能說出故事裡發生的事"],
+ ["lang","會主動問「為什麼」，或對新的詞彙感興趣"],
+ ["lang","能和不太熟的大人簡單對話（打招呼、回答問題）"],
+ ["lang","說話時能輪流，不會一直插話（或提醒後能等待）"],
+ // 情緒與社交 (6)
+ ["social","和其他小朋友一起玩時，能輪流和分享"],
+ ["social","生氣或難過時，能用說的表達，而不是只有哭鬧"],
+ ["social","到新環境（新教室、新老師），短時間內能安定下來"],
+ ["social","被糾正或提醒時，能接受並調整自己的行為"],
+ ["social","在大人陪伴下，願意嘗試沒做過的事"],
+ ["social","與家長短暫分開時（上學、託顧），情緒能保持穩定"],
+ // 生活自理 (6)
+ ["self","能自己上廁所、洗手"],
+ ["self","能自己吃飯，不需要大人餵"],
+ ["self","能自己穿脫外套和鞋子"],
+ ["self","會收拾自己玩過的玩具或用過的物品"],
+ ["self","身體不舒服時，能說出來（哪裡痛、想睡覺）"],
+ ["self","對自己的物品有概念（知道哪些是自己的、會記得帶回家）"],
+ // 學習興趣與好奇心 (6)
+ ["curio","對新事物表現出好奇（會湊過去看、動手摸、問問題）"],
+ ["curio","喜歡翻閱繪本或圖書（還不識字也算）"],
+ ["curio","學會新東西時會很開心，想展示給家人看"],
+ ["curio","會主動模仿大人做事（假裝煮飯、學大人說話）"],
+ ["curio","對數字、形狀、顏色或文字符號感興趣"],
+ ["curio","遇到有點難的事（拼圖拼不出來），願意再試一次"]
+];
+const NSQ_O=["很少","偶爾","經常","總是"];
+const DEVA=[
+ "和同齡孩子相比明顯坐不住，喜歡的活動也很難停留幾分鐘",
+ "提醒很多次，仍常常沒聽完指令就行動",
+ "在需要輪流、等待的場合，明顯比同齡孩子困難",
+ "活動量大到經常撞到東西、受傷，或讓照顧者疲於追趕",
+ "對喜歡的事（卡通、遊戲）也難以專注投入",
+ "情緒轉換特別困難，激動後很難平復",
+ "說話或詞彙明顯比同齡孩子少、不清楚，外人常聽不懂",
+ "很少與其他孩子互動，或互動方式明顯不同（不看人、叫名不回應）",
+ "生活自理（吃飯、如廁、穿脫）明顯落後同齡孩子",
+ "對聲音、觸覺、質地特別敏感或特別遲鈍，影響日常生活"];
+const DEVB=[
+ "無法專注於細節，或因粗心而發生錯誤",
+ "很難持續專注於功課或遊戲活動",
+ "別人跟他說話時，好像沒在聽",
+ "無法遵循指示完成事情（並非因為不想做或聽不懂）",
+ "很難把事情或活動安排得有條有理",
+ "逃避或不願意做需要持續花心力的事",
+ "會弄丟需要的東西（玩具、文具、聯絡簿）",
+ "容易受外界刺激影響而分心",
+ "在日常生活中健忘",
+ "手腳動個不停，或坐著時身體扭動",
+ "在需要坐好的場合會離開座位",
+ "在不適當的場合過度地跑來跑去或爬上爬下",
+ "很難安靜地玩或參與休閒活動",
+ "總是一直在動，好像身上裝了馬達",
+ "話很多",
+ "問題還沒問完就急著回答",
+ "很難排隊或等待輪流",
+ "打斷或干擾別人（插嘴、打斷別人的遊戲）"];
+const DEVA_O=["很少如此","有時如此","經常如此"];
+const DEVB_O=["完全沒有","有一點點","還算不少","非常的多"];
+const PS_A_TXT=["喜歡動手做、組裝操作","好奇、追根究柢","有想像力、喜歡創作","貼心、擅長與人相處","有主見、喜歡帶頭","有條理、按部就班"];
+const PS_C10_TXT=["成績有明確標準要求","讀書計畫由家長規定","未達期望會表達不滿","重大決定由父母把關","先聽完孩子的理由","支持冷門但有熱情的方向","常聊課業以外的事","先安撫情緒再談表現","重長期培養勝過短期成績","希望掌握學習數據"];
+const PS_AGREE_O=["很不同意","不太同意","普通","還算同意","非常同意"];
+const PS_LIKE_O=["很不像","有點不像","普通","有點像","非常像"];
+const RDPS_FIT_O=["很不符合","不太符合","普通","還算符合","非常符合"];
+const RDPS_A_TXT=["主動想學不用催","能自己安排時間","寫功課能專心","有自己的讀書方法","考試心態穩定","生活能自己打理"];
+const RDPS_C6_TXT=["成績有明確標準要求","作息安排由家長規定","先聽完孩子的理由","先安撫情緒再談表現","重長期培養勝過短期成績","希望掌握學習數據"];
+const NSPX_TXT=["學習表現有明確標準","作息安排由家長規定","先聽完再回應","先安撫情緒再談對錯","重長期培養勝過短期成績","希望掌握學習數據"];
+
+/* 逐題明細表（僅內部版） */
+function segOf(cc,prefix){ const s=cc.split("|").find(x=>x.startsWith(prefix)); return s?s.slice(prefix.length):null; }
+function detailTable(title, rows){
+  if(!rows.length) return "";
+  const tr=rows.map(r=>`<tr><td style="width:26px; text-align:right; color:#8a94a8;">${r[0]}</td><td>${r[1]}</td><td style="width:86px; font-weight:700; color:${r[3]||'#20315c'};">${r[2]}</td></tr>`).join("");
+  return `<h4 style="font-size:.8rem; color:#5b6478; margin:10px 0 4px;">${title}</h4><table style="font-size:.72rem;">${tr}</table>`;
+}
+function itemsRows(items, opts, ansStr, offset, hiFrom){
+  const rows=[];
+  for(let i=0;i<items.length;i++){
+    const v=Number(ansStr[offset+i]);
+    if(Number.isNaN(v)) continue;
+    const txt=Array.isArray(items[i])?items[i][1]:items[i];
+    const hi=(hiFrom!==undefined && v>=hiFrom);
+    rows.push([offset+i+1, txt, opts[v]!==undefined?opts[v]:v, hi?'#c0392b':null]);
+  }
+  return rows;
+}
+function pairRows(txts, vals, opts){
+  return txts.map((t,i)=> (vals && vals[i]!==undefined)?[i+1, t, opts[vals[i]]!==undefined?opts[vals[i]]:vals[i], null]:null).filter(Boolean);
+}
+function answerAppendix(blocks, internal){
+  if(!internal) return "";
+  const inner=blocks.filter(Boolean).join("");
+  if(!inner) return "";
+  return `<div class="internal"><h4>🔒 附錄：逐題作答明細（內部）</h4>${inner}</div>`;
 }
 /* ---- 溝通方向（內部）情境句 ---- */
 function gapTip(pA,riasec){
@@ -398,7 +669,13 @@ function renderJH(cc, pc, internal){
     `<h3 class="sec">高中／高職傾向</h3><div class="verdict">${dirTxt}｜學術 ${ac}/32・實作 ${pr}/32｜區分性 D=${D.toFixed(1)}${D<4?"（偏低，興趣仍在探索中，排名僅供參考）":""}</div>`+
     expTable+
     `<h3 class="sec">技高 15 群科適配 Top4</h3><div class="grid2">${topCards}</div>`+
-    (pc?styleBlock(pC.slice(0,4),pC.slice(4,8),pC.slice(8),internal,jhTips(pA,riasec,pExpect,T,pGroups,ranked)):"");
+    (pc?styleBlock(pC.slice(0,4),pC.slice(4,8),pC.slice(8),internal,jhTips(pA,riasec,pExpect,T,pGroups,ranked)):"")+
+    answerAppendix([
+      (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("孩子作答｜Part 1 興趣 60 題",itemsRows(HSQ_P1,HSQ_P1O,a,0)):null;})(),
+      (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("孩子作答｜Part 2 學習型態 16 題",itemsRows(JHQ_P2,JHQ_P2O,a,60)):null;})(),
+      pA?detailTable("家長對照卷｜眼中的孩子",pairRows(PS_A_TXT,pA,PS_LIKE_O)):null,
+      pC?detailTable("家長對照卷｜教育想法",pairRows(PS_C10_TXT,pC,PS_AGREE_O)):null
+    ],internal);
   return rptShell("生涯興趣測驗報告"+(pc?"＋親子對照":""),
     `<span>學生：<b>${esc(name)}</b></span><span>年級：<b>${esc(grade)}</b></span><span>何倫碼：<b>${top3}</b></span><span>傾向：<b>T=${T}</b></span>${pc?"":"<span style='color:#c0392b;'>（未填對照卷）</span>"}`, body);
 }
@@ -432,7 +709,12 @@ function renderRD(cc, pc, internal){
     `<h3 class="sec">六大能力：孩子自評${pA?" vs 家長觀察":""}（就緒指數 <span class="badge">${index}</span>）</h3>
      <div class="flex"><div style="text-align:center;">${radarDual(labels,vals,parentVals,32)}<div class="legend">─ <span class="c1">孩子自評</span>${pA?"　╌ <span class='c2'>家長觀察</span>":""}</div></div><div>${table}</div></div>`+
     planBlock+
-    (pc?styleBlock(pC.slice(0,2),pC.slice(2,4),pC.slice(4),internal,rdTips(pPlan,pWorry,vals,pA)):"");
+    (pc?styleBlock(pC.slice(0,2),pC.slice(2,4),pC.slice(4),internal,rdTips(pPlan,pWorry,vals,pA)):"")+
+    answerAppendix([
+      (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("孩子作答｜六大能力 48 題",itemsRows(RDQ,RDQ_O,a,0)):null;})(),
+      pA?detailTable("家長對照卷｜眼中的孩子",pairRows(RDPS_A_TXT,pA,RDPS_FIT_O)):null,
+      pC?detailTable("家長對照卷｜教育想法",pairRows(RDPS_C6_TXT,pC,PS_AGREE_O)):null
+    ],internal);
   return rptShell("國中準備度檢測報告"+(pc?"＋親子對照":""),
     `<span>學生：<b>${esc(name)}</b></span><span>年級：<b>${esc(grade)}</b></span><span>就緒指數：<b>${index}/100</b></span>${pc?"":"<span style='color:#c0392b;'>（未填對照卷）</span>"}`, body);
 }
@@ -482,7 +764,16 @@ function renderNS(cc, pc, internal){
      <div><table><tr><th>面向</th><th>分數</th><th>階段</th></tr>${rows}</table></div></div>
      <h3 class="sec">英語與學習背景</h3><div class="verdict">${esc(bg)||"（未填）"}</div>`+
      (pc?styleBlock(pc.split("|")[1].split(",").map(Number).slice(0,2), pc.split("|")[1].split(",").map(Number).slice(2,4), pc.split("|")[1].split(",").map(Number).slice(4,6), internal, []):"")+
-     ((pc && pc.split("|")[0]==="NSP2")?devBlock(pc.split("|")[2], pc.split("|")[3].split(",").map(Number), internal):"");
+     ((pc && pc.split("|")[0]==="NSP2")?devBlock(pc.split("|")[2], pc.split("|")[3].split(",").map(Number), internal):"")+
+     answerAppendix([
+       (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("家長作答｜五大面向 30 題",itemsRows(NSQ,NSQ_O,a,0)):null;})(),
+       (()=>{if(!pc||pc.split("|")[0]!=="NSP2") return null;
+         const trk=pc.split("|")[2], dv=pc.split("|")[3].split(",").map(Number);
+         const items=trk==="A"?DEVA:DEVB, opts=trk==="A"?DEVA_O:DEVB_O;
+         return detailTable("日常學習行為觀察 "+(trk==="A"?"10":"18")+" 題（紅字＝達關注選項）",
+           items.map((t,i)=>[i+1, t, opts[dv[i]]!==undefined?opts[dv[i]]:dv[i], dv[i]>=2?'#c0392b':null]));})(),
+       pc?detailTable("家長教育觀 6 題",pairRows(NSPX_TXT,pc.split("|")[1].split(",").map(Number),PS_AGREE_O)):null
+     ],internal);
   return rptShell("新生入班評估報告"+(pc?"＋家長教育觀":""),
     `<span>孩子：<b>${esc(name)}</b></span><span>年段：<b>${esc(grade)}</b></span><span>填答：<b>家長</b></span>`, body);
 }

@@ -583,7 +583,7 @@ function showResults(){
   const __flat=(new Set(answers)).size<=1;
   const __fast=__secs!==null && __secs<180;
   const qflag=(__fast||__flat)?[__fast?`快答${__secs}s`:null,__flat?"全同選項":null].filter(Boolean).join("+"):"OK";
-const code=`JHC1|${d.name}|${d.grade}|${scoreStr}|${s.ac},${s.pr}|Q:${qflag}`;
+const code=`JHC1|${d.name}|${d.grade}|${scoreStr}|${s.ac},${s.pr}|Q:${qflag}|ANS:${answers.join("")}`;
   const summary = `三碼${code3}｜D=${s.D.toFixed(1)}｜學術${s.ac}/32 實作${s.pr}/32 T=${s.T>0?"+":""}${s.T}｜群科:${ranked.slice(0,3).map(r=>r.g.n).join("、")}｜代碼[${code}]`;
   submitToGoogleForm({...d, status:"已完成測驗", result:summary});
   document.getElementById("screen-test").classList.add("hidden");

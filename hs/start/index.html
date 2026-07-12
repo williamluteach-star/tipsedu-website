@@ -499,7 +499,7 @@ function showResults(){
   const __flat=(new Set(answers)).size<=1;
   const __fast=__secs!==null && __secs<180;
   const qflag=(__fast||__flat)?[__fast?`快答${__secs}s`:null,__flat?"全同選項":null].filter(Boolean).join("+"):"OK";
-const code=`HSC1|${d.name}|${d.grade}|${scoreStr}|${s.nat},${s.hum}|Q:${qflag}`;
+const code=`HSC1|${d.name}|${d.grade}|${scoreStr}|${s.nat},${s.hum}|Q:${qflag}|ANS:${answers.join("")}`;
   const summary=`高中定向｜何倫碼${code3}｜D${s.D.toFixed(1)}｜選組${s.streamIdx}｜Top3:${s.gmatch.slice(0,3).map(g=>g.n+g.pct+"%").join("、")}｜代碼[${code}]`;
   submitToGoogleForm({...d, status:"已完成測驗", result:summary});
   document.getElementById("screen-test").classList.add("hidden");
