@@ -425,9 +425,79 @@ const code=`NSC1|${d.name}|${d.grade}|${scoreStr}|${bg}|Q:${qflag}`;
   const summary=`入班評估｜專注${s.scores.focus} 語言${s.scores.lang} 情緒${s.scores.social} 自理${s.scores.self} 好奇${s.scores.curio}｜亮點:${s.strongest.map(x=>x.name).join("、")}｜陪伴:${s.gentlest.map(x=>x.name).join("、")}｜英語:${bg}｜代碼[${code}]`;
   submitToGoogleForm({...d, status:"已完成評估", result:summary});
   document.getElementById("screen-test").classList.add("hidden");
+  showDevSection();
+  window.scrollTo(0,0);
+}
+/* ---- 日常學習行為觀察（依年段分軌，必填） ---- */
+const DEV_B_OPTS=["完全沒有","有一點點","還算不少","非常的多"];
+const DEV_A_OPTS=["很少如此","有時如此","經常如此"];
+const DEV_B=[
+ "無法專注於細節，或因粗心而發生錯誤",
+ "很難持續專注於功課或遊戲活動",
+ "別人跟他說話時，好像沒在聽",
+ "無法遵循指示完成事情（並非因為不想做或聽不懂）",
+ "很難把事情或活動安排得有條有理",
+ "逃避或不願意做需要持續花心力的事",
+ "會弄丟需要的東西（玩具、文具、聯絡簿）",
+ "容易受外界刺激影響而分心",
+ "在日常生活中健忘",
+ "手腳動個不停，或坐著時身體扭動",
+ "在需要坐好的場合會離開座位",
+ "在不適當的場合過度地跑來跑去或爬上爬下",
+ "很難安靜地玩或參與休閒活動",
+ "總是一直在動，好像身上裝了馬達",
+ "話很多",
+ "問題還沒問完就急著回答",
+ "很難排隊或等待輪流",
+ "打斷或干擾別人（插嘴、打斷別人的遊戲）"];
+const DEV_A=[
+ "和同齡孩子相比明顯坐不住，喜歡的活動也很難停留幾分鐘",
+ "提醒很多次，仍常常沒聽完指令就行動",
+ "在需要輪流、等待的場合，明顯比同齡孩子困難",
+ "活動量大到經常撞到東西、受傷，或讓照顧者疲於追趕",
+ "對喜歡的事（卡通、遊戲）也難以專注投入",
+ "情緒轉換特別困難，激動後很難平復",
+ "說話或詞彙明顯比同齡孩子少、不清楚，外人常聽不懂",
+ "很少與其他孩子互動，或互動方式明顯不同（不看人、叫名不回應）",
+ "生活自理（吃飯、如廁、穿脫）明顯落後同齡孩子",
+ "對聲音、觸覺、質地特別敏感或特別遲鈍，影響日常生活"];
+let devTrack=null, devAns=null;
+function pickDev(i,v){
+  devAns[i]=v;
+  const opts=(devTrack==="A"?DEV_A_OPTS:DEV_B_OPTS);
+  opts.forEach((_,x)=>document.getElementById(`dv${i}v${x}`).classList.toggle("sel",x===v));
+  document.getElementById("dvq"+i).style.border="";
+}
+function showDevSection(){
+  const grade=document.getElementById("stuClass").value;
+  devTrack=/幼兒園/.test(grade)?"A":"B";
+  const items=devTrack==="A"?DEV_A:DEV_B;
+  const opts=devTrack==="A"?DEV_A_OPTS:DEV_B_OPTS;
+  devAns=new Array(items.length).fill(null);
+  const rows=items.map((t,i)=>{
+    const btns=opts.map((o,v)=>`<button type="button" onclick="pickDev(${i},${v})" id="dv${i}v${v}">${o}</button>`).join("");
+    return `<div class="q" id="dvq${i}" style="padding:10px 8px; border-radius:10px;"><div class="q-text" style="font-weight:600; margin-bottom:8px;">${i+1}. ${t}</div><div class="opts">${btns}</div></div>`;
+  }).join("");
+  const rs=document.getElementById("screen-result");
+  rs.innerHTML=`
+  <div class="card">
+   <p class="tagline" style="font-size:.95rem; color:#3a4358;">還有幾題就完成了！接下來請依孩子<b>最近六個月</b>的日常表現作答。每個孩子的節奏都不同，沒有好壞之分——越貼近實際情況，我們越能為孩子安排合適的學習方式。</p>
+   ${rows}
+   <div class="err" id="dvErr" style="display:none; margin:8px 0;">還有題目未作答（未作答的已標紅框）。</div>
+   <button class="btn" style="width:100%; font-size:1.05rem; margin-top:8px;" onclick="submitDevSection()">下一步</button>
+   <div class="note" style="margin-top:12px;">📚 本節為日常行為之觀察參考（非醫療診斷）。${devTrack==="A"?"編製參考美國 CDC「Learn the Signs. Act Early.」發展里程碑與 ASQ 年齡與發展進程問卷之向度架構":"題目採 SNAP-IV 中文版（Swanson 原著、台灣常模由高淑芬醫師團隊建立）之行為描述"}，依台灣家庭情境在地化。</div>
+  </div>`;
+  rs.classList.remove("hidden");
+  window.scrollTo(0,0);
+}
+function submitDevSection(){
+  let ok=true;
+  devAns.forEach((v,i)=>{ if(v===null){ document.getElementById("dvq"+i).style.border="1.5px solid #e05d5d"; ok=false; } });
+  if(!ok){ document.getElementById("dvErr").style.display="block"; return; }
   showParentExtra();
   window.scrollTo(0,0);
 }
+
 /* ---- 家長教育觀（6 題，約 1 分鐘） ---- */
 const PSX_AGREE=["很不同意","不太同意","普通","還算同意","非常同意"];
 const PSX=[
@@ -450,12 +520,11 @@ function showParentExtra(){
     return `<div class="q" id="psxq${i}" style="padding:10px 8px; border-radius:10px;"><div class="q-text" style="font-weight:600; margin-bottom:8px;">${i+1}. ${it[1]}</div><div class="opts">${btns}</div></div>`;
   }).join("");
   rs.innerHTML=`
-  <div class="card"><h2>✅ 評估完成！最後 6 題：您的教育想法</h2>
+  <div class="card"><h2>📝 最後 6 題：您的教育想法</h2>
    <p class="tagline">約 1 分鐘。沒有對錯，這能幫助顧問用最適合您家庭的方式規劃與溝通。</p>
    ${rows}
    <div class="err" id="psxErr" style="display:none; margin:8px 0;">還有題目未作答（未作答的已標紅框）。</div>
    <button class="btn" style="width:100%; font-size:1.05rem; margin-top:8px;" onclick="submitParentExtra()">完成</button>
-   <button class="btn secondary" style="width:100%; margin-top:8px;" onclick="showDone()">略過，直接完成</button>
    <div class="note" style="margin-top:12px;">📚 <b>編製依據</b>：教養風格題採 Baumrind 理論（要求×回應雙軸），參考 PSDQ、PAQ 國際量表在地化改寫。僅供教育諮詢參考。</div>
   </div>`;
   rs.classList.remove("hidden");
@@ -465,8 +534,8 @@ function submitParentExtra(){
   psx.forEach((v,i)=>{ if(v===null){ document.getElementById("psxq"+i).style.border="1.5px solid #e05d5d"; ok=false; } });
   if(!ok){ document.getElementById("psxErr").style.display="block"; return; }
   const d=leadData();
-  const pcode=`NSP1|${psx.join(",")}`;
-  submitToGoogleForm({...d, status:"教育觀問卷完成", result:`教育觀｜代碼[${pcode}]`});
+  const pcode=`NSP2|${psx.join(",")}|${devTrack}|${devAns.join(",")}`;
+  submitToGoogleForm({...d, status:"觀察問卷完成", result:`行為觀察+教育觀｜代碼[${pcode}]`});
   showDone();
 }
 function showDone(){

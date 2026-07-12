@@ -210,7 +210,7 @@ function parseCodes(txt){
   // 也接受直接貼裸代碼
   txt.split(/[\n\r]+/).forEach(line=>{
     const t=line.trim();
-    if(/^(HSC1|HSP1|HSP2|JHC1|JHP1|JHP2|RDC1|RDP1|RDP2|NSC1|NSP1)\|/.test(t) && !found.includes(t)) found.push(t);
+    if(/^(HSC1|HSP1|HSP2|JHC1|JHP1|JHP2|RDC1|RDP1|RDP2|NSC1|NSP1|NSP2)\|/.test(t) && !found.includes(t)) found.push(t);
   });
   const out={};
   found.forEach(c=>{ let tag=c.split("|")[0]; tag=tag.replace(/2$/,"1"); out[tag]=c; });
@@ -437,6 +437,35 @@ function renderRD(cc, pc, internal){
     `<span>學生：<b>${esc(name)}</b></span><span>年級：<b>${esc(grade)}</b></span><span>就緒指數：<b>${index}/100</b></span>${pc?"":"<span style='color:#c0392b;'>（未填對照卷）</span>"}`, body);
 }
 
+/* ---- 發展關懷檢核（內部） ---- */
+function devBlock(track, dev, internal){
+  if(!internal) return "";
+  let rows="", light="", advice="";
+  if(track==="B"){
+    const inatt=dev.slice(0,9).filter(v=>v>=2).length;
+    const hyper=dev.slice(9,18).filter(v=>v>=2).length;
+    const mx=Math.max(inatt,hyper);
+    light= mx>=6?["🚩 紅旗標","#c0392b"]: mx>=4?["🟡 黃旗標","#b8860b"]:["🟢 無旗標","#0a8f43"];
+    rows=`<tr><th>不專注（9 題中達「還算不少」以上）</th><td>${inatt} 題</td><th>過動／衝動</th><td>${hyper} 題</td></tr>`;
+    advice= mx>=6?"相關行為表現達篩檢關注標準（DSM-5 症狀數門檻為 6 項）。建議溫和引導家長至<b>兒童心智科</b>或<b>兒童發展聯合評估中心</b>進一步評估釐清；面談話術見 SOP。"
+          : mx>=4?"行為表現偏多但未達關注標準。建議入班後由老師課堂觀察 1–2 個月佐證，屆時再請家長檢核一次。"
+          :"未見明顯篩檢警訊。";
+  } else {
+    const often6=dev.slice(0,6).filter(v=>v===2).length;
+    const often4=dev.slice(6,10).filter(v=>v===2).length;
+    const red= often6>=4 || often4>=2;
+    const yellow= !red && (often6+often4)>=2;
+    light= red?["🚩 紅旗標","#c0392b"]: yellow?["🟡 黃旗標","#b8860b"]:["🟢 無旗標","#0a8f43"];
+    rows=`<tr><th>注意力／活動量警訊（前 6 題「經常如此」）</th><td>${often6} 題</td><th>語言／社交／自理／感官（後 4 題）</th><td>${often4} 題</td></tr>`;
+    advice= red?"警訊行為達關注標準。建議引導家長完成<b>台中市官方學前兒童發展檢核</b>（線上），並視結果協助聯繫早療通報轉介——6 歲前是療育黃金期，這是幫孩子搶時間。"
+          : yellow?"有零星警訊，建議持續觀察並於入班 1–2 個月後由老師觀察佐證，再次檢核。"
+          :"未見明顯發展警訊。";
+  }
+  return `<div class="internal"><h4>🔒 發展關懷檢核（內部——不向家長出示，不使用診斷用語）</h4>
+    <table>${rows}</table>
+    <p style="font-size:.78rem; margin:6px 0;"><b style="color:${light[1]};">${light[0]}</b>　${advice}</p>
+    <p style="font-size:.7rem; color:#5b6478; margin-top:4px;">轉介資源：台中市兒童發展資源網 cdrc.taichung.gov.tw（官方線上檢核）｜台中市早期療育通報轉介中心 04-2208-3688｜兒童發展聯合評估中心：中國附醫、中山附醫、台中榮總｜本檢核為行為篩檢參考，非醫療診斷。</p></div>`;
+}
 function renderNS(cc, pc, internal){
   const seg=cc.split("|");
   const name=seg[1], grade=seg[2];
@@ -452,7 +481,8 @@ function renderNS(cc, pc, internal){
      <div class="flex"><div style="text-align:center;">${radarDual(labels,vals,null,18)}<div class="legend">─ <span class="c1">家長觀察</span></div></div>
      <div><table><tr><th>面向</th><th>分數</th><th>階段</th></tr>${rows}</table></div></div>
      <h3 class="sec">英語與學習背景</h3><div class="verdict">${esc(bg)||"（未填）"}</div>`+
-     (pc?styleBlock(pc.split("|")[1].split(",").map(Number).slice(0,2), pc.split("|")[1].split(",").map(Number).slice(2,4), pc.split("|")[1].split(",").map(Number).slice(4,6), internal, []):"");
+     (pc?styleBlock(pc.split("|")[1].split(",").map(Number).slice(0,2), pc.split("|")[1].split(",").map(Number).slice(2,4), pc.split("|")[1].split(",").map(Number).slice(4,6), internal, []):"")+
+     ((pc && pc.split("|")[0]==="NSP2")?devBlock(pc.split("|")[2], pc.split("|")[3].split(",").map(Number), internal):"");
   return rptShell("新生入班評估報告"+(pc?"＋家長教育觀":""),
     `<span>孩子：<b>${esc(name)}</b></span><span>年段：<b>${esc(grade)}</b></span><span>填答：<b>家長</b></span>`, body);
 }
