@@ -272,17 +272,18 @@
     if(!btn) return;
     if(!('speechSynthesis' in window)){ btn.style.display='none'; return; }
     var synth=window.speechSynthesis, on=false;
+    function isEn(){try{return (localStorage.getItem('tips-lang')||'zh')==='en';}catch(e){return document.documentElement.getAttribute('lang')==='en';}}
     function getText(){
       var ns=[].slice.call(document.querySelectorAll('.article h1,.article h2,.article p,.article li'));
       return ns.filter(function(n){return !n.closest('footer,header,nav,.cta-box');})
                .map(function(n){return n.innerText;}).join('。\n');
     }
-    function reset(){on=false;btn.textContent='🔊 朗讀文章';}
+    function reset(){on=false;btn.textContent=isEn()?'🔊 Listen to this article':'🔊 朗讀文章';}
     btn.addEventListener('click',function(){
       if(on){synth.cancel();reset();return;}
       var u=new SpeechSynthesisUtterance(getText());
-      u.lang='zh-TW';u.rate=1;u.onend=reset;u.onerror=reset;
-      synth.cancel();synth.speak(u);on=true;btn.textContent='⏹ 停止朗讀';
+      u.lang=isEn()?'en-US':'zh-TW';u.rate=1;u.onend=reset;u.onerror=reset;
+      synth.cancel();synth.speak(u);on=true;btn.textContent=isEn()?'⏹ Stop':'⏹ 停止朗讀';
     });
     window.addEventListener('beforeunload',function(){try{synth.cancel();}catch(e){}});
   })();
