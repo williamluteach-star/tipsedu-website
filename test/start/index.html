@@ -120,6 +120,54 @@
     .score-label{width:96px; font-size:.82rem;}
   }
 </style>
+<style id="macaron-theme">
+  :root{
+    --ink:#1d1d1f; --muted:#6e6e73; --bg:#faf7f4; --card:#ffffff;
+    --accent:#3d7fc1; --radius:18px;
+    --r:#e0798c; --i:#8b7cd8; --a:#e09a55; --s:#43a58c; --e:#5b8fd8; --c:#b0895a;
+  }
+  body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif; background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased;}
+  header.top{background:linear-gradient(160deg,#eaf3fb 0%,#e8f5ee 100%); color:var(--ink); border-radius:0 0 28px 28px; border-bottom:1px solid rgba(0,0,0,.04);}
+  .brand-logo{background:#1d1d1f; color:#fff; border-radius:12px; font-weight:800;}
+  .brand-logo a{color:inherit;}
+  .brand-sub{opacity:1; color:var(--muted);}
+  header.top h1{font-weight:700; letter-spacing:-.02em;}
+  .hl{color:#3d7fc1;}
+  .hero-stat{background:rgba(255,255,255,.72); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-radius:16px; color:#494952; box-shadow:0 2px 10px rgba(60,50,70,.05);}
+  .hero-stat b{color:var(--ink);}
+  .card{border-radius:20px; box-shadow:0 4px 24px rgba(60,50,70,.06);}
+  .card h2{color:var(--ink); letter-spacing:-.01em;}
+  .btn{border-radius:980px; background:var(--accent); font-weight:600;}
+  .btn:hover{filter:brightness(1.08);}
+  .btn.secondary{background:#ececf0; color:var(--ink);}
+  .lead-form{background:#eaf3fb; border:none; border-radius:16px;}
+  .field input,.field select{border:1px solid #d2d2d7; border-radius:12px;}
+  .progressbar{background:var(--bg);}
+  .pb-track{background:#e8e8ed; border-radius:980px;}
+  .pb-fill{background:linear-gradient(90deg,#9cc0e4,var(--accent));}
+  .q-item{border-radius:16px; box-shadow:0 2px 12px rgba(60,50,70,.05);}
+  .opts button{border:1.5px solid #d2d2d7; border-radius:12px; color:#3a3a3c;}
+  .opts button:hover{border-color:var(--accent);}
+  .opts button.sel{background:var(--accent); border-color:var(--accent);}
+  .verdict{background:#eaf3fb; border-left:5px solid var(--accent); border-radius:14px;}
+  .code-badge{background:#1d1d1f; color:#fff; border-radius:14px;}
+  .group-card{border:none; background:#f7f4f1; border-radius:14px;}
+  .group-card .pct{color:var(--accent);}
+  .note{background:#f5f2ee; border-radius:12px;}
+  .cta-box{background:linear-gradient(135deg,#eaf3fb,#e8f5ee); color:var(--ink); border-radius:20px;}
+  .cta-box h2{color:var(--ink);}
+  .cta-contact{opacity:1; color:#494952;}
+  .line-float{border-radius:980px;}
+  .psx,.psg{border-radius:980px !important;}
+  @media print{
+    body{background:#fff;}
+    header.top{background:#fff !important; color:#1d1d1f !important; border-bottom:2px solid #1d1d1f; border-radius:0;}
+    .hl{color:#1d1d1f !important;}
+    .code-badge{background:#fff !important; color:#1d1d1f !important; border:2.5px solid #1d1d1f;}
+    .card{box-shadow:none; border:1px solid #ddd;}
+    .verdict,.lead-form,.note,.group-card{background:#f6f6f6 !important;}
+  }
+</style>
 </head>
 <body>
 <header class="top hero">
@@ -146,7 +194,6 @@
       <div class="feature"><b>🎯 台灣升學制度對接</b>直接對應普通高中選組方向與技術型高中 15 群科，附各群科別與適合特質。</div>
       <div class="feature"><b>👨‍🏫 免費專人解讀</b>做完測驗加 LINE，TIPS 教育顧問免費一對一解讀報告，並提供 12 年學習藍圖建議。</div>
     </div>
-    <div class="note">📢 <b>116 學年統測新制</b>：四技二專統測已從「5 科全考」改為<b>自主選考</b>——依報考群類至少選 2～3 科，甄選入學最多也只採計 4 科。這代表<b>選對群科、及早聚焦優勢科目</b>，比以往更關鍵。本測驗的 15 群科適配排名，正是幫孩子找出該聚焦的方向。</div>
   </div>
   <div class="card">
     <h2>📝 填寫基本資料，立即開始免費測驗</h2>
@@ -618,7 +665,7 @@ let psA=new Array(6).fill(null), psC=new Array(10).fill(null), psExpect=null, ps
 
 const PS_STYLE=`<style>
 .psx,.psg{display:inline-block; margin:4px 6px 4px 0; padding:8px 14px; border:1.5px solid #ccd4e2; background:#fff; border-radius:20px; font-size:.85rem; cursor:pointer; font-family:inherit; color:#3a4358;}
-.psx.on,.psg.on{background:#2f6fed; border-color:#2f6fed; color:#fff; font-weight:700;}
+.psx.on,.psg.on{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700;}
 .q.miss{border:1.5px solid #e05d5d; border-radius:10px;}
 </style>`;
 

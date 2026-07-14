@@ -7,45 +7,45 @@
 <meta name="robots" content="noindex,nofollow">
 <style>
   *{box-sizing:border-box; margin:0; padding:0;}
-  body{font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; background:#e8ebf2; color:#1a2233; line-height:1.55; font-size:15px;}
+  body{font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; background:#faf7f4; color:#1d1d1f; line-height:1.55; font-size:15px;}
   .panel{max-width:820px; margin:18px auto; background:#fff; border-radius:12px; padding:20px 24px; box-shadow:0 2px 10px rgba(20,30,60,.08);}
-  .panel h1{font-size:1.15rem; color:#20315c; margin-bottom:8px;}
+  .panel h1{font-size:1.15rem; color:#1d1d1f; margin-bottom:8px;}
   textarea{width:100%; min-height:110px; border:1.5px solid #ccd4e2; border-radius:8px; padding:10px; font-size:.85rem; font-family:inherit;}
   .row{display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-top:10px;}
-  .btn{background:#2f6fed; color:#fff; border:none; border-radius:9px; padding:11px 22px; font-size:.95rem; font-weight:800; cursor:pointer; font-family:inherit;}
-  .btn.sec{background:#eef3ff; color:#2f6fed;}
+  .btn{background:#5b8fd8; color:#fff; border:none; border-radius:9px; padding:11px 22px; font-size:.95rem; font-weight:800; cursor:pointer; font-family:inherit;}
+  .btn.sec{background:#eaf3fb; color:#5b8fd8;}
   label.mode{font-size:.9rem; font-weight:700; cursor:pointer;}
   .hint{font-size:.78rem; color:#5b6478; margin-top:6px;}
   .errbox{display:none; background:#fdecec; color:#c0392b; border-radius:8px; padding:8px 12px; font-size:.85rem; margin-top:10px;}
   /* ===== 報告 ===== */
   .a4{max-width:820px; margin:18px auto; background:#fff; padding:34px 42px; box-shadow:0 2px 12px rgba(20,30,60,.12);}
-  .rpt-head{display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid #20315c; padding-bottom:10px;}
-  .logo{font-weight:900; font-size:1.1rem; letter-spacing:2px; color:#20315c;}
+  .rpt-head{display:flex; justify-content:space-between; align-items:flex-start; border-bottom:3px solid #1d1d1f; padding-bottom:10px;}
+  .logo{font-weight:900; font-size:1.1rem; letter-spacing:2px; color:#1d1d1f;}
   .logo small{display:block; font-weight:500; font-size:.66rem; color:#5b6478; letter-spacing:1px;}
   .rpt-title{text-align:right;}
-  .rpt-title h2{font-size:1.15rem; color:#20315c;}
+  .rpt-title h2{font-size:1.15rem; color:#1d1d1f;}
   .rpt-title .sub{font-size:.68rem; color:#5b6478;}
-  .stu-row{display:flex; gap:16px; flex-wrap:wrap; margin:10px 0; font-size:.83rem; background:#f4f6fa; border-radius:8px; padding:7px 12px;}
-  .stu-row b{color:#2f6fed;}
-  h3.sec{font-size:.95rem; color:#20315c; border-left:5px solid #2f6fed; padding-left:8px; margin:14px 0 8px;}
+  .stu-row{display:flex; gap:16px; flex-wrap:wrap; margin:10px 0; font-size:.83rem; background:#f5f2ee; border-radius:8px; padding:7px 12px;}
+  .stu-row b{color:#5b8fd8;}
+  h3.sec{font-size:.95rem; color:#1d1d1f; border-left:5px solid #5b8fd8; padding-left:8px; margin:14px 0 8px;}
   table{width:100%; border-collapse:collapse; font-size:.78rem; margin:6px 0;}
   th,td{border:1px solid #d8deea; padding:4px 8px; text-align:left;}
-  th{background:#eef3ff; color:#20315c;}
-  .badge{display:inline-block; background:#20315c; color:#fff; font-weight:800; letter-spacing:4px; border-radius:8px; padding:2px 12px 2px 16px; font-size:1rem;}
+  th{background:#eaf3fb; color:#1d1d1f;}
+  .badge{display:inline-block; background:#1d1d1f; color:#fff; font-weight:800; letter-spacing:4px; border-radius:8px; padding:2px 12px 2px 16px; font-size:1rem;}
   .gap-hi{background:#fdecec; color:#c0392b; font-weight:700;}
   .gap-ok{color:#0a8f43;}
-  .verdict{background:#e5f7f5; border-left:5px solid #12b5a5; border-radius:8px; padding:7px 12px; font-size:.8rem; margin:8px 0;}
-  .warn{background:#fdf6e8; border-left:5px solid #e8a020;}
+  .verdict{background:#e8f5ee; border-left:5px solid #43a58c; border-radius:8px; padding:7px 12px; font-size:.8rem; margin:8px 0;}
+  .warn{background:#fdf6e4; border-left:5px solid #e8a020;}
   .internal{background:#f1f3f7; border:1.5px dashed #8a94a8; border-radius:10px; padding:12px 14px; margin:12px 0;}
   .internal h4{font-size:.85rem; color:#5b6478; margin-bottom:6px;}
   .note-box{border:1.5px dashed #b9c3d6; border-radius:8px; min-height:84px; padding:8px 12px; font-size:.72rem; color:#8a93a8; margin:6px 0;}
   .foot{margin-top:12px; border-top:1.5px solid #d8deea; padding-top:7px; font-size:.65rem; color:#5b6478; display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;}
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
   .gcard{border:1px solid #d8deea; border-radius:8px; padding:7px 10px; font-size:.74rem;}
-  .gcard b{color:#20315c;} .gcard .pct{float:right; color:#2f6fed; font-weight:800;}
+  .gcard b{color:#1d1d1f;} .gcard .pct{float:right; color:#5b8fd8; font-weight:800;}
   .flex{display:flex; gap:16px; flex-wrap:wrap;} .flex>div{flex:1; min-width:250px;}
   .legend{font-size:.68rem; color:#5b6478; text-align:center;}
-  .legend .c1{color:#2f6fed; font-weight:700;} .legend .c2{color:#e8873a; font-weight:700;}
+  .legend .c1{color:#5b8fd8; font-weight:700;} .legend .c2{color:#e09a55; font-weight:700;}
   .spec{margin:6px 0;}
   .spec .lab{font-size:.75rem; font-weight:700; margin-bottom:2px;}
   @media print{
@@ -55,11 +55,40 @@
     @page{size:A4; margin:8mm;}
   }
 </style>
+<style id="macaron-theme">
+  body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif; -webkit-font-smoothing:antialiased;}
+  .panel{border-radius:20px; box-shadow:0 4px 24px rgba(60,50,70,.07); padding:24px 28px;}
+  .panel h1{letter-spacing:-.01em;}
+  textarea{border:1px solid #d2d2d7; border-radius:14px; padding:12px;}
+  .btn{border-radius:980px; font-weight:700; background:#1d1d1f; transition:.2s;}
+  .btn:hover{filter:brightness(1.25);}
+  .btn.sec{background:#ececf0; color:#1d1d1f;}
+  .errbox{border-radius:12px; background:#fdeef1; color:#c9526f;}
+  .a4{border-radius:20px; box-shadow:0 4px 28px rgba(60,50,70,.09);}
+  .rpt-head{border-bottom:2.5px solid #1d1d1f;}
+  .stu-row{border-radius:12px; background:#f5f2ee;}
+  h3.sec{letter-spacing:-.01em;}
+  th{background:#eaf3fb;}
+  th,td{border:1px solid #e5e0da;}
+  .badge{border-radius:10px;}
+  .verdict{border-radius:12px;}
+  .internal{background:#f5f2ee; border:1.5px dashed #b5aa9c; border-radius:14px;}
+  .gcard{border:1px solid #e5e0da; border-radius:12px;}
+  .note-box{border:1.5px dashed #cfc6ba; border-radius:12px;}
+  .foot{border-top:1.5px solid #e5e0da;}
+  @media print{
+    /* 列印淡雅：一律白底＋淡灰，不印馬卡龍底色 */
+    .a4{border-radius:0;}
+    .stu-row,.internal,.verdict,.warn{background:#f6f6f6 !important;}
+    th{background:#efefef !important;}
+    .gap-hi{background:#f1f1f1 !important;}
+  }
+</style>
 </head>
 <body>
 
 <div class="panel">
-  <h1>🔒 TIPS 報告產生器（內部工具，請勿外流網址）<a href="sop.html" style="float:right; font-size:.75rem; color:#2f6fed; text-decoration:none;">📖 解讀面談 SOP</a></h1>
+  <h1>🔒 TIPS 報告產生器（內部工具，請勿外流網址）<a href="sop.html" style="float:right; font-size:.75rem; color:#5b8fd8; text-decoration:none;">📖 解讀面談 SOP</a></h1>
   <p class="hint">從試算表複製「結果摘要」欄整格貼上即可（孩子那筆＋對照卷那筆可以一起貼，系統會自動抓「代碼[…]」）。支援：高中定向 HSC／國中興趣 JHC／準備度 RDC／入班評估 NSC＋各對照卷代碼。</p>
   <textarea id="codeInput" placeholder="把試算表的結果摘要貼在這裡（可多筆一起貼）…"></textarea>
   <div class="row">
@@ -113,8 +142,8 @@ const JH_GROUPS = [
  {n:"設計群", codes:["A","R"], majors:"廣告設計科、多媒體設計科、室內設計科", fit:"對美感與空間有興趣、想用作品表達想法", path:"升學：科大視覺傳達／多媒體設計；出路：設計公司、遊戲美術、接案設計師"},
  {n:"藝術群", codes:["A","S"], majors:"音樂科、舞蹈科、美術科、表演藝術科", fit:"創意與觀察力強、喜歡表演與藝術表達", path:"升學：藝術大學／科大表演藝術；出路：劇團、音樂教學、演藝與策展"}
 ];
-const RD_DIMS=[["mot","學習動機","#e05d5d"],["time","時間管理","#e8873a"],["focus","專注習慣","#eab308"],["strategy","學習方法","#12b5a5"],["mind","考試心態","#2f6fed"],["self","生活獨立","#7c5cd6"]];
-const NS_DIMS=[["focus","專注與持續","#e05d5d"],["lang","語言與溝通","#e8873a"],["social","情緒與社交","#12b5a5"],["self","生活自理","#2f6fed"],["curio","學習興趣與好奇心","#7c5cd6"]];
+const RD_DIMS=[["mot","學習動機","#e0798c"],["time","時間管理","#e09a55"],["focus","專注習慣","#d4a72c"],["strategy","學習方法","#43a58c"],["mind","考試心態","#5b8fd8"],["self","生活獨立","#8b7cd8"]];
+const NS_DIMS=[["focus","專注與持續","#e0798c"],["lang","語言與溝通","#e09a55"],["social","情緒與社交","#43a58c"],["self","生活自理","#5b8fd8"],["curio","學習興趣與好奇心","#8b7cd8"]];
 const R6=["R","I","A","S","E","C"];
 const R6NAME={R:"實用型 R",I:"研究型 I",A:"藝術型 A",S:"社會型 S",E:"企業型 E",C:"事務型 C"};
 const HS_EXPECT=["自然組","社會組","尊重孩子，沒有特定期望"];
@@ -138,8 +167,8 @@ function radarDual(labels, childVals, parentVals, maxV){
     const [lx,ly]=pt(i,1.28); lab+=`<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="700" fill="${L[1]}">${L[0]} ${childVals[i]}</text>`; });
   const p1=labels.map((_,i)=>pt(i,childVals[i]/maxV).join(",")).join(" ");
   let p2="";
-  if(parentVals) p2=`<polygon points="${labels.map((_,i)=>pt(i,parentVals[i]/maxV).join(",")).join(" ")}" fill="rgba(232,135,58,.14)" stroke="#e8873a" stroke-width="2" stroke-dasharray="5 4"/>`;
-  return `<svg viewBox="0 0 300 280" width="300" height="280">${grid}${axes}<polygon points="${p1}" fill="rgba(47,111,237,.2)" stroke="#2f6fed" stroke-width="2.5"/>${p2}${lab}</svg>`;
+  if(parentVals) p2=`<polygon points="${labels.map((_,i)=>pt(i,parentVals[i]/maxV).join(",")).join(" ")}" fill="rgba(232,135,58,.14)" stroke="#e09a55" stroke-width="2" stroke-dasharray="5 4"/>`;
+  return `<svg viewBox="0 0 300 280" width="300" height="280">${grid}${axes}<polygon points="${p1}" fill="rgba(47,111,237,.2)" stroke="#5b8fd8" stroke-width="2.5"/>${p2}${lab}</svg>`;
 }
 function bar(pct,color){ const w=pct>0?Math.max(pct,3):0; return `<svg viewBox="0 0 100 12" preserveAspectRatio="none" width="100%" height="13" style="display:block;"><rect width="100" height="12" rx="4" fill="#e8ecf4"/>${w?`<rect width="${w}" height="12" rx="4" fill="${color}"/>`:""}</svg>`; }
 function spectrum(label,val,maxV,left,right){
@@ -148,8 +177,8 @@ function spectrum(label,val,maxV,left,right){
   return `<div class="spec"><div class="lab">${label}</div>
     <svg viewBox="0 0 600 42" width="100%" style="display:block; max-width:640px;">
       <rect x="8" y="8" width="584" height="9" rx="4.5" fill="#e8ecf4"/>
-      <rect x="8" y="8" width="${Math.max(9,pct*584)}" height="9" rx="4.5" fill="#2f6fed"/>
-      <circle cx="${x}" cy="12.5" r="7" fill="#20315c"/>
+      <rect x="8" y="8" width="${Math.max(9,pct*584)}" height="9" rx="4.5" fill="#5b8fd8"/>
+      <circle cx="${x}" cy="12.5" r="7" fill="#1d1d1f"/>
       <text x="8" y="36" font-size="13" fill="#5b6478">${left}</text>
       <text x="592" y="36" font-size="13" fill="#5b6478" text-anchor="end">${right}</text>
     </svg></div>`;
@@ -238,7 +267,7 @@ function parseLegacy(txt,out){
 
 /* ================= 各測驗報告 ================= */
 function riasecSection(riasec, pA, top3code){
-  const labels=R6.map(k=>[k, {R:"#e05d5d",I:"#7c5cd6",A:"#e8873a",S:"#12b5a5",E:"#2f6fed",C:"#8a6d3b"}[k]]);
+  const labels=R6.map(k=>[k, {R:"#e0798c",I:"#8b7cd8",A:"#e09a55",S:"#43a58c",E:"#5b8fd8",C:"#b0895a"}[k]]);
   const childVals=R6.map(k=>riasec[k]);
   const parentVals=pA?pA.map(v=>v*10):null;
   let table="";
@@ -256,7 +285,7 @@ function riasecSection(riasec, pA, top3code){
   return `<h3 class="sec">興趣六型剖面${pA?"：孩子實測 vs 家長眼中的孩子":""}（何倫碼 <span class="badge">${top3code}</span>）</h3>
     <div class="flex"><div style="text-align:center;">${radarDual(labels,childVals,parentVals,40)}
     <div class="legend">─ <span class="c1">孩子實測</span>${pA?"　╌ <span class='c2'>家長觀察</span>":""}</div></div>
-    <div>${table||R6.map(k=>`<div style="display:flex; align-items:center; gap:8px; margin:4px 0;"><div style="width:76px; font-size:.76rem; font-weight:700;">${R6NAME[k]}</div><div style="flex:1;">${bar(riasec[k]/40*100,"#2f6fed")}</div><div style="width:44px; font-size:.74rem; text-align:right;">${riasec[k]}/40</div></div>`).join("")}</div></div>`;
+    <div>${table||R6.map(k=>`<div style="display:flex; align-items:center; gap:8px; margin:4px 0;"><div style="width:76px; font-size:.76rem; font-weight:700;">${R6NAME[k]}</div><div style="flex:1;">${bar(riasec[k]/40*100,"#5b8fd8")}</div><div style="width:44px; font-size:.74rem; text-align:right;">${riasec[k]}/40</div></div>`).join("")}</div></div>`;
 }
 
 function renderHS(cc, pc, internal){
@@ -307,7 +336,7 @@ function renderHS(cc, pc, internal){
 function qWarn(seg,internal){
   const q=(seg||"").replace(/^Q:/,"");
   if(!internal || !q || q==="OK") return "";
-  return `<div class="verdict warn" style="border-left-color:#e05d5d; background:#fdecec;">⚠ <b>作答品質旗標：${q}</b>——作答過快或全程同一選項，結果參考價值可能偏低，建議安排重測後再據以規劃。</div>`;
+  return `<div class="verdict warn" style="border-left-color:#e0798c; background:#fdecec;">⚠ <b>作答品質旗標：${q}</b>——作答過快或全程同一選項，結果參考價值可能偏低，建議安排重測後再據以規劃。</div>`;
 }
 /* ---- 題庫（逐題明細用） ---- */
 const HSQ_P1=[
@@ -551,7 +580,7 @@ const NSPX_TXT=["學習表現有明確標準","作息安排由家長規定","先
 function segOf(cc,prefix){ const s=cc.split("|").find(x=>x.startsWith(prefix)); return s?s.slice(prefix.length):null; }
 function detailTable(title, rows){
   if(!rows.length) return "";
-  const tr=rows.map(r=>`<tr><td style="width:26px; text-align:right; color:#8a94a8;">${r[0]}</td><td>${r[1]}</td><td style="width:86px; font-weight:700; color:${r[3]||'#20315c'};">${r[2]}</td></tr>`).join("");
+  const tr=rows.map(r=>`<tr><td style="width:26px; text-align:right; color:#8a94a8;">${r[0]}</td><td>${r[1]}</td><td style="width:86px; font-weight:700; color:${r[3]||'#1d1d1f'};">${r[2]}</td></tr>`).join("");
   return `<h4 style="font-size:.8rem; color:#5b6478; margin:10px 0 4px;">${title}</h4><table style="font-size:.72rem;">${tr}</table>`;
 }
 function itemsRows(items, opts, ansStr, offset, hiFrom){
@@ -671,7 +700,6 @@ function renderJH(cc, pc, internal){
     `<h3 class="sec">高中／高職傾向</h3><div class="verdict">${dirTxt}｜學術 ${ac}/32・實作 ${pr}/32｜區分性 D=${D.toFixed(1)}${D<4?"（偏低，興趣仍在探索中，排名僅供參考）":""}</div>`+
     expTable+
     `<h3 class="sec">技高 15 群科適配 Top4</h3><div class="grid2">${topCards}</div>`+
-    `<div class="verdict warn">📢 <b>制度快訊（116 學年度起）</b>：四技二專統測改為<b>自主選考</b>——單群類考生至少選考 2 科（含 1 科專業科目）、跨群類至少 3 科；四技甄選入學第一階段參採統測科目降為<b>最多 4 科</b>，117 學年起篩選倍率再由 3 倍放寬至 4 倍。整體方向是「考得少、採得準」：<b>群科選得對，孩子就能把時間集中在真正加分的科目上</b>。本報告的群科適配排名可作為選擇起點，建議搭配 TIPS 顧問一對一解讀。</div>`+
     (pc?styleBlock(pC.slice(0,4),pC.slice(4,8),pC.slice(8),internal,jhTips(pA,riasec,pExpect,T,pGroups,ranked)):"")+
     answerAppendix([
       (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("孩子作答｜Part 1 興趣 60 題",itemsRows(HSQ_P1,HSQ_P1O,a,0)):null;})(),
@@ -758,7 +786,7 @@ function renderNS(cc, pc, internal){
   const bg=seg[4]||"";
   const labels=NS_DIMS.map(d=>[d[1].slice(0,2), d[2]]);
   const rows=NS_DIMS.map((d,i)=>{
-    const lv=vals[i]>=14?["亮點優勢","#12b5a5"]:(vals[i]>=9?["穩定發展","#e8873a"]:["慢慢來","#e05d5d"]);
+    const lv=vals[i]>=14?["亮點優勢","#43a58c"]:(vals[i]>=9?["穩定發展","#e09a55"]:["慢慢來","#e0798c"]);
     return `<tr><td>${d[1]}</td><td>${vals[i]}/18</td><td style="color:${lv[1]}; font-weight:700;">${lv[0]}</td></tr>`;}).join("");
   const body=
     qWarn(seg[5],internal)+
@@ -809,7 +837,7 @@ function renderGrowth(allCodes, internal){
   parsed.sort((a,b)=>a.stage-b.stage);
   const name=parsed[parsed.length-1].name||parsed[0].name;
   // 時間軸
-  const tl=parsed.map((p,i)=>`<tr><td style="width:24px; font-weight:800; color:#2f6fed;">${i+1}</td><td>${p.label}</td><td>${esc(p.grade)}</td><td>${p.key}</td></tr>`).join("");
+  const tl=parsed.map((p,i)=>`<tr><td style="width:24px; font-weight:800; color:#5b8fd8;">${i+1}</td><td>${p.label}</td><td>${esc(p.grade)}</td><td>${p.key}</td></tr>`).join("");
   let body=`<h3 class="sec">學習軌跡時間軸（共 ${parsed.length} 次測評）</h3>
     <table><tr><th></th><th>測驗</th><th>年級</th><th>關鍵結果</th></tr>${tl}</table>`;
   // 何倫碼穩定性
@@ -824,7 +852,7 @@ function renderGrowth(allCodes, internal){
       </div><div class="verdict">📌 ${stable}</div>`;
     // RIASEC 疊圖（最早 vs 最新）
     const a=hCodes[0], b=hCodes[hCodes.length-1];
-    const labels=R6.map(k=>[k,{R:"#e05d5d",I:"#7c5cd6",A:"#e8873a",S:"#12b5a5",E:"#2f6fed",C:"#8a6d3b"}[k]]);
+    const labels=R6.map(k=>[k,{R:"#e0798c",I:"#8b7cd8",A:"#e09a55",S:"#43a58c",E:"#5b8fd8",C:"#b0895a"}[k]]);
     body+=`<div class="flex"><div style="text-align:center;">${radarDual(labels,R6.map(k=>b.riasec[k]),R6.map(k=>a.riasec[k]),40)}
       <div class="legend">─ <span class="c1">${b.label}（${esc(b.grade)}）</span>　╌ <span class="c2">${a.label}（${esc(a.grade)}）</span></div></div>
       <div><table><tr><th>類型</th><th>${esc(a.grade)}</th><th>${esc(b.grade)}</th><th>變化</th></tr>
