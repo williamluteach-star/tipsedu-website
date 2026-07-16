@@ -33,7 +33,7 @@
 </head>
 <body>
 <div class="panel">
-  <h1>📊 TIPS 學測落點分析 <span class="badge">骨架版・樣本 24 校系</span><a href="../" style="float:right; font-size:.75rem; color:#5b8fd8; text-decoration:none;">← 回報告產生器</a></h1>
+  <h1>📊 TIPS 學測落點分析 <span class="badge">申請 41 校系・分發全量 1772 系組</span><a href="../" style="float:right; font-size:.75rem; color:#5b8fd8; text-decoration:none;">← 回報告產生器</a></h1>
   <p class="hint">輸入學測級分（沒考的科目留空），系統依 114 學年甄選會官方「各校系篩選標準一覽表」判定：🔥 夢幻（差 2～4 級分內，值得衝）｜🎯 落點（±1 級分）｜🛡 安全（超過 2 級分以上）。</p>
   <div class="grid6">
     <div class="fld"><label>國文</label><input id="s國" type="number" min="0" max="15" placeholder="－"></div>
@@ -43,17 +43,37 @@
     <div class="fld"><label>社會</label><input id="s社" type="number" min="0" max="15" placeholder="－"></div>
     <div class="fld"><label>自然</label><input id="s自" type="number" min="0" max="15" placeholder="－"></div>
   </div>
-  <button class="btn" onclick="run()">產生落點分析</button>
+  <div id="distFields" style="display:none;">
+    <p class="hint" style="margin-top:2px;">分科測驗級分（60 級分制，沒考的留空；學測級分系統會自動 ×4 換算）</p>
+    <div class="grid6" style="grid-template-columns:repeat(8,1fr);">
+      <div class="fld"><label>數甲</label><input id="d數甲" type="number" min="0" max="60" placeholder="－"></div>
+      <div class="fld"><label>數乙</label><input id="d數乙" type="number" min="0" max="60" placeholder="－"></div>
+      <div class="fld"><label>物理</label><input id="d物" type="number" min="0" max="60" placeholder="－"></div>
+      <div class="fld"><label>化學</label><input id="d化" type="number" min="0" max="60" placeholder="－"></div>
+      <div class="fld"><label>生物</label><input id="d生" type="number" min="0" max="60" placeholder="－"></div>
+      <div class="fld"><label>歷史</label><input id="d歷" type="number" min="0" max="60" placeholder="－"></div>
+      <div class="fld"><label>地理</label><input id="d地" type="number" min="0" max="60" placeholder="－"></div>
+      <div class="fld"><label>公民</label><input id="d公" type="number" min="0" max="60" placeholder="－"></div>
+    </div>
+    <div class="fld" style="max-width:280px; margin-bottom:10px;"><label>校系關鍵字過濾（選填，例：台大、資訊、中興）</label><input id="dFilter" type="text" placeholder="留空＝全部"></div>
+  </div>
+  <div style="margin:4px 0 10px;">
+    <label style="font-size:.85rem; font-weight:700; margin-right:14px;"><input type="radio" name="ldmode" value="apply" checked> 申請入學一階（學測）</label>
+    <label style="font-size:.85rem; font-weight:700;"><input type="radio" name="ldmode" value="dist"> 分發入學（學測＋分科）</label>
+  </div>
+  <button class="btn" onclick="go()">產生落點分析</button>
   <button class="btn sec" onclick="window.print()">🖨 列印</button>
+  <script>document.addEventListener("change",e=>{ if(e.target.name==="ldmode") document.getElementById("distFields").style.display = e.target.value==="dist"?"block":"none"; });</script>
 </div>
 <div class="out" id="out"></div>
 
+<script src="data114.js"></script>
 <script>
 /* 114 學測五標（大考中心）：頂/前/均/後/底 */
 const FIVE={"國":[13,12,10,9,7],"英":[13,11,8,4,3],"數A":[11,9,6,4,3],"數B":[12,10,6,4,3],"社":[13,12,10,8,7],"自":[13,12,9,7,5]};
 const LVL={"頂":0,"前":1,"均":2,"後":3,"底":4};
-/* 樣本資料：114 學年個人申請一階篩選標準（甄選會官方一覽表轉錄，2026-07 骨架版） */
-const DEPTS=[
+/* 內建備援樣本（data114.js 未載入時使用） */
+const DEPTS_BUILTIN=[
  {u:"國立臺灣大學",d:"電機工程學系",chk:{"英":"頂","數A":"頂","自":"頂"},sv:[[["英","數A","自"],44]]},
  {u:"國立臺灣大學",d:"法律學系法學組",chk:{"國":"頂","英":"頂","數B":"前","社":"頂"},sv:[[["國","英"],30]]},
  {u:"國立臺灣大學",d:"機械工程學系",chk:{"英":"均","數A":"前","自":"前"},sv:[[["英","數A","自"],41]]},
@@ -78,12 +98,52 @@ const DEPTS=[
  {u:"逢甲大學",d:"國際經營與貿易學系",chk:{"英":"後","數B":"後"},sv:[[["國","英","數B","社"],32]]},
  {u:"逢甲大學",d:"經濟學系",chk:{"英":"後","數B":"後"},sv:[[["數B"],6],[["社"],11]]}
 ];
+function go(){
+  const m=document.querySelector('input[name="ldmode"]:checked').value;
+  if(m==="dist") runDist(); else run();
+}
+function runDist(){
+  if(typeof LD_DIST==="undefined"){ document.getElementById("out").innerHTML='<div class="tierbox"><p style="font-size:.85rem;">找不到資料檔 data114.js——請確認已上傳至 luodian 資料夾。</p></div>'; return; }
+  const G={}; ["國","英","數A","數B"].forEach(k=>{const v=document.getElementById("s"+k).value; G[k]=v===""?null:Number(v)*4;});
+  const F={}; ["數甲","數乙","物","化","生","歷","地","公"].forEach(k=>{const v=document.getElementById("d"+k).value; F[k]=v===""?null:Number(v);});
+  const SC={...G,...F};
+  const kw=(document.getElementById("dFilter").value||"").trim();
+  const tiers={safe:[],match:[],dream:[]}; let far=0, missing=0;
+  LD_DIST.forEach(D=>{
+    if(kw && !(D.u+D.d).includes(kw)) return;
+    let total=0, tw=0, ok=true;
+    for(const [subj,w] of D.w){ if(SC[subj]===null||SC[subj]===undefined){ok=false;break;} total+=SC[subj]*w; tw+=w; }
+    if(!ok){missing++;return;}
+    const dn=(total-D.m)/tw; // 每加權單位差距（60 分制；4 分≈1 學測級分）
+    const card={...D, total:Math.round(total*100)/100, dn:Math.round(dn*10)/10};
+    if(dn>=8) tiers.safe.push(card);
+    else if(dn>=-4) tiers.match.push(card);
+    else if(dn>=-16) tiers.dream.push(card);
+    else far++;
+  });
+  const CAP=30;
+  const box=(title,emoji,color,bg,arr,desc)=>{
+    arr.sort((a,b)=>a.dn-b.dn);
+    const shown=arr.slice(0,CAP);
+    const cards=shown.length?shown.map(c=>`<div class="dcard" style="background:${bg};"><span class="diff" style="color:${color};">${c.dn>=0?"+":""}${c.dn}</span><b>${c.u}　${c.d}</b><div class="st">採計：${c.w.map(x=>x[0]+"×"+x[1]).join(" ")}｜我的加權總分 ${c.total}／去年最低 ${c.m}（差距為每加權科平均，4 分≈1 學測級分）</div></div>`).join(""):`<p style="font-size:.82rem; color:#6e6e73;">此帶沒有符合的校系${kw?"（過濾中："+kw+"）":""}。</p>`;
+    const more=arr.length>CAP?`<p style="font-size:.75rem; color:#6e6e73;">另有 ${arr.length-CAP} 個未顯示——用關鍵字過濾縮小範圍。</p>`:"";
+    return `<div class="tierbox"><h2 style="color:${color};">${emoji} ${title}<span style="font-weight:500; font-size:.78rem; color:#6e6e73;">　${desc}</span></h2>${cards}${more}</div>`;
+  };
+  document.getElementById("out").innerHTML=
+    box("夢幻志向","🔥","#c9526f","#fdeef1",tiers.dream,"每科平均差 1～4 級分——值得衝")+
+    box("落點志向","🎯","#2f8f6d","#e8f5ee",tiers.match,"每科平均 ±1 級分——主力戰場")+
+    box("安全志向","🛡","#3d7fc1","#eaf3fb",tiers.safe,"每科平均超過 2 級分——保心安的底")+
+    `<p class="miss">資料庫共 ${LD_DIST.length} 個系組（61 所大學，114 學年分發入學官方全量）；${missing} 個因缺考採計科目未列入、${far} 個差距過大未列出。</p>
+     <div class="note">📌 資料來源：大學分發入學委員會 114 學年度「各系組最低錄取標準及錄取人數一覽表」官方文件全量解析。學測級分依官方規則 ×4 換算為 60 分制。以「去年」標準比對「今年」成績，各年難度與名額不同，結果為<b>選填參考，非錄取保證</b>；術科、英聽檢定與特種生名額未納入。🔒 內部工具，請勿外流網址。</div>`;
+  document.title="學測落點分析_分發_"+new Date().toLocaleDateString("zh-TW").replace(/[/]/g,"");
+}
 function run(){
   const S={};
   ["國","英","數A","數B","社","自"].forEach(k=>{const v=document.getElementById("s"+k).value; S[k]=v===""?null:Number(v);});
   const tiers={safe:[],match:[],dream:[]};
   let far=0, blocked=0;
-  DEPTS.forEach(D=>{
+  const POOL=(typeof LD_APPLY!=="undefined")?LD_APPLY:DEPTS_BUILTIN;
+  POOL.forEach(D=>{
     // 檢定
     let chkFail=null;
     for(const [subj,lv] of Object.entries(D.chk||{})){
@@ -121,7 +181,7 @@ function run(){
     box("落點志向","🎯","#2f8f6d","#e8f5ee",tiers.match,"±1 級分——主力戰場，志願的核心配置")+
     box("安全志向","🛡","#3d7fc1","#eaf3fb",tiers.safe,"超過 2 級分以上——保心安的底")+
     `<p class="miss">另有 ${far} 個樣本校系差距過大未列出、${blocked} 個因檢定未過或缺考科而排除。</p>
-     <div class="note">📌 資料來源：大學甄選入學委員會 114 學年度「各校系篩選標準一覽表」與大考中心 114 學測五標（骨架版內建 24 個代表校系樣本；正式版將匯入全部校系與分發入學標準）。本分析以「去年」標準比對「今年」成績，各年題目難度與報名人數不同，結果為<b>選填參考，非錄取保證</b>；英聽檢定與同級分超額篩選未納入計算，請以當年簡章為準。🔒 內部工具，請勿外流網址。</div>`;
+     <div class="note">📌 資料來源：大學甄選入學委員會 114 學年度「各校系篩選標準一覽表」與大考中心 114 學測五標（申請一階資料庫目前收錄 41 個可溯源校系（台大、中興、逢甲、中國醫大——甄選會官方僅以圖片公布全國版，本庫只收錄可逐筆查證的文字版資料，將逐年累積）；分發入學已收錄全國 1772 系組）。本分析以「去年」標準比對「今年」成績，各年題目難度與報名人數不同，結果為<b>選填參考，非錄取保證</b>；英聽檢定與同級分超額篩選未納入計算，請以當年簡章為準。🔒 內部工具，請勿外流網址。</div>`;
   document.title=`學測落點分析_${new Date().toLocaleDateString("zh-TW").replace(/\//g,"")}`;
 }
 </script>
