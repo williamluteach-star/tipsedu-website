@@ -33,7 +33,7 @@
 </head>
 <body>
 <div class="panel">
-  <h1>📊 TIPS 學測落點分析 <span class="badge">申請 41 校系・分發全量 1772 系組</span><a href="../" style="float:right; font-size:.75rem; color:#5b8fd8; text-decoration:none;">← 回報告產生器</a></h1>
+  <h1>📊 TIPS 學測落點分析 <span class="badge">學測：申請41＋四技602＋分發1772｜統測：甄選2667＋聯登2059</span><a href="../" style="float:right; font-size:.75rem; color:#5b8fd8; text-decoration:none;">← 回報告產生器</a></h1>
   <p class="hint">輸入學測級分（沒考的科目留空），系統依 114 學年甄選會官方「各校系篩選標準一覽表」判定：🔥 夢幻（差 2～4 級分內，值得衝）｜🎯 落點（±1 級分）｜🛡 安全（超過 2 級分以上）。</p>
   <div class="grid6">
     <div class="fld"><label>國文</label><input id="s國" type="number" min="0" max="15" placeholder="－"></div>
@@ -42,6 +42,25 @@
     <div class="fld"><label>數學B</label><input id="s數B" type="number" min="0" max="15" placeholder="－"></div>
     <div class="fld"><label>社會</label><input id="s社" type="number" min="0" max="15" placeholder="－"></div>
     <div class="fld"><label>自然</label><input id="s自" type="number" min="0" max="15" placeholder="－"></div>
+  </div>
+  <div id="tveFields" style="display:none;">
+    <div class="fld" style="max-width:300px;"><label>招生群類</label><select id="tGroup" style="width:100%; padding:9px; border:1px solid #d2d2d7; border-radius:12px; font-family:inherit;"></select></div>
+    <p class="hint">統測級分（1–15，甄選一階用）</p>
+    <div class="grid6" style="grid-template-columns:repeat(5,1fr);">
+      <div class="fld"><label>國文級分</label><input id="t國" type="number" min="0" max="15" placeholder="－"></div>
+      <div class="fld"><label>英文級分</label><input id="t英" type="number" min="0" max="15" placeholder="－"></div>
+      <div class="fld"><label>數學級分</label><input id="t數" type="number" min="0" max="15" placeholder="－"></div>
+      <div class="fld"><label>專一級分</label><input id="t專1" type="number" min="0" max="15" placeholder="－"></div>
+      <div class="fld"><label>專二級分</label><input id="t專2" type="number" min="0" max="15" placeholder="－"></div>
+    </div>
+    <p class="hint">統測原始分數（聯登分發用：國英數 0–100、專一專二 0–200；沒有就留空，只跑甄選）</p>
+    <div class="grid6" style="grid-template-columns:repeat(5,1fr);">
+      <div class="fld"><label>國文分數</label><input id="r國" type="number" min="0" max="100" placeholder="－"></div>
+      <div class="fld"><label>英文分數</label><input id="r英" type="number" min="0" max="100" placeholder="－"></div>
+      <div class="fld"><label>數學分數</label><input id="r數" type="number" min="0" max="100" placeholder="－"></div>
+      <div class="fld"><label>專一分數</label><input id="r專1" type="number" min="0" max="200" placeholder="－"></div>
+      <div class="fld"><label>專二分數</label><input id="r專2" type="number" min="0" max="200" placeholder="－"></div>
+    </div>
   </div>
   <div id="distFields" style="display:none;">
     <p class="hint" style="margin-top:2px;">分科測驗級分（60 級分制，沒考的留空；學測級分系統會自動 ×4 換算）</p>
@@ -60,14 +79,17 @@
   <div style="margin:4px 0 10px;">
     <label style="font-size:.85rem; font-weight:700; margin-right:14px;"><input type="radio" name="ldmode" value="apply" checked> 申請入學一階（學測）</label>
     <label style="font-size:.85rem; font-weight:700;"><input type="radio" name="ldmode" value="dist"> 分發入學（學測＋分科）</label>
+    <label style="font-size:.85rem; font-weight:700; margin-left:14px;"><input type="radio" name="ldmode" value="tve"> 統測（甄選＋聯登）</label>
   </div>
   <button class="btn" onclick="go()">產生落點分析</button>
   <button class="btn sec" onclick="window.print()">🖨 列印</button>
-  <script>document.addEventListener("change",e=>{ if(e.target.name==="ldmode") document.getElementById("distFields").style.display = e.target.value==="dist"?"block":"none"; });</script>
+  <script>document.addEventListener("change",e=>{ if(e.target.name==="ldmode"){ document.getElementById("distFields").style.display = e.target.value==="dist"?"block":"none"; document.getElementById("tveFields").style.display = e.target.value==="tve"?"block":"none"; }});
+  window.addEventListener("DOMContentLoaded",()=>{ if(typeof TVE_UNI!=="undefined"){ const gs=[...new Set(TVE_UNI.map(x=>x.g))].sort(); document.getElementById("tGroup").innerHTML=gs.map(g=>`<option value="${g.slice(0,2)}">${g}</option>`).join(""); }});</script>
 </div>
 <div class="out" id="out"></div>
 
 <script src="data114.js"></script>
+<script src="data114_tve.js"></script>
 <script>
 /* 114 學測五標（大考中心）：頂/前/均/後/底 */
 const FIVE={"國":[13,12,10,9,7],"英":[13,11,8,4,3],"數A":[11,9,6,4,3],"數B":[12,10,6,4,3],"社":[13,12,10,8,7],"自":[13,12,9,7,5]};
@@ -124,7 +146,65 @@ function techBlock(S){
 }
 function go(){
   const m=document.querySelector('input[name="ldmode"]:checked').value;
-  if(m==="dist") runDist(); else run();
+  if(m==="dist") runDist(); else if(m==="tve") runTve(); else run();
+}
+function tveBox(title,arr,color,bg,cap){
+  arr.sort((a,b)=>a.df-b.df);
+  const shown=arr.slice(0,cap);
+  const cards=shown.length?shown.map(c=>`<div class="dcard" style="background:${bg};"><span class="diff" style="color:${color};">${c.df>=0?"+":""}${c.df}</span><b>${c.u}　${c.d}</b><div class="st">${c.st}</div></div>`).join(""):`<p style="font-size:.82rem; color:#6e6e73;">此帶沒有符合的校系。</p>`;
+  const more=arr.length>cap?`<p style="font-size:.75rem; color:#6e6e73;">另有 ${arr.length-cap} 個未顯示。</p>`:"";
+  return `<div class="tierbox"><h2 style="color:${color};">${title}</h2>${cards}${more}</div>`;
+}
+function runTve(){
+  if(typeof TVE_SEL==="undefined"){ document.getElementById("out").innerHTML='<div class="tierbox"><p>找不到 data114_tve.js，請確認已上傳。</p></div>'; return; }
+  const gc=document.getElementById("tGroup").value;
+  const L={}; ["國","英","數","專1","專2"].forEach(k=>{const v=document.getElementById("t"+k).value; L[k]=v===""?null:Number(v);});
+  const R={}; ["國","英","數","專1","專2"].forEach(k=>{const v=document.getElementById("r"+k).value; R[k]=v===""?null:Number(v);});
+  let html="";
+  // 甄選一階（級分）
+  if(Object.values(L).some(v=>v!==null)){
+    const t={safe:[],match:[],dream:[]}; let far=0, miss=0;
+    TVE_SEL.forEach(D=>{
+      if(!D.g.startsWith(gc)) return;
+      let diffs=[], st=[];
+      for(const [ss,min] of D.sv){
+        if(ss.some(x=>L[x]===null)){diffs=null;break;}
+        const sum=ss.reduce((a,x)=>a+L[x],0);
+        diffs.push(sum-min); st.push(`${ss.join("+")} ${sum}/${min}（${sum-min>=0?"+":""}${sum-min}）`);
+      }
+      if(!diffs){miss++;return;}
+      const df=Math.min(...diffs);
+      const card={u:D.u,d:D.d,df,st:"去年一階最低篩選："+st.join("　")};
+      if(df>=2) t.safe.push(card); else if(df>=-1) t.match.push(card); else if(df>=-4) t.dream.push(card); else far++;
+    });
+    html+=`<div class="tierbox" style="background:#fdf6e4;"><h2>📝 甄選入學一階（統測級分）｜群類：${document.getElementById("tGroup").selectedOptions[0].textContent}</h2></div>`
+      + tveBox("🔥 夢幻（差 2～4 級分）",t.dream,"#c9526f","#fdeef1",25)
+      + tveBox("🎯 落點（±1 級分）",t.match,"#2f8f6d","#e8f5ee",25)
+      + tveBox("🛡 安全（超 2 級分以上）",t.safe,"#3d7fc1","#eaf3fb",25)
+      + `<p class="miss">甄選資料庫 ${TVE_SEL.length} 系（114 官方一階篩選標準）；本群類中 ${far} 系差距過大、${miss} 系缺級分未列。</p>`;
+  }
+  // 聯登分發（原始分數加權）
+  if(Object.values(R).some(v=>v!==null)){
+    const t={safe:[],match:[],dream:[]}; let far=0, miss=0;
+    TVE_UNI.forEach(D=>{
+      if(!D.g.startsWith(gc)) return;
+      let total=0, tw=0, ok=true;
+      for(const [x,w] of D.w){ if(R[x]===null){ok=false;break;} total+=R[x]*w; tw+=w; }
+      if(!ok){miss++;return;}
+      const dn=Math.round((total-D.m)/tw*10)/10;
+      const card={u:D.u,d:D.d,df:dn,st:`加權：${D.w.map(x=>x[0]+"×"+x[1]).join(" ")}｜我的總分 ${Math.round(total*100)/100}／去年最低 ${D.m}（差距為每加權科平均原始分）`};
+      if(dn>=15) t.safe.push(card); else if(dn>=-7.5) t.match.push(card); else if(dn>=-30) t.dream.push(card); else far++;
+    });
+    html+=`<div class="tierbox" style="background:#fdf6e4;"><h2>🏫 聯合登記分發（統測原始分數）</h2></div>`
+      + tveBox("🔥 夢幻（每科平均差 7.5～30 分）",t.dream,"#c9526f","#fdeef1",25)
+      + tveBox("🎯 落點（每科平均 ±7.5 分）",t.match,"#2f8f6d","#e8f5ee",25)
+      + tveBox("🛡 安全（每科平均超 15 分以上）",t.safe,"#3d7fc1","#eaf3fb",25)
+      + `<p class="miss">聯登資料庫 ${TVE_UNI.length} 系（114 官方錄取總成績統計）；本群類中 ${far} 系差距過大、${miss} 系缺分數未列。</p>`;
+  }
+  if(!html) html='<div class="tierbox"><p style="font-size:.85rem;">請至少輸入一組成績（統測級分或原始分數）。</p></div>';
+  html+=`<div class="note">📌 資料來源：技專校院招生委員會聯合會 114 學年度官方文件（甄選一階篩選標準＋聯登錄取總成績統計）全量解析。以去年標準比對今年成績，<b>選填參考、非錄取保證</b>；甄選二階備審面試、術科與在校成績採計未納入。🔒 內部工具。</div>`;
+  document.getElementById("out").innerHTML=html;
+  document.title="統測落點分析_"+new Date().toLocaleDateString("zh-TW").replace(/[/]/g,"");
 }
 function runDist(){
   if(typeof LD_DIST==="undefined"){ document.getElementById("out").innerHTML='<div class="tierbox"><p style="font-size:.85rem;">找不到資料檔 data114.js——請確認已上傳至 luodian 資料夾。</p></div>'; return; }
