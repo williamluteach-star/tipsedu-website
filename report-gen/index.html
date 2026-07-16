@@ -1060,6 +1060,15 @@ function generate(){
   }
   document.getElementById("report").innerHTML=html;
   window.scrollTo(0,document.querySelector(".a4").offsetTop-10);
+  /* 存 PDF 檔名自動化：學生姓名_報告名_日期（列印/另存 PDF 時的預設檔名） */
+  try{
+    const rpt=document.querySelector(".a4");
+    const stuName=(rpt.querySelector(".stu-row b")||{}).textContent||"";
+    const rptName=(rpt.querySelector(".rpt-title h2")||{}).textContent||"報告";
+    const d=new Date(); const ds=`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`;
+    const mTag= modeVal==="internal"?"內部版": modeVal==="growth"?"":"面談版";
+    document.title=`${stuName}_${rptName}${mTag?"_"+mTag:""}_${ds}`.replace(/[\\/:*?"<>|＋+]/g,"_");
+  }catch(e){}
 }
 </script>
 </body>
