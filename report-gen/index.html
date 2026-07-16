@@ -170,6 +170,112 @@ const RD_WORRY=["成績跟不上","3C 與手機","交友","作息與自律","沒
 const PS_STYLE_Q={D:["成績有明確標準與要求","讀書計畫由家長規定","未達期望會明確表達不滿","重大決定由父母把關"],
                   S:["會先聽完孩子的理由","願意支持冷門但有熱情的方向","常聊課業以外的事","先安撫情緒再談表現"]};
 
+
+/* ================= 三級志向引擎（挑戰/穩健/安穩） ================= */
+/* pub=面談版層級描述；int=內部版點名參考（🔒不印給家長） */
+const HS_ASP={
+ "資訊學群":{pub:["頂尖國立大學資訊工程系（學測頂標帶）","國立大學／四大科大資訊科系","私立大學與科大資訊科系＋作品集實力路線"],int:["台大、清大、陽明交大、成大資工","中央、中興、中正資工；台科大、北科大","逢甲資訊、朝陽資工、勤益資工"]},
+ "工程學群":{pub:["頂尖國立大學電機／機械／材料系","國立大學工學院／頂尖科大工程科系","私立大學與科大工程科系"],int:["台大、成大、清大、陽明交大電機機械","中央、中興、中正工學院；台科大、北科大","逢甲工學院、勤益、修平"]},
+ "數理化學群":{pub:["頂尖國立大學數學／物理／化學系","國立大學理學院、師範體系數理系","私立大學應用數學／應用化學系"],int:["台大、清大數學物理化學","中央、中興理學院；台師大、彰師大","輔仁、東海、逢甲應數應化"]},
+ "醫藥衛生學群":{pub:["醫學系／牙醫系（頂標＋面試）","藥學、物治、護理系（國立與醫大體系）","私立科大護理與健康科系"],int:["台大、陽明交大、長庚醫學系","高醫、中國醫、中山醫藥學護理物治","弘光、中臺、仁德"]},
+ "生命科學學群":{pub:["頂尖國立大學生命科學系","國立大學生科／生技相關科系","私立大學生物科技系"],int:["台大生科、清大生科","中興生科、海大、嘉大","大葉、靜宜、慈濟"]},
+ "生物資源學群":{pub:["頂尖國立大學農學院（含獸醫）","國立農業體系大學相關科系","私立科大農業與休閒科系"],int:["台大獸醫森林動科","中興農資學院、嘉大、屏科大","弘光、大葉、明道大學"]},
+ "地球與環境學群":{pub:["頂尖國立大學大氣／地質／海洋系","國立大學環工與地科相關科系","私立大學環境工程系"],int:["台大大氣地質、中央大氣","中興環工、海大、高師大地環","逢甲環工、朝陽環管"]},
+ "建築與設計學群":{pub:["頂尖大學建築系（含術科）","老牌私立建築與國立科大設計系","私立科大設計群科系"],int:["成大建築、陽明交大建築","中原建築、雲科大設計、實踐設計","嶺東、朝陽、亞洲大學設計"]},
+ "藝術學群":{pub:["國立藝術大學（術科頂尖帶）","師範體系與老牌私大藝術科系","私立大學藝術與多媒體科系"],int:["北藝大、台藝大","台師大美術、輔仁音樂、東海美術","亞洲、朝陽、嶺東"]},
+ "社會與心理學群":{pub:["頂尖國立大學心理／社會系","國立大學心理社工與老牌私大","私立大學心理／社工系"],int:["台大心理、政大社會","中正心理、東吳社工、輔仁心理","亞洲、靜宜、南華"]},
+ "大眾傳播學群":{pub:["頂尖國立大學傳播學院","傳播名門私大與師範體系","私立大學與科大多媒體傳播科系"],int:["政大傳播學院、台師大圖傳","世新、輔仁、文化傳播","朝陽傳播、南台資傳"]},
+ "外語學群":{pub:["頂尖國立大學外文系","師範體系與老牌私大外語科系","私立大學與科大應用外語系"],int:["台大外文、政大英文","台師大英語、東吳、淡江外語","靜宜、文藻、僑光"]},
+ "文史哲學群":{pub:["頂尖國立大學中文／歷史／哲學系","國立大學與師範體系文史科系","私立大學中文與歷史科系"],int:["台大、政大中文歷史哲學","中興中文、彰師國文、成大歷史","逢甲中文、靜宜中文、東海歷史"]},
+ "教育學群":{pub:["師範大學公費生／頂大教育系","教育大學與師範體系","私立大學幼教與教育科系"],int:["台師大公費生、政大教育","台中教大、彰師大、嘉大","朝陽幼保、弘光幼保、亞洲幼教"]},
+ "法政學群":{pub:["頂尖國立大學法律系","國立大學法政與老牌私大法律系","私立大學法律與行政管理科系"],int:["台大、政大法律","中正、興大法律；東吳法律","逢甲土管財法、亞洲財法"]},
+ "管理學群":{pub:["頂尖國立大學管理學院","國立大學商管學院／頂尖科大管院","私立大學與科大企管行銷科系"],int:["台大、政大管院","中興企管、台科大管院、逢甲商學院","朝陽、僑光、嶺東企管行銷"]},
+ "財經學群":{pub:["頂尖國立大學財金系","國立大學財金會計與商業科大","私立大學與科大財金會計科系"],int:["台大財金、政大金融","中興財金、北商大、逢甲財金","朝陽財金、僑光財金、嶺東會計"]},
+ "遊憩與運動學群":{pub:["師範／體育大學代表隊層級","國立體育體系與教育大學體育系","私立科大休閒運動管理科系"],int:["台師大體育、國立體大","北市大體育、台中教大體育","弘光、朝陽、僑光休閒運動"]}};
+const CAREER_ASP={
+ "警察":["中央警察大學（學測入學，畢業考警察特考三等）","臺灣警察專科學校（高中職畢，2 年公費，特考四等）","一般大學畢業後報考一般警察特考"],
+ "職業軍人":["軍校正期班（陸／海／空軍官校、國防大學）","大學在學加入 ROTC 儲備軍官訓練團","志願士兵入伍後循士官管道晉升"],
+ "護理師":["國立大學護理系（學測申請）","醫學大學體系與國立科大護理系","五專護理科→二技銜接（國中畢即可起步）"]};
+function aspTierBox(title,emoji,color,bg,items,intItems,internal){
+  const lis=items.map((it,i)=>`<li>${it}${internal&&intItems&&intItems[i]?`<br><span style="color:#8a6d3b; font-size:.72rem;">🔒 參考校系：${intItems[i]}</span>`:""}</li>`).join("");
+  return `<div style="background:${bg}; border-radius:14px; padding:12px 16px; flex:1; min-width:230px;">
+    <div style="font-weight:800; color:${color}; margin-bottom:4px;">${emoji} ${title}</div>
+    <ol style="margin:2px 0 2px 18px; font-size:.79rem; line-height:1.7;">${lis}</ol></div>`;
+}
+function aspireHS(ranked,internal){
+  const top3=ranked.slice(0,3);
+  const tiers=[[],[],[]], tiersInt=[[],[],[]];
+  top3.forEach(g=>{ const a=HS_ASP[g.n]; if(!a) return;
+    for(let t=0;t<3;t++){ tiers[t].push(`<b>${g.n.replace("學群","")}</b>：${a.pub[t]}`); tiersInt[t].push(a.int[t]); } });
+  let careerRows="";
+  (window.__careerSel||[]).forEach(i=>{ const c=CAREER_DB[i]; const asp=CAREER_ASP[c.n];
+    if(asp) careerRows+=`<div style="background:#fdf6e4; border-radius:14px; padding:10px 16px; margin-top:8px; font-size:.79rem;"><b>🎯 ${c.n}路線三級：</b>挑戰＝${asp[0]}｜穩健＝${asp[1]}｜安穩＝${asp[2]}</div>`; });
+  return `<h3 class="sec">三級志向建議（依適配前三學群生成）</h3>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      ${aspTierBox("挑戰志向","🔥","#c9526f","#fdeef1",tiers[0],tiersInt[0],internal)}
+      ${aspTierBox("穩健志向","🎯","#2f8f6d","#e8f5ee",tiers[1],tiersInt[1],internal)}
+      ${aspTierBox("安穩志向","🛡","#3d7fc1","#eaf3fb",tiers[2],tiersInt[2],internal)}
+    </div>${careerRows}
+    <p style="font-size:.7rem; color:#5b6478; margin:6px 0;">三級志向採國際大學升學輔導通用的 <b>Reach－Match－Safety</b>（台灣稱「夢幻／落點／安全」）選填策略，為<b>方向規劃參考，非錄取預測</b>；實際錄取依當年成績、各校簡章與招生管道為準。建議三級都準備，把主力放在穩健帶、用挑戰帶拉高度、用安穩帶保心安。${internal?"（🔒 參考校系僅內部使用，面談時視情況口頭提及，不印給家長）":""}</p>`;
+}
+function aspireJH(T,ranked,internal){
+  const top3=ranked.slice(0,3).map(g=>g.n);
+  let tiers,tiersInt;
+  if(T<=-8){
+    tiers=[["<b>普高</b>：第一志願層級公立高中（爭取數理／語文資優班）","<b>普高</b>：完全中學直升菁英班","<b>備援</b>：頂尖私中高中部直升"],
+           ["<b>普高</b>：前段公立高中","<b>普高</b>：社區優質公立高中","<b>技高備選</b>："+top3[0]+"熱門科（保留彈性）"],
+           ["<b>普高</b>：社區公立高中","<b>綜高</b>：綜合高中學術學程","<b>私立</b>：私立高中普通科"]];
+    tiersInt=[["台中一中、台中女中","興大附中","衛道、曉明直升班"],["文華、台中二中","惠文、西苑、忠明","台中高工／家商招牌科"],["長億、大里、東山","明道、僑泰綜高","新民、嶺東高中部"]];
+  } else if(T>=8){
+    tiers=[[`<b>技高</b>：公立龍頭技高「${top3[0]}」熱門科`,`<b>技高</b>：公立龍頭技高「${top3[1]}」科`,"<b>特色</b>：科學班／實驗班型技術高中"],
+           [`<b>技高</b>：一般公立技高「${top3[0]}」科`,`<b>技高</b>：一般公立技高「${top3[1]}」科`,"<b>五專</b>：國立科大附屬五專部相關科"],
+           [`<b>技高</b>：私立技高「${top3[0]}」科`,"<b>綜高</b>：綜合高中專門學程","<b>五專</b>：私立科大五專部相關科"]];
+    tiersInt=[["台中高工、台中家商、興大附農招牌科","同上第二志願科","台中高工甄選熱門科"],["沙鹿高工、霧峰農工、大甲高工、東勢高工","同區公立技高","台中科大五專部"],["嶺東、僑泰、明德技術科","明道、青年綜高","修平、僑光五專"]];
+  } else {
+    tiers=[["<b>普高</b>：前段公立高中（維持雙軌可能）",`<b>技高</b>：公立龍頭技高「${top3[0]}」熱門科`,"<b>普高</b>：完全中學直升班"],
+           ["<b>普高</b>：社區公立高中",`<b>技高</b>：一般公立技高「${top3[0]}」科`,`<b>技高</b>：公立技高「${top3[1]}」科`],
+           ["<b>綜高</b>：綜合高中（高一再分流，最保彈性）","<b>技高</b>：私立技高相關科","<b>私立</b>：私立高中普通科"]];
+    tiersInt=[["文華、台中二中","台中高工、台中家商招牌科","興大附中"],["惠文、西苑","沙鹿高工、霧峰農工","同區公立技高"],["明道、僑泰綜高","嶺東、青年","新民、東山"]];
+  }
+  let careerRows="";
+  (window.__careerSel||[]).forEach(i=>{ const c=CAREER_DB[i]; const asp=CAREER_ASP[c.n];
+    if(asp) careerRows+=`<div style="background:#fdf6e4; border-radius:14px; padding:10px 16px; margin-top:8px; font-size:.79rem;"><b>🎯 ${c.n}路線三級：</b>挑戰＝${asp[0]}｜穩健＝${asp[1]}｜安穩＝${asp[2]}</div>`; });
+  return `<h3 class="sec">三級志向建議（會考選填參考）</h3>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      ${aspTierBox("挑戰志向","🔥","#c9526f","#fdeef1",tiers[0],tiersInt[0],internal)}
+      ${aspTierBox("穩健志向","🎯","#2f8f6d","#e8f5ee",tiers[1],tiersInt[1],internal)}
+      ${aspTierBox("安穩志向","🛡","#3d7fc1","#eaf3fb",tiers[2],tiersInt[2],internal)}
+    </div>${careerRows}
+    <p style="font-size:.7rem; color:#5b6478; margin:6px 0;">依國際升學輔導通用 <b>Reach－Match－Safety</b>（夢幻／落點／安全）策略生成，為<b>方向規劃參考，非錄取預測</b>；實際選填以會考成績、當年序位與各區簡章為準。${internal?"（🔒 參考校系僅內部使用，不印給家長）":""}</p>`;
+}
+/* ================= 升學規劃時間軸 ================= */
+function tlHS(grade,streamIdx){
+  const focus= streamIdx>=54?"數A・物理／化學（多數理工醫農校系採計）": streamIdx<=46?"國文・英文・社會＋依校系評估數B":"先顧國英數共同科，選組後再聚焦";
+  const rows=[
+   ["高一上","全科打底＋社團定向；每學期至少 1 件課程學習成果上傳學習歷程"],
+   ["高一寒假","參加 1 個對準適配學群的營隊／線上課，產出心得（多元表現素材）"],
+   ["高一下","<b>選組定案</b>（校內約 4～5 月）；建議選組前回 TIPS 重測驗證方向"],
+   ["高二","加深加廣選修對準目標校系採計科目：<b>"+focus+"</b>；啟動小論文／探究專題"],
+   ["高二暑假","學測總複習啟動；完成檢定（英檢／APCS 等依方向）；學習歷程素材收整"],
+   ["高三上","1 月<b>學測</b>；學習歷程勾選與收尾"],
+   ["高三下","3 月個人申請一階→4-5 月<b>二階書審＋面試</b>（審查資料與面試合計占比常達 50% 以上，學習歷程在此決勝）→未上再拚 7 月分科"]];
+  return `<h3 class="sec">升學規劃時間軸</h3><p style="font-size:.7rem; color:#5b6478; margin:2px 0 4px;">OECD 青少年生涯準備指標研究顯示：在學期間有計畫地探索、體驗與思考職涯的學生，成年後的就業表現顯著較佳——時間軸中的探索行動正是依此設計。</p><table><tr><th style="width:110px;">階段</th><th>重點行動</th></tr>${rows.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td></tr>`).join("")}</table>`;
+}
+function tlJH(grade,T){
+  const dirRow= T>=8?["國三上","報名<b>技藝教育課程</b>（技藝班）：實作體驗＋技優甄審加分，是偏實作孩子的黃金機會"]
+    : T<=-8?["國三上","以會考 5A 目標配速；評估數理／語文資優鑑定與特色招生"]
+    :["國三上","普高技高雙軌並行：參加技藝班說明會＋高中參訪各一次再收斂"];
+  const rows=[
+   ["國一","英數奠基＋建立讀書習慣；社團廣泛探索"],
+   ["國二上","段考穩定度追蹤；開始蒐集高中職與群科資訊"],
+   ["國二下","回 TIPS <b>興趣重測</b>——兩次結果一致，方向就能重押"],
+   dirRow,
+   ["國三 5 月","<b>國中教育會考</b>"],
+   ["國三 6 月","成績＋序位公布→用本報告的三級志向表選填志願（夢幻／落點／安全都要有）"],
+   ["國三 7-8 月","放榜報到；高中銜接課程（英數先修）"]];
+  return `<h3 class="sec">升學規劃時間軸（會考線）</h3><table><tr><th style="width:110px;">階段</th><th>重點行動</th></tr>${rows.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td></tr>`).join("")}</table>`;
+}
+
 /* ================= 職業聚焦（O*NET 職業興趣碼） ================= */
 const CAREER_DB=[
  {n:"警察",code:"RCE",onet:"33-3051",path:"高中職畢→警專專科警員班（2 年公費，畢業考警察特考四等）；或學測／分科→中央警察大學（特考三等）；一般大學畢亦可考一般警察特考",req:"身高（男約165／女約160cm）、視力與體格檢查、體能測驗、素行審查；輪班與勤務壓力"},
@@ -348,7 +454,7 @@ function rptShell(title, stu, body){
     ${body}
     <h3 class="sec">顧問建議（面談時填寫）</h3>
     <div class="note-box">&nbsp;</div>
-    <div class="foot"><span>TIPS 英典教育｜台中市南屯區黎明路一段295號｜0905-547839｜LINE @tipsedu</span><span>O*NET / CEEC / LASSI / Baumrind 架構在地化編製</span></div>
+    <div class="foot"><span>TIPS 英典教育｜台中市南屯區黎明路一段295號｜0905-547839｜LINE @tipsedu</span><span>O*NET・CEEC・LASSI・Baumrind・OECD 生涯準備指標 架構在地化編製</span></div>
   </div>`;
 }
 /* 家長風格分析（D,S 各題 0-4；cT 為理念題，可為空） */
@@ -479,6 +585,8 @@ function renderHS(cc, pc, internal){
     `<h3 class="sec">大學 18 學群適配 Top4</h3><div class="grid2">${topCards}</div>`+
     interpHS(riasec,top3,D,streamIdx,ranked,grade)+
     careerBlock(riasec)+
+    aspireHS(ranked,internal)+
+    tlHS(grade,streamIdx)+
     (pc?styleBlock(pC.slice(0,4),pC.slice(4,8),pC.slice(8),internal,hsTips(pA,riasec,pExpect,streamIdx,pGroups,ranked)):"")+
     answerAppendix([
       (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("孩子作答｜Part 1 興趣 60 題",itemsRows(HSQ_P1,HSQ_P1O,a,0)):null;})(),
@@ -859,6 +967,8 @@ function renderJH(cc, pc, internal){
     `<h3 class="sec">技高 15 群科適配 Top4</h3><div class="grid2">${topCards}</div>`+
     interpJH(riasec,top3,D,T,ranked)+
     careerBlock(riasec)+
+    aspireJH(T,ranked,internal)+
+    tlJH(grade,T)+
     (pc?styleBlock(pC.slice(0,4),pC.slice(4,8),pC.slice(8),internal,jhTips(pA,riasec,pExpect,T,pGroups,ranked)):"")+
     answerAppendix([
       (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("孩子作答｜Part 1 興趣 60 題",itemsRows(HSQ_P1,HSQ_P1O,a,0)):null;})(),
