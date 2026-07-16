@@ -98,6 +98,30 @@ const DEPTS_BUILTIN=[
  {u:"逢甲大學",d:"國際經營與貿易學系",chk:{"英":"後","數B":"後"},sv:[[["國","英","數B","社"],32]]},
  {u:"逢甲大學",d:"經濟學系",chk:{"英":"後","數B":"後"},sv:[[["數B"],6],[["社"],11]]}
 ];
+function techBlock(S){
+  if(typeof LD_TECH==="undefined") return "";
+  const t={safe:[],match:[],dream:[]}; let noinfo=0;
+  LD_TECH.forEach(D=>{
+    if(!D.s){noinfo++;return;}
+    let sum=0, ok=true;
+    const hasA=D.s.includes("數A"), hasB=D.s.includes("數B");
+    for(const sub of D.s){ if(sub==="數A"||sub==="數B") continue; if(S[sub]===null){ok=false;break;} sum+=S[sub]; }
+    if(ok&&(hasA||hasB)){ const mv=Math.max(hasA&&S["數A"]!==null?S["數A"]:-1, hasB&&S["數B"]!==null?S["數B"]:-1); if(mv<0) ok=false; else sum+=mv; }
+    if(!ok) return;
+    const pct=sum/(15*D.n)*100;
+    const dg=Math.round((pct-D.m)/100*15*10)/10; // 平均每科級分差
+    const card={u:D.u,d:D.d,st:`參採 ${D.s.join("、")}（等權重）｜我的換算 ${Math.round(pct*100)/100}％／去年門檻 ${D.m}％（平均每科差 ${dg>=0?"+":""}${dg} 級分）`,df:dg};
+    if(dg>=2) t.safe.push(card); else if(dg>=-1) t.match.push(card); else if(dg>=-4) t.dream.push(card);
+  });
+  const mk=(arr,color,bg)=>{arr.sort((a,b)=>a.df-b.df);return arr.map(c=>`<div class="dcard" style="background:${bg};"><span class="diff" style="color:${color};">${c.df>=0?"+":""}${c.df}</span><b>${c.u}　${c.d}</b><div class="st">${c.st}</div></div>`).join("");};
+  const total=t.safe.length+t.match.length+t.dream.length;
+  if(!total) return `<div class="tierbox"><h2>🏫 四技申請（科大）</h2><p style="font-size:.82rem; color:#6e6e73;">依目前輸入科目，沒有符合三級帶的科大校系。</p></div>`;
+  return `<div class="tierbox"><h2>🏫 四技申請（科大）——同一份學測的第二條路</h2>
+    ${t.dream.length?`<p style="font-size:.85rem; font-weight:700; color:#c9526f; margin-top:6px;">🔥 夢幻</p>`+mk(t.dream,"#c9526f","#fdeef1"):""}
+    ${t.match.length?`<p style="font-size:.85rem; font-weight:700; color:#2f8f6d; margin-top:6px;">🎯 落點</p>`+mk(t.match,"#2f8f6d","#e8f5ee"):""}
+    ${t.safe.length?`<p style="font-size:.85rem; font-weight:700; color:#3d7fc1; margin-top:6px;">🛡 安全</p>`+mk(t.safe,"#3d7fc1","#eaf3fb"):""}
+    <p style="font-size:.7rem; color:#5b6478; margin-top:6px;">資料：技專校院招生策略委員會 114 四技申請一階最低篩選標準（全量 602 系）＋ 15 所重點科大參採科目（台科、北科、雲科、虎尾、勤益、台中科大與台中在地私立科大）。僅列「等權重可精確驗算」之 102 系；含加權或參採未確認者不列入分級，可口頭查簡章確認。</p></div>`;
+}
 function go(){
   const m=document.querySelector('input[name="ldmode"]:checked').value;
   if(m==="dist") runDist(); else run();
@@ -176,10 +200,12 @@ function run(){
     const cards=arr.length?arr.map(c=>`<div class="dcard" style="background:${bg};"><span class="diff" style="color:${color};">${c.df>=0?"+":""}${c.df}</span><b>${c.u}　${c.d}</b><div class="st">去年一階最低篩選：${c.st}</div></div>`).join(""):`<p style="font-size:.82rem; color:#6e6e73;">此帶目前沒有符合的樣本校系。</p>`;
     return `<div class="tierbox"><h2 style="color:${color};">${emoji} ${title}<span style="font-weight:500; font-size:.78rem; color:#6e6e73;">　${desc}</span></h2>${cards}</div>`;
   };
+  const techHtml=techBlock(S);
   document.getElementById("out").innerHTML=
     box("夢幻志向","🔥","#c9526f","#fdeef1",tiers.dream,"差 2～4 級分——值得衝，二階備審面試是翻身機會")+
     box("落點志向","🎯","#2f8f6d","#e8f5ee",tiers.match,"±1 級分——主力戰場，志願的核心配置")+
     box("安全志向","🛡","#3d7fc1","#eaf3fb",tiers.safe,"超過 2 級分以上——保心安的底")+
+    techHtml+
     `<p class="miss">另有 ${far} 個樣本校系差距過大未列出、${blocked} 個因檢定未過或缺考科而排除。</p>
      <div class="note">📌 資料來源：大學甄選入學委員會 114 學年度「各校系篩選標準一覽表」與大考中心 114 學測五標（申請一階資料庫目前收錄 41 個可溯源校系（台大、中興、逢甲、中國醫大——甄選會官方僅以圖片公布全國版，本庫只收錄可逐筆查證的文字版資料，將逐年累積）；分發入學已收錄全國 1772 系組）。本分析以「去年」標準比對「今年」成績，各年題目難度與報名人數不同，結果為<b>選填參考，非錄取保證</b>；英聽檢定與同級分超額篩選未納入計算，請以當年簡章為準。🔒 內部工具，請勿外流網址。</div>`;
   document.title=`學測落點分析_${new Date().toLocaleDateString("zh-TW").replace(/\//g,"")}`;
