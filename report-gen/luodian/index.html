@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TIPS 學測落點分析（內部骨架版）</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif; background:#faf7f4; color:#1d1d1f; line-height:1.7; -webkit-font-smoothing:antialiased; font-size:15px;}
+  .panel{max-width:860px; margin:18px auto; background:#fff; border-radius:20px; padding:24px 28px; box-shadow:0 4px 24px rgba(60,50,70,.07);}
+  h1{font-size:1.15rem; letter-spacing:-.01em;}
+  .hint{font-size:.78rem; color:#6e6e73; margin-top:6px;}
+  .grid6{display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin:14px 0;}
+  .fld label{font-size:.8rem; font-weight:700; display:block; margin-bottom:3px;}
+  .fld input{width:100%; padding:9px 10px; border:1px solid #d2d2d7; border-radius:12px; font-size:1rem; font-family:inherit; text-align:center;}
+  .btn{background:#1d1d1f; color:#fff; border:none; border-radius:980px; padding:12px 26px; font-size:.95rem; font-weight:700; cursor:pointer; font-family:inherit; transition:.2s;}
+  .btn:hover{filter:brightness(1.3);}
+  .btn.sec{background:#ececf0; color:#1d1d1f;}
+  .out{max-width:860px; margin:0 auto 60px;}
+  .tierbox{background:#fff; border-radius:20px; padding:20px 24px; margin-top:14px; box-shadow:0 4px 24px rgba(60,50,70,.06);}
+  .tierbox h2{font-size:1.02rem; margin-bottom:8px;}
+  .dcard{border-radius:14px; padding:11px 14px; margin:8px 0; font-size:.83rem;}
+  .dcard b{font-size:.9rem;}
+  .dcard .diff{float:right; font-weight:800; font-size:1rem;}
+  .dcard .st{font-size:.75rem; color:#494952; margin-top:2px;}
+  .miss{font-size:.78rem; color:#6e6e73; margin-top:8px;}
+  .note{font-size:.72rem; color:#5b6478; background:#f5f2ee; border-radius:12px; padding:10px 14px; margin-top:14px;}
+  .badge{display:inline-block; background:#fdf6e4; color:#a8790a; border-radius:980px; padding:2px 12px; font-size:.72rem; font-weight:700; margin-left:8px;}
+  @media print{ body{background:#fff;} .panel{box-shadow:none;} .btn{display:none;} .tierbox{box-shadow:none; border:1px solid #ddd;} }
+  @media (max-width:640px){ .grid6{grid-template-columns:repeat(3,1fr);} }
+</style>
+</head>
+<body>
+<div class="panel">
+  <h1>📊 TIPS 學測落點分析 <span class="badge">骨架版・樣本 24 校系</span><a href="../" style="float:right; font-size:.75rem; color:#5b8fd8; text-decoration:none;">← 回報告產生器</a></h1>
+  <p class="hint">輸入學測級分（沒考的科目留空），系統依 114 學年甄選會官方「各校系篩選標準一覽表」判定：🔥 夢幻（差 2～4 級分內，值得衝）｜🎯 落點（±1 級分）｜🛡 安全（超過 2 級分以上）。</p>
+  <div class="grid6">
+    <div class="fld"><label>國文</label><input id="s國" type="number" min="0" max="15" placeholder="－"></div>
+    <div class="fld"><label>英文</label><input id="s英" type="number" min="0" max="15" placeholder="－"></div>
+    <div class="fld"><label>數學A</label><input id="s數A" type="number" min="0" max="15" placeholder="－"></div>
+    <div class="fld"><label>數學B</label><input id="s數B" type="number" min="0" max="15" placeholder="－"></div>
+    <div class="fld"><label>社會</label><input id="s社" type="number" min="0" max="15" placeholder="－"></div>
+    <div class="fld"><label>自然</label><input id="s自" type="number" min="0" max="15" placeholder="－"></div>
+  </div>
+  <button class="btn" onclick="run()">產生落點分析</button>
+  <button class="btn sec" onclick="window.print()">🖨 列印</button>
+</div>
+<div class="out" id="out"></div>
+
+<script>
+/* 114 學測五標（大考中心）：頂/前/均/後/底 */
+const FIVE={"國":[13,12,10,9,7],"英":[13,11,8,4,3],"數A":[11,9,6,4,3],"數B":[12,10,6,4,3],"社":[13,12,10,8,7],"自":[13,12,9,7,5]};
+const LVL={"頂":0,"前":1,"均":2,"後":3,"底":4};
+/* 樣本資料：114 學年個人申請一階篩選標準（甄選會官方一覽表轉錄，2026-07 骨架版） */
+const DEPTS=[
+ {u:"國立臺灣大學",d:"電機工程學系",chk:{"英":"頂","數A":"頂","自":"頂"},sv:[[["英","數A","自"],44]]},
+ {u:"國立臺灣大學",d:"法律學系法學組",chk:{"國":"頂","英":"頂","數B":"前","社":"頂"},sv:[[["國","英"],30]]},
+ {u:"國立臺灣大學",d:"機械工程學系",chk:{"英":"均","數A":"前","自":"前"},sv:[[["英","數A","自"],41]]},
+ {u:"國立臺灣大學",d:"土木工程學系",chk:{"國":"均","英":"均","數A":"均","自":"均"},sv:[[["國","英","數A","自"],51]]},
+ {u:"國立臺灣大學",d:"護理學系",chk:{"國":"均","英":"均","數A":"均","自":"均"},sv:[[["英"],12],[["自"],13]]},
+ {u:"國立臺灣大學",d:"物理治療學系",chk:{"國":"均","英":"均","數A":"均","自":"均"},sv:[[["英","數A","自"],41]]},
+ {u:"國立臺灣大學",d:"藥學系",chk:{"國":"均","英":"均"},sv:[[["數A","自"],28],[["國","英"],27]]},
+ {u:"國立臺灣大學",d:"外國語文學系",chk:{"國":"前","英":"頂","社":"前"},chkAny:[["數A","數B"],"均"],sv:[[["英"],15]]},
+ {u:"國立中興大學",d:"財務金融學系",chk:{"國":"均","英":"前","數A":"均"},sv:[[["國","英","數A","社"],45],[["數A"],8],[["英"],14]]},
+ {u:"國立中興大學",d:"資訊管理學系",chk:{"國":"均","英":"前","數A":"前","自":"均"},sv:[[["國","英","自"],34],[["數A"],12]]},
+ {u:"國立中興大學",d:"法律學系",chk:{"國":"均","英":"均","數B":"均","社":"前"},sv:[[["英"],13],[["國"],13],[["社"],14]]},
+ {u:"國立中興大學",d:"機械工程學系",chk:{"英":"均","數A":"均","自":"均"},sv:[[["英"],11],[["數A","自"],24]]},
+ {u:"國立中興大學",d:"企業管理學系",chk:{"英":"前","數B":"前"},sv:[[["英"],11],[["數B"],10],[["國","社"],25]]},
+ {u:"國立中興大學",d:"外國語文學系",chk:{"國":"均","英":"前"},sv:[[["國"],11],[["英"],14]]},
+ {u:"國立中興大學",d:"會計學系",chk:{"國":"均","英":"均","數A":"均","社":"均"},sv:[[["國","英","數A","社"],43],[["社"],13],[["英"],12]]},
+ {u:"國立中興大學",d:"化學系",chk:{"英":"均","數A":"均","自":"均"},sv:[[["英"],10],[["數A"],11],[["自"],13]]},
+ {u:"國立中興大學",d:"土木工程學系",chk:{"英":"均","數A":"均","自":"均"},sv:[[["數A","自"],21],[["英","數A","自"],34]]},
+ {u:"逢甲大學",d:"機械與電腦輔助工程學系",chk:{"自":"後"},sv:[[["國","數A","自"],28]]},
+ {u:"逢甲大學",d:"化學工程學系",chk:{"英":"後","自":"後"},sv:[[["國","英","數A","自"],38]]},
+ {u:"逢甲大學",d:"光電科學與工程學系",chk:{"英":"後","數A":"後"},sv:[[["國","英","數A","自"],37]]},
+ {u:"逢甲大學",d:"會計學系",chk:{"英":"後","社":"後"},sv:[[["社"],10],[["英"],7]]},
+ {u:"逢甲大學",d:"國際經營與貿易學系",chk:{"英":"後","數B":"後"},sv:[[["國","英","數B","社"],32]]},
+ {u:"逢甲大學",d:"經濟學系",chk:{"英":"後","數B":"後"},sv:[[["數B"],6],[["社"],11]]}
+];
+function run(){
+  const S={};
+  ["國","英","數A","數B","社","自"].forEach(k=>{const v=document.getElementById("s"+k).value; S[k]=v===""?null:Number(v);});
+  const tiers={safe:[],match:[],dream:[]};
+  let far=0, blocked=0;
+  DEPTS.forEach(D=>{
+    // 檢定
+    let chkFail=null;
+    for(const [subj,lv] of Object.entries(D.chk||{})){
+      if(S[subj]===null){chkFail=`未考${subj}`;break;}
+      if(S[subj]<FIVE[subj][LVL[lv]]){chkFail=`${subj}未達${lv}標`;break;}
+    }
+    if(!chkFail && D.chkAny){
+      const [subjs,lv]=D.chkAny;
+      if(!subjs.some(s=>S[s]!==null && S[s]>=FIVE[s][LVL[lv]])) chkFail=`${subjs.join("或")}未達${lv}標`;
+    }
+    if(chkFail){blocked++;return;}
+    // 各篩選階段：取瓶頸差距
+    let diffs=[], stTxt=[];
+    for(const [subjs,min] of D.sv){
+      if(subjs.some(s=>S[s]===null)){diffs=null;break;}
+      const sum=subjs.reduce((a,s)=>a+S[s],0);
+      diffs&&diffs.push(sum-min);
+      stTxt.push(`${subjs.join("+")} ${sum}/${min}（${sum-min>=0?"+":""}${sum-min}）`);
+    }
+    if(!diffs){blocked++;return;}
+    const d=Math.min(...diffs);
+    const card={...D, df:d, st:stTxt.join("　")};
+    if(d>=2) tiers.safe.push(card);
+    else if(d>=-1) tiers.match.push(card);
+    else if(d>=-4) tiers.dream.push(card);
+    else far++;
+  });
+  const box=(title,emoji,color,bg,arr,desc)=>{
+    arr.sort((a,b)=>a.df-b.df);
+    const cards=arr.length?arr.map(c=>`<div class="dcard" style="background:${bg};"><span class="diff" style="color:${color};">${c.df>=0?"+":""}${c.df}</span><b>${c.u}　${c.d}</b><div class="st">去年一階最低篩選：${c.st}</div></div>`).join(""):`<p style="font-size:.82rem; color:#6e6e73;">此帶目前沒有符合的樣本校系。</p>`;
+    return `<div class="tierbox"><h2 style="color:${color};">${emoji} ${title}<span style="font-weight:500; font-size:.78rem; color:#6e6e73;">　${desc}</span></h2>${cards}</div>`;
+  };
+  document.getElementById("out").innerHTML=
+    box("夢幻志向","🔥","#c9526f","#fdeef1",tiers.dream,"差 2～4 級分——值得衝，二階備審面試是翻身機會")+
+    box("落點志向","🎯","#2f8f6d","#e8f5ee",tiers.match,"±1 級分——主力戰場，志願的核心配置")+
+    box("安全志向","🛡","#3d7fc1","#eaf3fb",tiers.safe,"超過 2 級分以上——保心安的底")+
+    `<p class="miss">另有 ${far} 個樣本校系差距過大未列出、${blocked} 個因檢定未過或缺考科而排除。</p>
+     <div class="note">📌 資料來源：大學甄選入學委員會 114 學年度「各校系篩選標準一覽表」與大考中心 114 學測五標（骨架版內建 24 個代表校系樣本；正式版將匯入全部校系與分發入學標準）。本分析以「去年」標準比對「今年」成績，各年題目難度與報名人數不同，結果為<b>選填參考，非錄取保證</b>；英聽檢定與同級分超額篩選未納入計算，請以當年簡章為準。🔒 內部工具，請勿外流網址。</div>`;
+  document.title=`學測落點分析_${new Date().toLocaleDateString("zh-TW").replace(/\//g,"")}`;
+}
+</script>
+</body>
+</html>

@@ -101,7 +101,7 @@
 <body>
 
 <div class="panel">
-  <h1>🔒 TIPS 報告產生器（內部工具，請勿外流網址）<span style="float:right;"><a href="manual.html" style="font-size:.75rem; color:#5b8fd8; text-decoration:none; margin-right:12px;">📘 使用說明</a><a href="sop.html" style="font-size:.75rem; color:#5b8fd8; text-decoration:none;">📖 解讀面談 SOP</a></span></h1>
+  <h1>🔒 TIPS 報告產生器（內部工具，請勿外流網址）<span style="float:right;"><a href="luodian/" style="font-size:.75rem; color:#5b8fd8; text-decoration:none; margin-right:12px;">📊 學測落點</a><a href="manual.html" style="font-size:.75rem; color:#5b8fd8; text-decoration:none; margin-right:12px;">📘 使用說明</a><a href="sop.html" style="font-size:.75rem; color:#5b8fd8; text-decoration:none;">📖 解讀面談 SOP</a></span></h1>
   <p class="hint">從試算表複製「結果摘要」欄整格貼上即可（孩子那筆＋對照卷那筆可以一起貼，系統會自動抓「代碼[…]」）。支援：高中定向 HSC／國中興趣 JHC／準備度 RDC／入班評估 NSC＋各對照卷代碼。</p>
   <textarea id="codeInput" placeholder="把試算表的結果摘要貼在這裡（可多筆一起貼）…"></textarea>
   <div class="row" id="careerRow" style="gap:6px; align-items:flex-start;">
@@ -297,7 +297,13 @@ const CAREER_DB=[
  {n:"空服員",code:"CSR",onet:"53-2031",path:"大學畢→航空公司招募（不限科系）",req:"英語門檻（多益等）、儀態與體檢、長期時差與站立服務"},
  {n:"廚師",code:"ERC",onet:"35-1011",path:"技高餐飲群科→科大餐旅；中餐／西餐／烘焙證照",req:"高溫久站環境、假日與夜間工時、從學徒做起"},
  {n:"物理治療師",code:"SIR",onet:"29-1123",path:"物理治療學系（4～6 年）→物治師國考",req:"國考取照、體力勞動、需持續進修專科技術"},
- {n:"社工師",code:"S",onet:"21-1021",path:"社會工作學系→社工師考試",req:"個案負荷與情緒勞動高、跨機構協調能力"}];
+ {n:"社工師",code:"S",onet:"21-1021",path:"社會工作學系→社工師考試",req:"個案負荷與情緒勞動高、跨機構協調能力"},
+ {n:"電機工程師",code:"RIC",onet:"17-2071",path:"電機系（大學／科大）→半導體、電子與電力產業",req:"數理門檻高（數A＋物理）、技術更新快需持續進修"},
+ {n:"機械工程師",code:"RIC",onet:"17-2141",path:"機械系（大學／科大）→精密機械、半導體設備、車輛產業",req:"力學與製圖基礎、部分場域需輪班與現場作業"},
+ {n:"土木工程師",code:"RIC",onet:"17-2051",path:"土木系→土木技師高考／公務人員土木職系",req:"技師考試門檻、工地環境與工期壓力"},
+ {n:"建築師",code:"RCA",onet:"17-1011",path:"建築系（多為 5 年制）→建築師高考",req:"高考錄取率低、設計與法規並重、養成期長"},
+ {n:"心理師",code:"SI",onet:"19-3033",path:"心理系→諮商／臨床心理研究所（碩士）→心理師國考",req:"依法須碩士學歷＋全職實習一年才能應考，養成期約 7 年"},
+ {n:"獸醫師",code:"IR",onet:"29-1131",path:"獸醫系（5～6 年，全台僅少數校系）→獸醫師國考",req:"入學分數門檻高、名額少；體力勞動與情緒負荷"}];
 function careerFit(riasec,code){
   const w=[3,2,1]; let num=0, den=0;
   code.split("").forEach((c,i)=>{ num+=riasec[c]*w[i]; den+=40*w[i]; });
