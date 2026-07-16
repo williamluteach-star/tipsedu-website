@@ -84,6 +84,19 @@
     .gap-hi{background:#f1f1f1 !important;}
   }
 </style>
+<style id="interp-style">
+  .cchip{border:1.5px solid #d2d2d7; background:#fff; color:#3a3a3c; border-radius:980px; padding:5px 13px; font-size:.8rem; cursor:pointer; font-family:inherit; transition:.15s;}
+  .cchip.on{background:#1d1d1f; border-color:#1d1d1f; color:#fff; font-weight:700;}
+  .interp{background:#fbf8f4; border-radius:14px; padding:12px 16px; margin:6px 0; font-size:.83rem; line-height:1.75;}
+  .interp p{margin:6px 0;}
+  .interp .formal{font-weight:700; background:#eaf3fb; border-radius:10px; padding:7px 11px; font-size:.79rem; line-height:1.6;}
+  ul.act{margin:4px 0 4px 20px; font-size:.82rem; line-height:1.7;}
+  ul.act li{margin:5px 0;}
+  @media print{
+    .interp{background:#f6f6f6 !important;}
+    .interp .formal{background:#efefef !important;}
+  }
+</style>
 </head>
 <body>
 
@@ -91,6 +104,10 @@
   <h1>🔒 TIPS 報告產生器（內部工具，請勿外流網址）<a href="sop.html" style="float:right; font-size:.75rem; color:#5b8fd8; text-decoration:none;">📖 解讀面談 SOP</a></h1>
   <p class="hint">從試算表複製「結果摘要」欄整格貼上即可（孩子那筆＋對照卷那筆可以一起貼，系統會自動抓「代碼[…]」）。支援：高中定向 HSC／國中興趣 JHC／準備度 RDC／入班評估 NSC＋各對照卷代碼。</p>
   <textarea id="codeInput" placeholder="把試算表的結果摘要貼在這裡（可多筆一起貼）…"></textarea>
+  <div class="row" id="careerRow" style="gap:6px; align-items:flex-start;">
+    <span style="font-size:.83rem; font-weight:700; padding-top:4px;">🎯 職業聚焦（選填，可複選，僅適用①⑤生涯類報告）：</span>
+    <div style="flex:1; display:flex; flex-wrap:wrap; gap:6px;" id="careerChips"></div>
+  </div>
   <div class="row">
     <label class="mode"><input type="radio" name="mode" value="talk" checked> 面談版（可給家長看）</label>
     <label class="mode"><input type="radio" name="mode" value="internal"> 內部版（含分型與合拍度）</label>
@@ -142,7 +159,7 @@ const JH_GROUPS = [
  {n:"設計群", codes:["A","R"], majors:"廣告設計科、多媒體設計科、室內設計科", fit:"對美感與空間有興趣、想用作品表達想法", path:"升學：科大視覺傳達／多媒體設計；出路：設計公司、遊戲美術、接案設計師"},
  {n:"藝術群", codes:["A","S"], majors:"音樂科、舞蹈科、美術科、表演藝術科", fit:"創意與觀察力強、喜歡表演與藝術表達", path:"升學：藝術大學／科大表演藝術；出路：劇團、音樂教學、演藝與策展"}
 ];
-const RD_DIMS=[["mot","學習動機","#e0798c"],["time","時間管理","#e09a55"],["focus","專注習慣","#d4a72c"],["strategy","學習方法","#43a58c"],["mind","考試心態","#5b8fd8"],["self","生活獨立","#8b7cd8"]];
+const RD_DIMS=[["mot","學習動機","#e0798c","動機"],["time","時間管理","#e09a55","時間"],["focus","專注習慣","#d4a72c","專注"],["strategy","學習方法","#43a58c","方法"],["mind","考試心態","#5b8fd8","心態"],["self","生活獨立","#8b7cd8","獨立"]];
 const NS_DIMS=[["focus","專注與持續","#e0798c"],["lang","語言與溝通","#e09a55"],["social","情緒與社交","#43a58c"],["self","生活自理","#5b8fd8"],["curio","學習興趣與好奇心","#8b7cd8"]];
 const R6=["R","I","A","S","E","C"];
 const R6NAME={R:"實用型 R",I:"研究型 I",A:"藝術型 A",S:"社會型 S",E:"企業型 E",C:"事務型 C"};
@@ -152,6 +169,144 @@ const RD_PLAN=["全科班","單科補強","自主學習為主","還沒想好"];
 const RD_WORRY=["成績跟不上","3C 與手機","交友","作息與自律","沒有特別擔心"];
 const PS_STYLE_Q={D:["成績有明確標準與要求","讀書計畫由家長規定","未達期望會明確表達不滿","重大決定由父母把關"],
                   S:["會先聽完孩子的理由","願意支持冷門但有熱情的方向","常聊課業以外的事","先安撫情緒再談表現"]};
+
+/* ================= 職業聚焦（O*NET 職業興趣碼） ================= */
+const CAREER_DB=[
+ {n:"警察",code:"RCE",onet:"33-3051",path:"高中職畢→警專專科警員班（2 年公費，畢業考警察特考四等）；或學測／分科→中央警察大學（特考三等）；一般大學畢亦可考一般警察特考",req:"身高（男約165／女約160cm）、視力與體格檢查、體能測驗、素行審查；輪班與勤務壓力"},
+ {n:"護理師",code:"SCI",onet:"29-1141",path:"國中畢→五專護理科（5 年）；或高中→大學／科大護理系（4 年）→護理師國考",req:"國考取照、三班輪值、高情緒勞動與抗壓需求"},
+ {n:"消防員",code:"R",onet:"33-2011",path:"警專消防安全科／警大消防系→特考；或一般大學畢→一般警察特考消防警察類",req:"體能標準高（負重、心肺）、危險環境作業、24 小時輪值"},
+ {n:"職業軍人",code:"RCE",onet:"—",path:"國中畢→中正預校；高中畢→軍校正期班（陸海空官校等）；大學在學→ROTC；大學畢→專業軍官班",req:"體格與體能標準、服役契約年限、部隊紀律生活（O*NET 未收錄現役軍職，何倫碼為近似參考）",approx:true},
+ {n:"國中小老師",code:"S",onet:"25-2021",path:"大學修教育學程→教師資格考→各縣市教師甄選",req:"教甄競爭激烈（口試＋試教）、班級經營與家長溝通負荷"},
+ {n:"醫師",code:"SI",onet:"29-1215",path:"學測頂標→醫學系（6 年）→醫師國考＋PGY 訓練",req:"學業門檻極高、養成期 10 年以上、工時長"},
+ {n:"藥師",code:"ISC",onet:"29-1051",path:"藥學系（5～6 年）→藥師國考",req:"國考取照、用藥責任重、需終身進修"},
+ {n:"會計師",code:"CEI",onet:"13-2011",path:"會計／財金系→會計師高考（可先考記帳士）",req:"高考科目多、簽證責任、忙季工時長"},
+ {n:"律師",code:"ECI",onet:"23-1011",path:"法律系→律師高考→律訓＋實習",req:"錄取率低、大量閱讀與文書、辯論與抗壓能力"},
+ {n:"軟體工程師",code:"IC",onet:"15-1252",path:"資工／資管系，或作品集自學路線；高中可先考 APCS 檢定",req:"持續自學新技術、邏輯與英文文件閱讀能力"},
+ {n:"機師",code:"RCE",onet:"53-2011",path:"大學畢→航空公司培訓機師（CPL/ATPL）或自費飛行學校",req:"航空體檢一級標準（視力、心血管）、ICAO 英語門檻、心理測評、時差輪班"},
+ {n:"空服員",code:"CSR",onet:"53-2031",path:"大學畢→航空公司招募（不限科系）",req:"英語門檻（多益等）、儀態與體檢、長期時差與站立服務"},
+ {n:"廚師",code:"ERC",onet:"35-1011",path:"技高餐飲群科→科大餐旅；中餐／西餐／烘焙證照",req:"高溫久站環境、假日與夜間工時、從學徒做起"},
+ {n:"物理治療師",code:"SIR",onet:"29-1123",path:"物理治療學系（4～6 年）→物治師國考",req:"國考取照、體力勞動、需持續進修專科技術"},
+ {n:"社工師",code:"S",onet:"21-1021",path:"社會工作學系→社工師考試",req:"個案負荷與情緒勞動高、跨機構協調能力"}];
+function careerFit(riasec,code){
+  const w=[3,2,1]; let num=0, den=0;
+  code.split("").forEach((c,i)=>{ num+=riasec[c]*w[i]; den+=40*w[i]; });
+  return Math.round(num/den*100);
+}
+function careerBlock(riasec){
+  const sel=window.__careerSel||[];
+  if(!sel.length) return "";
+  const cards=sel.map(i=>{
+    const c=CAREER_DB[i], fit=careerFit(riasec,c.code);
+    const lv= fit>=70?["高（興趣面）","#0a8f43"]: fit>=55?["中高","#43a58c"]: fit>=40?["中等","#b8860b"]:["目前偏低","#c0392b"];
+    return `<div class="gcard"><b>${c.n}</b><span class="pct">${fit}%</span><br>
+      <span style="color:#5b6478;">何倫碼 ${c.code}${c.onet!=="—"?`（O*NET ${c.onet}）`:"（近似參考碼）"}｜興趣適配：<b style="color:${lv[1]};">${lv[0]}</b></span><br>
+      📍 ${c.path}<br><span style="color:#c0392b;">⚠ ${c.req}</span></div>`;
+  }).join("");
+  return `<h3 class="sec">🎯 職業聚焦分析</h3>
+    <div class="grid2">${cards}</div>
+    <p style="font-size:.7rem; color:#5b6478; margin:4px 0 8px;">興趣適配依 O*NET 職業興趣碼（第一碼×3、第二碼×2、第三碼×1 加權）計算，僅反映「興趣面」的契合度；實際錄取與適任尚取決於學業成績、體格體能、國家考試等硬條件（已列於各職業 ⚠ 處）。興趣偏低不代表不能走，但建議先實際體驗（見習、營隊、訪談從業者）再決定投入。</p>`;
+}
+function initCareerChips(){
+  const box=document.getElementById("careerChips"); if(!box) return;
+  box.innerHTML=CAREER_DB.map((c,i)=>`<button type="button" class="cchip" data-i="${i}" onclick="this.classList.toggle('on')">${c.n}</button>`).join("");
+}
+document.addEventListener("DOMContentLoaded", initCareerChips);
+
+/* ================= 綜合解讀引擎 ================= */
+const RTYPE={
+ R:{tag:"動手實作",para:"屬於「做中學」的孩子：對具體、動手、看得到成果的活動最有感，坐著聽講不如親手操作一次。這類孩子的優勢在執行力與實作直覺，適合有實驗、實作、專題的學習環境。",
+    sec:"搭配第二碼實用型 R，能把想法實際動手做出來，「落實力」會是亮點。"},
+ I:{tag:"探究思考",para:"屬於「打破砂鍋問到底」的孩子：對原理和「為什麼」特別好奇，喜歡觀察、分析、驗證。這類孩子適合探究式學習——給他一個好問題，比給他十頁講義更有用。",
+    sec:"搭配第二碼研究型 I，不只會做、還想弄懂背後原理，適合需要深度思考的路線。"},
+ A:{tag:"創意表達",para:"屬於「用作品說話」的孩子：有自己的美感和想法，不喜歡千篇一律。這類孩子需要能自由發揮的空間，規定太死反而熄火；給他創作的出口，能量就會出來。",
+    sec:"搭配第二碼藝術型 A，多了美感與原創性，做出來的東西會有自己的味道。"},
+ S:{tag:"人際助人",para:"屬於「電力來自人群」的孩子：教別人、幫別人、和人合作時最有成就感。這類孩子適合有討論、合作、服務成分的學習，也常是團體裡的黏著劑。",
+    sec:"搭配第二碼社會型 S，在團隊合作與人際場合特別能發揮。"},
+ E:{tag:"領導影響",para:"屬於「想帶頭做事」的孩子：有企圖心，喜歡說服別人、組織活動、把想法變成行動。這類孩子需要舞台和實戰——當幹部、辦活動、做企劃，越做越亮。",
+    sec:"搭配第二碼企業型 E，多了行動力與領導企圖，適合需要主導性的角色。"},
+ C:{tag:"條理執行",para:"屬於「把事情做對」的孩子：有條理、重精確、能堅持把流程走完。這類孩子是靠得住的執行者，適合結構清楚、規則明確的環境。",
+    sec:"搭配第二碼事務型 C，做事更有條理、能把成果收好尾。"}};
+function stabTxt(D){ return D>=8?["興趣輪廓清楚穩定","輪廓清楚，這個結果值得作為規劃主軸。"]
+  : D>=4?["輪廓大致成形","可以先朝這個方向探索，同時保持一些彈性。"]
+  :["六型分數相近、仍在廣泛探索期","這在這個年紀完全正常——此時排名僅供參考，最有價值的行動是多元嘗試，之後再重測收斂。"]; }
+function interpCore(riasec,top3,D,formalExtra){
+  const a=top3[0], b=top3[1];
+  const lowT=R6.slice().sort((x,y)=>riasec[x]-riasec[y])[0];
+  const s=stabTxt(D);
+  return `<h3 class="sec">綜合解讀</h3><div class="interp">
+    <p class="formal">📋 測評摘要：興趣組型 ${top3}（首碼 ${R6NAME[a]}・區分性 D=${D.toFixed(1)}，${s[0]}）${formalExtra}</p>
+    <p><b>${R6NAME[a]}｜${RTYPE[a].tag}</b>——${RTYPE[a].para}</p>
+    <p>${RTYPE[b].sec}　${s[1]}</p>
+    <p style="color:#6e6e73;">${R6NAME[lowT]} 分數相對低（${riasec[lowT]}/40）——這不代表能力不好，只是目前興趣不在這裡；若未來科系或工作需要大量這類活動，選擇前建議先實際體驗看看。</p>
+  </div>`;
+}
+function interpHS(riasec,top3,D,streamIdx,ranked,grade){
+  const streamShort= streamIdx>=62?"自然組傾向顯著": streamIdx>=54?"偏自然組": streamIdx>46?"自然社會均衡": streamIdx>38?"偏社會組":"社會組傾向顯著";
+  const core=interpCore(riasec,top3,D,`；選組傾向指數 ${streamIdx}（${streamShort}）；學群適配前三：${ranked.slice(0,3).map(g=>g.n).join("、")}。`);
+  const dirAct= streamIdx>=54?"選課重心放在數學與自然科：多數理工醫農校系採計數A＋物理／化學，高一把數學底子打穩，選組時就有底氣。"
+    : streamIdx<=46?"加深國文、英文與社會科：閱讀與表達力是社會組校系的核心競爭力，數學方向可依目標校系評估數B。"
+    :"還不用急著二選一：把這份報告和高一上學期各科的「手感」放在一起看，選組說明會前再確認一次。";
+  const acts=[dirAct]
+    .concat(ranked.slice(0,2).map(g=>`探索「${g.n}」：${g.path}`))
+    .concat(D<4?["先廣後深：這學期安排 2～3 種不同性質的探索（營隊、線上課、講座），體驗後再重測收斂方向。"]:[])
+    .concat([/高一/.test(grade)?"高一下選組前回班重測一次，確認方向穩定後再定案；重大決定搭配學校輔導室測驗交叉驗證。":"選填與學習歷程重大決定前，搭配學校輔導室測驗與導師意見交叉驗證。"]);
+  return core+`<h3 class="sec">給家庭的行動建議</h3><ul class="act">${acts.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+}
+function interpJH(riasec,top3,D,T,ranked){
+  const dirShort= T<=-8?"偏普通高中": T>=8?"偏技術型高中":"普高技高中間帶";
+  const core=interpCore(riasec,top3,D,`；學習型態指數 T=${T}（${dirShort}）；群科適配前三：${ranked.slice(0,3).map(g=>g.n).join("、")}。`);
+  const dirAct= T>=8?"孩子的學習型態偏實作：請認真把技術型高中放進選項——這不是成績的退路，而是把優勢放大的路，先從下面的適配群科開始了解。"
+    : T<=-8?"孩子的學習型態偏學術：普通高中路線相對合拍，以會考成績極大化為主軸，同時保留對大學科系方向的想像。"
+    :"孩子在學術與實作之間彈性大：兩條路都認真看——安排一次高中課程說明＋一次技職參訪，用實際體驗幫他做決定。";
+  const acts=[dirAct]
+    .concat(ranked.slice(0,2).map(g=>`了解「${g.n}」：${g.path}`))
+    .concat(T>=8?["實地走一趟：技職博覽會、科大或技高開放日——看見真實的教室與設備，孩子的眼睛會告訴你答案。"]:[])
+    .concat(D<4?["興趣還在探索期：先多元嘗試（社團、營隊、職業試探課程），國二下再重測收斂。"]:["國二下、國三上各重測一次，確認興趣穩定後，會考選填就能放心押方向。"]);
+  return core+`<h3 class="sec">給家庭的行動建議</h3><ul class="act">${acts.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+}
+const RD_HI=["對學習有自己的動力，這是最珍貴的引擎","能安排自己的時間，上國中後的多科作業接得住","專注品質好，讀書效率有本錢","已經有自己的讀書方法，之後只需升級工具","面對考試的心態穩，這在會考長跑特別值錢","生活獨立度好，適應新環境的底子夠"];
+const RD_ADV=["把「為什麼要學」跟孩子有感的事掛鉤：從他喜歡的主題延伸學習，每週一次 15 分鐘聊「這週學到最有趣的事」。",
+ "用看得見的計畫表：週計畫貼在書桌前，先從「每天固定 30 分鐘作業時段」開始，完成就打勾，累積成就感。",
+ "作業切段進行：25 分鐘專注＋5 分鐘休息；寫作業時手機平板放房間外——環境先安靜，專注才留得住。",
+ "練「講一次」：每讀完一段，讓孩子用自己的話講給你聽，講得出來才是真的懂；錯題本從每週 3 題開始就好。",
+ "把考試變練習：考前用模擬題演練降低陌生感；考後只檢討錯題、不檢討人，孩子才敢面對錯誤。",
+ "把責任還給孩子：自己整理書包、固定一項家務，家長忍住不代勞——獨立是國中適應最被低估的能力。"];
+function interpRD(vals,index,pPlan,pWorry){
+  const hiIdx=vals.map((v,i)=>i).sort((a,b)=>vals[b]-vals[a]).slice(0,2);
+  const loIdx=vals.map((v,i)=>i).sort((a,b)=>vals[a]-vals[b]).slice(0,2);
+  const band= index>=80?["就緒度高","大部分能力已達國中銜接水準，重點是維持節奏並持續加深，讓好習慣撐過國中的量變。"]
+    : index>=60?["中等就緒","有明確的強項，也有 1～2 個上國中前值得補強的暖身區——小五小六開始調整，時間剛剛好。"]
+    :["暖身期","多項能力還在打底階段，請不用焦慮：這個檢測的目的正是提早看見，從一個習慣開始改變就好，三個月就看得到差。"];
+  const acts=loIdx.map(i=>`【${RD_DIMS[i][1]}】${RD_ADV[i]}`)
+    .concat(pWorry===1?["跟孩子共同訂 3C 公約：定點充電、定時使用，家長同步遵守，公約才有效力。"]:[])
+    .concat(["入班約 3 個月後重測一次，用前後測數據看見成長（成長軌跡報告會自動比對）。"]);
+  return `<h3 class="sec">綜合解讀</h3><div class="interp">
+    <p class="formal">📋 測評摘要：整體就緒指數 ${index}/100（${band[0]}）；相對強項：${hiIdx.map(i=>RD_DIMS[i][1]).join("、")}；優先暖身：${loIdx.map(i=>RD_DIMS[i][1]).join("、")}。</p>
+    <p>${band[1]}</p>
+    <p><b>先看亮點：</b>${RD_DIMS[hiIdx[0]][1]}是孩子目前最穩的一塊——${RD_HI[hiIdx[0]]}；${RD_DIMS[hiIdx[1]][1]}也表現不錯。跟孩子談這份結果時，請先從這裡開始講。</p>
+    <p><b>暖身區：</b>${loIdx.map(i=>RD_DIMS[i][1]).join("與")}目前分數較低——這是「還沒建立的習慣」，不是能力問題，下面的建議都是在家就能開始的做法。</p>
+  </div>
+  <h3 class="sec">給家庭的行動建議</h3><ul class="act">${acts.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+}
+const NS_HI=["能持續投入活動，課堂學習的續航力好","表達與理解走在前面，老師的引導接得快","情緒與人際穩定，進入新環境的適應成本低","自理能力好——能照顧自己，就能空出力氣學習","好奇心是最好的學習引擎，給對題材就會自己往前跑"];
+const NS_ADV=["課堂採短節奏、多轉換的活動設計；在家玩「計時小任務」，從 5 分鐘慢慢拉長專注時間。",
+ "每天 10 分鐘繪本共讀，讀完讓孩子「講回來」；入班初期老師會搭配圖卡與動作提示，降低理解門檻。",
+ "先小組、後團體的漸進安排；在家多玩需要輪流與等待的桌遊，練習社交節奏。",
+ "入班初期老師多一步引導；在家讓孩子自己背書包、收拾用品——慢沒關係，代勞才是真的慢。",
+ "從孩子最喜歡的主題切入英語與學習素材；每週留一個「孩子提問時間」，讓好奇被認真對待。"];
+function interpNS(vals){
+  const hi=vals.indexOf(Math.max(...vals)), lo=vals.indexOf(Math.min(...vals));
+  const acts=[`【${NS_DIMS[lo][1]}】${NS_ADV[lo]}`,
+    `用強項帶暖身區：${NS_HI[hi]}——課程會優先從這個優勢面切入設計。`,
+    "入班後 4～6 週與老師對一次觀察：在家與在校的表現一致嗎？這是微調安排的最好時機。"];
+  return `<h3 class="sec">綜合解讀</h3><div class="interp">
+    <p class="formal">📋 觀察摘要：五面向中「${NS_DIMS[hi][1]}」為目前亮點（${vals[hi]}/18）；「${NS_DIMS[lo][1]}」尚在暖身（${vals[lo]}/18），屬可透過課堂與家庭安排支持的範圍。</p>
+    <p>每個孩子的發展節奏本來就不同步——這份圖不是成績單，是「起步地圖」：亮點面向告訴我們從哪裡切入最順，暖身面向告訴我們哪裡多給一點支持。</p>
+    <p><b>亮點：</b>${NS_DIMS[hi][1]}——${NS_HI[hi]}。<br><b>暖身區：</b>${NS_DIMS[lo][1]}——現在的分數只代表「還在長」，學齡前後正是進步最快的階段。</p>
+  </div>
+  <h3 class="sec">給家庭的行動建議</h3><ul class="act">${acts.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+}
+
 
 /* ================= 工具 ================= */
 function gm(riasec,g){ return Math.round(((riasec[g.codes[0]]*2 + riasec[g.codes[1]])/120)*100); }
@@ -322,6 +477,8 @@ function renderHS(cc, pc, internal){
     `<h3 class="sec">選組傾向</h3><div class="verdict">${streamTxt}｜自然 ${nat}/32・社會 ${hum}/32｜區分性 D=${D.toFixed(1)}${D<4?"（偏低，興趣仍在探索中，排名僅供參考）":""}</div>`+
     expTable+
     `<h3 class="sec">大學 18 學群適配 Top4</h3><div class="grid2">${topCards}</div>`+
+    interpHS(riasec,top3,D,streamIdx,ranked,grade)+
+    careerBlock(riasec)+
     (pc?styleBlock(pC.slice(0,4),pC.slice(4,8),pC.slice(8),internal,hsTips(pA,riasec,pExpect,streamIdx,pGroups,ranked)):"")+
     answerAppendix([
       (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("孩子作答｜Part 1 興趣 60 題",itemsRows(HSQ_P1,HSQ_P1O,a,0)):null;})(),
@@ -700,6 +857,8 @@ function renderJH(cc, pc, internal){
     `<h3 class="sec">高中／高職傾向</h3><div class="verdict">${dirTxt}｜學術 ${ac}/32・實作 ${pr}/32｜區分性 D=${D.toFixed(1)}${D<4?"（偏低，興趣仍在探索中，排名僅供參考）":""}</div>`+
     expTable+
     `<h3 class="sec">技高 15 群科適配 Top4</h3><div class="grid2">${topCards}</div>`+
+    interpJH(riasec,top3,D,T,ranked)+
+    careerBlock(riasec)+
     (pc?styleBlock(pC.slice(0,4),pC.slice(4,8),pC.slice(8),internal,jhTips(pA,riasec,pExpect,T,pGroups,ranked)):"")+
     answerAppendix([
       (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("孩子作答｜Part 1 興趣 60 題",itemsRows(HSQ_P1,HSQ_P1O,a,0)):null;})(),
@@ -719,7 +878,7 @@ function renderRD(cc, pc, internal){
   const index=Math.round(total/192*100);
   let pA=null,pPlan=null,pWorry=null,pC=null;
   if(pc){ const seg=pc.split("|"); pA=seg[1].split(",").map(Number); pPlan=Number(seg[2]); pWorry=Number(seg[3]); pC=seg[4].split(",").map(Number); }
-  const labels=RD_DIMS.map(d=>[d[1].slice(0,2), d[2]]);
+  const labels=RD_DIMS.map(d=>[d[3], d[2]]);
   const parentVals=pA?pA.map(v=>v*8):null;
   let table;
   if(pA){
@@ -740,6 +899,7 @@ function renderRD(cc, pc, internal){
     `<h3 class="sec">六大能力：孩子自評${pA?" vs 家長觀察":""}（就緒指數 <span class="badge">${index}</span>）</h3>
      <div class="flex"><div style="text-align:center;">${radarDual(labels,vals,parentVals,32)}<div class="legend">─ <span class="c1">孩子自評</span>${pA?"　╌ <span class='c2'>家長觀察</span>":""}</div></div><div>${table}</div></div>`+
     planBlock+
+    interpRD(vals,index,pPlan,pWorry)+
     (pc?styleBlock(pC.slice(0,2),pC.slice(2,4),pC.slice(4),internal,rdTips(pPlan,pWorry,vals,pA)):"")+
     answerAppendix([
       (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("孩子作答｜六大能力 48 題",itemsRows(RDQ,RDQ_O,a,0)):null;})(),
@@ -794,6 +954,7 @@ function renderNS(cc, pc, internal){
      <div class="flex"><div style="text-align:center;">${radarDual(labels,vals,null,18)}<div class="legend">─ <span class="c1">家長觀察</span></div></div>
      <div><table><tr><th>面向</th><th>分數</th><th>階段</th></tr>${rows}</table></div></div>
      <h3 class="sec">英語與學習背景</h3><div class="verdict">${esc(bg)||"（未填）"}</div>`+
+     interpNS(vals)+
      (pc?styleBlock(pc.split("|")[1].split(",").map(Number).slice(0,2), pc.split("|")[1].split(",").map(Number).slice(2,4), pc.split("|")[1].split(",").map(Number).slice(4,6), internal, []):"")+
      ((pc && pc.split("|")[0]==="NSP2")?devBlock(pc.split("|")[2], pc.split("|")[3].split(",").map(Number), internal):"")+
      answerAppendix([
@@ -863,7 +1024,7 @@ function renderGrowth(allCodes, internal){
   const rds=parsed.filter(p=>p.rd);
   if(rds.length>=2){
     const a=rds[0], b=rds[rds.length-1];
-    const labels=RD_DIMS.map(d=>[d[1].slice(0,2),d[2]]);
+    const labels=RD_DIMS.map(d=>[d[3],d[2]]);
     body+=`<h3 class="sec">準備度前後測（就緒指數 ${a.idx} → ${b.idx}，${b.idx-a.idx>=0?"+":""}${b.idx-a.idx}）</h3>
       <div class="flex"><div style="text-align:center;">${radarDual(labels,b.rd,a.rd,32)}
       <div class="legend">─ <span class="c1">後測（${esc(b.grade)}）</span>　╌ <span class="c2">前測（${esc(a.grade)}）</span></div></div>
@@ -877,6 +1038,7 @@ function renderGrowth(allCodes, internal){
 }
 /* ================= 主流程 ================= */
 function generate(){
+  window.__careerSel=[...document.querySelectorAll(".cchip.on")].map(b=>+b.dataset.i);
   const err=document.getElementById("errBox"); err.style.display="none";
   const codes=parseCodes(document.getElementById("codeInput").value);
   const modeVal=document.querySelector('input[name="mode"]:checked').value;
