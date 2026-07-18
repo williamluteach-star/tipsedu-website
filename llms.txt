@@ -1,6 +1,6 @@
 # TIPS 英典教育
 
-> 台中市南屯區的升學與英語補習班，服務國小到高中的孩子。以獲金鼎獎入圍、教育部認證的 KC 科基語測 AI 系統為每位孩子建立個人化學習路徑；課程涵蓋愛美語全英文授課、Lumos 英文閱讀、國中會考與高中學測衝刺、全民英檢、國小課輔安親、鋼琴與美術才藝，以及菲律賓宿霧遊學。主張因材施教、進度透明，用科學數據陪孩子規劃 12 年學習藍圖。
+> 台中市南屯區的升學與英語補習班，服務國小到高中的孩子。以獲金鼎獎入圍、教育部認證的 KC 科基語測 AI 系統為每位孩子建立個人化學習路徑；課程涵蓋愛美語全英文授課、Lumos 英文閱讀、國中會考與高中學測衝刺、全民英檢、國小課輔安親、鋼琴與美術才藝，以及菲律賓宿霧遊學。主張因材施教、進度透明，用科學數據陪孩子規劃 12 年學習藍圖。並提供 108 課綱高中／技高「學習歷程」三年陪伴服務（專屬平台存素材＋LINE 截止日提醒＋真人老師引導反思）。
 
 ## 主要頁面
 - [關於 TIPS 英典教育](https://www.tips-edu.com/about.html): 辦學理念、課程系統與創辦團隊介紹。
@@ -9,6 +9,14 @@
 - [菲律賓宿霧遊學](https://www.tips-edu.com/abroad.html): 國高中生海外遊學，費用、安全與行前準備。
 - [學生專區](https://www.tips-edu.com/student.html): 學習系統入口（KC 科基語測、Lumos、金頭腦、ERIS）。
 - [媒體報導](https://www.tips-edu.com/media.html): 媒體採訪與報導。
+
+
+## 學習歷程陪伴服務（108 課綱）
+- [高中學習歷程三年陪伴服務](https://www.tips-edu.com/learning-portfolio.html): 高中／技高學習歷程三年陪伴——專屬平台隨手存素材、LINE 截止日自動提醒、真人老師引導反思，符合教育部 AI 使用揭露規範。
+- [學習歷程「編輯中」陷阱：上傳了不等於交了](https://www.tips-edu.com/blog/portfolio-editing-trap.html): 「編輯中」與「已送出認證」的差異、六階段送出流程與三步自救檢查。
+- [高一家長必看：學習歷程三年怎麼佈局](https://www.tips-edu.com/blog/portfolio-3year-guide.html): 普高（學測→個申）與技高（統測→四技甄選）三年時程、每學年勾選課程成果 6 件＋多元表現 10 件的規則。
+- [自主學習計畫怎麼開始](https://www.tips-edu.com/blog/self-directed-learning-guide.html): 全國約 87% 校系採計自主學習；選題公式、紀錄五要素、三大地雷。
+- 學生登入平台：https://portfolio.tips-edu.com/ （台灣版）／ https://portfolio.tips-edu.com/us/ （國際版）
 
 ## 部落格
 - [部落格](https://www.tips-edu.com/blog/): 升學與英語學習的家長指南。
