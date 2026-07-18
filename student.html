@@ -309,6 +309,7 @@ footer ul a{font-size:.92rem;color:var(--muted)}footer ul a:hover{color:#f5a623}
 <h1 data-i18n="t11">學生專區</h1>
 <p class="sub" data-i18n="t12">登入你的學習系統，繼續今天的練習。</p>
 <div class="sys-grid">
+<a class="sys-card" href="https://portfolio.tips-edu.com/" rel="noopener" target="_blank"><div class="sys-media"><div class="sys-icon"><svg viewbox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H18a2 2 0 0 1 2 2v13a.5.5 0 0 1-.5.5H6a2 2 0 0 1-2-2Z"></path><path d="M8 4v13M8 8.5h7M8 11.5h5"></path></svg></div></div><div class="sys-name" data-i18n="s1">學習歷程平台</div><div class="sys-desc" data-i18n="s2">高中／技高學習歷程陪伴：快拍存素材、AI 反思教練、校內狀態追蹤與截止日提醒。用老師發的學號＋登入代碼登入。</div><span class="sys-go" data-i18n="s3">進入平台 →</span></a>
 <a class="sys-card" href="https://www.kconline.com.tw/" rel="noopener" target="_blank">
 <div class="sys-media"><img alt="KC 科基語測" data-i18n-alt="a5" src="img/kc.jpg"/></div>
 <div class="sys-name" data-i18n="t13">KC 科基語測</div>
@@ -399,7 +400,7 @@ var ZH={},ZHA={};
 var mdEl=document.querySelector('meta[name="description"]');
 var ZHMETA={title:document.title,desc:mdEl?mdEl.getAttribute('content'):''};
 var AMAP={alt:'alt',label:'aria-label',placeholder:'placeholder',title:'title',src:'src'};
-document.querySelectorAll('[data-i18n]').forEach(function(el){ZH[el.getAttribute('data-i18n')]=el.innerHTML;});
+Object.assign(EN,{"s1": "Learning Portfolio Platform", "s2": "Learning-portfolio support for high school and vocational students: snap-and-save materials, an AI reflection coach, in-school status tracking, and deadline reminders. Log in with the student ID and login code your teacher gave you.", "s3": "Enter platform →"});document.querySelectorAll('[data-i18n]').forEach(function(el){ZH[el.getAttribute('data-i18n')]=el.innerHTML;});
 Object.keys(AMAP).forEach(function(a){document.querySelectorAll('[data-i18n-'+a+']').forEach(function(el){ZHA[el.getAttribute('data-i18n-'+a)]=el.getAttribute(AMAP[a]);});});
 function setLang(l){var en=(l==='en');
 document.documentElement.setAttribute('lang',en?'en':'zh-Hant');
