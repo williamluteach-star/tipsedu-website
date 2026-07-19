@@ -480,14 +480,17 @@ function styleBlock(cD, cS, cT, internal, tips){
                spectrum("回應與支持程度", sSum, sMax, "孩子自己來", "高度支持");
   let html=`<h3 class="sec">家長教養互動風格</h3>${spec}`;
   if(internal){
+    const dR=dSum/dMax, sR=sSum/sMax;
+    const band=r=> r>=0.6?"偏高": r>=0.4?"中等":"偏低";
     const hiD=dSum>=dMax*0.55, hiS=sSum>=sMax*0.55;
-    const type= hiD&&hiS?"民主威信型":hiD&&!hiS?"專斷型":!hiD&&hiS?"寬容型":"低涉入型";
+    // 型別僅供內部挑溝通策略，非給家長的判決；名稱已中性化（避免「專斷」等文化貶義標籤）
+    const type= hiD&&hiS?"高要求·高回應":hiD&&!hiS?"高要求·低回應":!hiD&&hiS?"低要求·高回應":"低要求·低回應";
     const strat={
-      "民主威信型":"與機構理念高度相容——直接展示數據與規劃，邀請家長參與目標設定。",
-      "專斷型":"先給數據與成績結構，再帶入興趣與適性；避免一開始就挑戰家長的期望。",
-      "寬容型":"強調 TIPS 的進度透明與定期回報機制，補足結構面；以孩子的意願為切入點。",
-      "低涉入型":"以省心、可信賴為主軸溝通，回報具體、頻率適中，減少要求家長配合的事項。"}[type];
-    const base={"民主威信型":88,"專斷型":58,"寬容型":72,"低涉入型":45}[type];
+      "高要求·高回應":"與機構理念高度相容——直接展示數據與規劃，邀請家長參與目標設定。",
+      "高要求·低回應":"先給數據與成績結構，再帶入興趣與適性；避免一開始就挑戰家長的期望。（提醒：高要求常是華人『管＝關心』的表現，勿以西方『專斷』負面解讀）",
+      "低要求·高回應":"強調 TIPS 的進度透明與定期回報機制，補足結構面；以孩子的意願為切入點。",
+      "低要求·低回應":"以省心、可信賴為主軸溝通，回報具體、頻率適中，減少要求家長配合的事項。"}[type];
+    const base={"高要求·高回應":88,"高要求·低回應":58,"低要求·高回應":72,"低要求·低回應":45}[type];
     const supp=cS[1]!==undefined?cS[1]:0;
     let fit=base + supp*3;
     if(tSum!==null) fit += Math.round(tSum*1.5);
@@ -500,8 +503,9 @@ function styleBlock(cD, cS, cT, internal, tips){
       if(cT[1]<=1) tipLines.push("家長不偏好盯數據——回報從簡，重點式訊息即可。");
     }
     html+=`<div class="internal"><h4>🔒 內部參考（列印面談版時不會出現）</h4>
-      <table><tr><th>教養分型</th><th>要求軸</th><th>回應軸</th>${tSum!==null?"<th>理念契合</th>":""}<th>TIPS 合拍度</th></tr>
-      <tr><td><b>${type}</b></td><td>${dSum}/${dMax}</td><td>${sSum}/${sMax}</td>${tSum!==null?`<td>${tSum}/8</td>`:""}<td><b>${fit} / 100</b></td></tr></table>
+      <table><tr><th>要求軸傾向</th><th>回應軸傾向</th>${tSum!==null?"<th>理念契合</th>":""}<th>TIPS 合拍度</th></tr>
+      <tr><td><b>${band(dR)}</b>（${dSum}/${dMax}）</td><td><b>${band(sR)}</b>（${sSum}/${sMax}）</td>${tSum!==null?`<td>${tSum}/8</td>`:""}<td><b>${fit} / 100</b></td></tr></table>
+      <div style="font-size:.72rem; color:#8a7a4a; margin-top:5px; line-height:1.5;">💡 <b>溝通起點假設（非分型定論）</b>：目前傾向「<b>${type}</b>」。教養風格是<b>連續光譜</b>、不是四選一的標籤；此欄只供顧問拿捏開場方式，用詞一律「傾向、可能」，面談中不對家長宣讀。高要求不等於「專斷」——華人「管」的文化裡，嚴格常是關心與愛的表現。</div>
       <div style="font-size:.76rem; margin-top:6px;"><b>💬 溝通方向：</b><ul style="margin:4px 0 0 18px;">${tipLines.map(t=>`<li>${t}</li>`).join("")}</ul></div></div>`;
   }
   return html;

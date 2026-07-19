@@ -521,7 +521,7 @@ function renderParentSurvey(){
   const worryBtns=PS_WORRY.map((t,i)=>`<button type="button" class="psx" id="pswo${i}" onclick="pickWorry(${i})">${t}</button>`).join("");
   rs.innerHTML=PS_STYLE+`
   <div class="card"><h2>👨‍👩‍👧 親子教育觀對照卷（家長填）</h2>
-   <p class="tagline">共 14 題，約 3 分鐘。沒有對錯，請依實際狀況作答；結果僅供顧問解讀報告時參考。</p></div>
+   <p class="tagline">共 14 題，約 3 分鐘。沒有對錯，請依實際狀況作答。這份問卷是用來<b>協助顧問理解親子觀點的異同、作為面談溝通的參考</b>，不會用來為家長評分或分型，也不會單獨對外呈現。</p></div>
   <div class="card"><h3>Part 1｜您眼中的孩子</h3>${rowA}</div>
   <div class="card"><h3>Part 2｜您的規劃與想法</h3>
     <p style="font-weight:600; margin:6px 0;">7. 國中階段的學習安排，您目前的想法？</p><div>${planBtns}</div>
