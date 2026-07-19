@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>國中準備度檢測（小五、小六）｜TIPS 英典教育</title>
-<meta name="description" content="孩子準備好上國中了嗎？TIPS 英典教育免費提供 48 題國中準備度檢測，從學習動機、時間管理、專注習慣、學習方法、考試心態、生活獨立六大能力，數據化評估孩子的國中銜接就緒度。">
+<meta name="description" content="孩子準備好上國中了嗎？TIPS 英典教育免費提供 56 題國中準備度檢測，從學習動機、時間管理、專注習慣、學習方法、考試心態、生活獨立、後設認知七大能力，數據化評估孩子的國中銜接就緒度。">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://www.tips-edu.com/ready/start/">
-<meta property="og:title" content="免費國中準備度檢測｜小四～小六，六大能力看懂銜接就緒度">
-<meta property="og:description" content="學習動機、時間管理、專注習慣、學習方法、考試心態、生活獨立六大能力數據化評估。台中南屯 TIPS 英典教育免費提供。">
+<meta property="og:title" content="免費國中準備度檢測｜小四～小六，七大能力看懂銜接就緒度">
+<meta property="og:description" content="學習動機、時間管理、專注習慣、學習方法、考試心態、生活獨立、後設認知七大能力數據化評估。台中南屯 TIPS 英典教育免費提供。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.tips-edu.com/ready/start/">
 <meta property="og:image" content="https://www.tips-edu.com/og-image.png">
@@ -152,10 +152,10 @@
 <body>
 <header class="top">
   <div class="brandbar"><span class="brand-logo">TIPS 英典教育</span><span class="brand-sub">KC INSIDE ‧ 智慧引擎驅動</span></div>
-  <h1>孩子準備好上<span class="hl">國中</span>了嗎？<br>六大能力 × 數據化就緒檢測</h1>
-  <p style="margin-top:8px;">給小五、小六學生的國中準備度檢測：48 題、約 15 分鐘，測出孩子在學習動機、時間管理、專注習慣、學習方法、考試心態、生活獨立六大面向的就緒程度。<b>完全免費。</b></p>
+  <h1>孩子準備好上<span class="hl">國中</span>了嗎？<br>七大能力 × 數據化就緒檢測</h1>
+  <p style="margin-top:8px;">給小五、小六學生的國中準備度檢測：56 題、約 18 分鐘，測出孩子在學習動機、時間管理、專注習慣、學習方法、考試心態、生活獨立、後設認知七大面向的就緒程度。<b>完全免費。</b></p>
   <div class="hero-stats">
-    <div class="hero-stat"><b>48 題</b>六大能力</div>
+    <div class="hero-stat"><b>56 題</b>七大能力</div>
     <div class="hero-stat"><b>15 分鐘</b>孩子自填</div>
     <div class="hero-stat"><b>就緒指數</b>雷達圖分析</div>
     <div class="hero-stat"><b>免費</b>一對一解讀</div>
@@ -199,7 +199,7 @@
         <input type="text" id="leadLine" placeholder="選填">
       </div>
       <label class="consent"><input type="checkbox" id="leadConsent">我同意 TIPS 英典教育依《<a href="/privacy/" target="_blank" rel="noopener" style="color:inherit;">資料使用說明</a>》蒐集以上資料，用於提供檢測報告解讀與課程資訊。<span class="err" id="errConsent" style="display:none;">請勾選同意</span></label>
-      <button class="btn" style="margin-top:14px; width:100%; font-size:1.1rem;" onclick="startTest()">🚀 開始檢測（約 15 分鐘）</button>
+      <button class="btn" style="margin-top:14px; width:100%; font-size:1.1rem;" onclick="startTest()">🚀 開始檢測（約 18 分鐘）</button>
     </div>
     <div class="note">📚 <b>編製依據</b>：本檢測向度架構參考美國 LASSI 學習與讀書策略量表（動機、時間管理、專注、學習策略等構面）與台灣國中新生學習適應研究編製，詳細說明見報告末。本工具為學習準備度的<b>參考輔助工具</b>，非標準化心理測驗。結果建議搭配 TIPS 顧問解讀與 KC 系統的學科程度檢測一起看。</div>
   </div>
@@ -272,7 +272,10 @@ const DIMS = [
   advice:"把「考壞了」重新定義為「找到不會的地方了」，家長的第一句話不問分數、先問「這次發現哪裡還不熟？」。考前建立固定的例行程序（整理文具、早睡）能有效降低焦慮。"},
  {key:"self", name:"生活獨立", color:"#7c5cd6", icon:"🌱",
   desc:"自己整理、自己負責的自理能力——國中老師不會再幫忙盯的部分。",
-  advice:"把一件目前由大人代勞的事完整交還給孩子（整理書包、設鬧鐘起床），講好規則後忍住不插手一個月，讓自然結果（忘記帶課本）成為老師。"}
+  advice:"把一件目前由大人代勞的事完整交還給孩子（整理書包、設鬧鐘起床），講好規則後忍住不插手一個月，讓自然結果（忘記帶課本）成為老師。"},
+ {key:"meta", name:"後設認知", color:"#3d7fc1", icon:"🧭",
+  desc:"會自己計畫、監控、反思學習過程的能力——讓孩子從「被動照做」變成「自己會學」的關鍵，也是國中自主學習的核心。",
+  advice:"從「讀前一句、讀後一句」開始：讀書前問孩子「今天打算讀到哪？」，讀完問「你怎麼知道自己懂了？」。段考後陪他做一次「這次哪裡可以調整」的復盤，把每次考試變成升級的機會——這正是 TIPS 學習方法課的核心。"}
 ];
 const ITEMS = [
  // 學習動機 (8)
@@ -328,7 +331,16 @@ const ITEMS = [
  ["self","我的零用錢會自己想過怎麼用"],
  ["self","學校的通知和聯絡事項，我會主動告訴家長"],
  ["self","我會主動幫忙做家事"],
- ["self","遇到問題我會先自己想辦法，再找大人幫忙"]
+ ["self","遇到問題我會先自己想辦法，再找大人幫忙"],
+ // 後設認知 (8)
+ ["meta","開始讀書前，我會先想「今天要讀什麼、大概讀到哪」"],
+ ["meta","讀的時候我會停下來問自己「剛剛這段我真的懂了嗎」"],
+ ["meta","發現自己分心或恍神時，我能察覺並把自己拉回來"],
+ ["meta","寫完功課我會回頭檢查，不是寫完就收"],
+ ["meta","同一科我知道用哪種方法讀最有效，會選好方法再開始"],
+ ["meta","遇到讀不懂的，我會換個方法再試（先看例題、畫圖等）"],
+ ["meta","段考結束後，我會想「這次哪裡沒讀好、下次怎麼調整」"],
+ ["meta","考試前我大概知道自己準備得夠不夠、有沒有把握"]
 ];
 const OPTS = ["非常不符合","不太符合","一半一半","大致符合","非常符合"];
 
@@ -403,8 +415,8 @@ function computeScores(){
   const scores={};
   DIMS.forEach(d=>scores[d.key]=0);
   ITEMS.forEach((it,i)=>{ scores[it[0]] += answers[i]; });   // 每向度 0-32
-  const total = Object.values(scores).reduce((a,b)=>a+b,0);  // 0-192
-  const index = Math.round(total/192*100);                   // 就緒指數 0-100
+  const total = Object.values(scores).reduce((a,b)=>a+b,0);  // 0-(DIMS.length*32)
+  const index = Math.round(total/(DIMS.length*32)*100);      // 就緒指數 0-100
   const sorted = DIMS.slice().sort((a,b)=>scores[b.key]-scores[a.key]);
   return {scores, total, index, strongest:sorted.slice(0,2), weakest:sorted.slice(-2).reverse()};
 }
@@ -427,7 +439,7 @@ function radarSVG(scores){
     labels+=`<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="12.5" font-weight="700" fill="${d.color}">${d.name} ${scores[d.key]}</text>`;
   });
   const poly=DIMS.map((d,i)=>pt(i,scores[d.key]/32).join(",")).join(" ");
-  return `<svg viewBox="0 0 320 300" width="320" height="300" role="img" aria-label="六大能力雷達圖">${grid}${axes}<polygon points="${poly}" fill="rgba(18,181,165,.25)" stroke="#12b5a5" stroke-width="2.5"/>${labels}</svg>`;
+  return `<svg viewBox="0 0 320 300" width="320" height="300" role="img" aria-label="七大能力雷達圖">${grid}${axes}<polygon points="${poly}" fill="rgba(18,181,165,.25)" stroke="#12b5a5" stroke-width="2.5"/>${labels}</svg>`;
 }
 
 /* ================= 結果 → 家長對照卷 → 完成 ================= */
@@ -440,7 +452,7 @@ function showResults(){
   const __fast=__secs!==null && __secs<120;
   const qflag=(__fast||__flat)?[__fast?`快答${__secs}s`:null,__flat?"全同選項":null].filter(Boolean).join("+"):"OK";
 const code=`RDC1|${d.name}|${d.grade}|${scoreStr}|Q:${qflag}|ANS:${answers.join("")}`;
-  const summary=`就緒指數${s.index}/100｜動機${s.scores.mot} 時間${s.scores.time} 專注${s.scores.focus} 方法${s.scores.strategy} 心態${s.scores.mind} 獨立${s.scores.self}｜優勢:${s.strongest.map(x=>x.name).join("、")}｜暖身:${s.weakest.map(x=>x.name).join("、")}｜代碼[${code}]`;
+  const summary=`就緒指數${s.index}/100｜動機${s.scores.mot} 時間${s.scores.time} 專注${s.scores.focus} 方法${s.scores.strategy} 心態${s.scores.mind} 獨立${s.scores.self} 後設${s.scores.meta}｜優勢:${s.strongest.map(x=>x.name).join("、")}｜暖身:${s.weakest.map(x=>x.name).join("、")}｜代碼[${code}]`;
   submitToGoogleForm({...d, status:"已完成檢測", result:summary});
   document.getElementById("screen-test").classList.add("hidden");
   showParentIntro();
@@ -456,7 +468,8 @@ const PS_A=[
  ["focus","孩子寫功課能專心，不容易分心"],
  ["strategy","孩子有自己的一套讀書方法"],
  ["mind","孩子面對考試不會過度緊張，考差能調適"],
- ["self","孩子生活上大多能自己打理"]];
+ ["self","孩子生活上大多能自己打理"],
+ ["meta","孩子讀書時會自己計畫、檢查、調整，不是被動照著做"]];
 const PS_C=[
  ["D","我對孩子的成績有明確的標準與要求"],
  ["D","孩子的作息和學習安排，主要由我來規定"],
@@ -466,7 +479,7 @@ const PS_C=[
  ["T","我希望能隨時掌握孩子的學習進度與具體數據"]];
 const PS_PLAN=["全科班","單科補強","自主學習為主","還沒想好"];
 const PS_WORRY=["成績跟不上","3C 與手機","交友","作息與自律","沒有特別擔心"];
-let psA=new Array(6).fill(null), psC=new Array(6).fill(null), psPlan=null, psWorry=null;
+let psA=new Array(7).fill(null), psC=new Array(6).fill(null), psPlan=null, psWorry=null;
 
 const PS_STYLE=`<style>
 .psx{display:inline-block; margin:4px 6px 4px 0; padding:8px 14px; border:1.5px solid #ccd4e2; background:#fff; border-radius:20px; font-size:.85rem; cursor:pointer; font-family:inherit; color:#3a4358;}
@@ -540,7 +553,7 @@ function showDone(parentDone){
     <div style="font-size:3rem;">🎉</div>
     <h2 style="margin-top:6px;">恭喜完成！專屬報告已產出</h2>
     <p style="margin-top:12px;">報告已送達 TIPS 顧問端。因為內容包含多項交叉分析，<b>由老師當面為您解讀最準確</b>，也能直接給出銜接國中的具體建議。</p>
-    <div class="note" style="text-align:left; margin-top:14px;">📋 報告內容包含：六大能力雷達圖、就緒指數、優勢與暖身重點${parentDone?"、親子認知落差對照":""}</div>
+    <div class="note" style="text-align:left; margin-top:14px;">📋 報告內容包含：七大能力雷達圖、就緒指數、優勢與暖身重點${parentDone?"、親子認知落差對照":""}</div>
     ${parentDone?"":`<p class="tagline" style="margin-top:8px;">家長對照卷這次先跳過沒關係，到班看報告時可以現場補填。</p>`}
     <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
       <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" style="text-decoration:none;">📅 加 LINE 預約看報告（${TIPS_CONFIG.LINE_ID}）</a>
