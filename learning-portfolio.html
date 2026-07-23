@@ -307,6 +307,150 @@ footer ul a:hover{color:#f5a623}
 </ul>
 </div>
 </section>
+
+
+<!-- ============================================================
+     TIPS 學習歷程 諮詢表單區塊（#55）
+     用法：整段貼進 learning-portfolio.html 的「常見問題」之後、footer 之前。
+     樣式全部 scoped 在 .tips-consult 底下，不會影響站上其他區塊。
+     送出對象：portfolio 後端 /exec 的 action 'waitlist'（saveWaitlist_，含 honeypot）。
+     ============================================================ -->
+<section class="tips-consult" id="consult">
+  <style>
+    .tips-consult { background: #080b12; padding: 72px 20px 88px; font-family: 'Noto Sans TC', -apple-system, 'PingFang TC', 'Microsoft JhengHei', sans-serif; }
+    .tips-consult .tc-inner { max-width: 720px; margin: 0 auto; }
+    .tips-consult .tc-kicker { text-align: center; color: #f0a93a; font-size: 13px; letter-spacing: .25em; font-weight: 700; margin-bottom: 14px; }
+    .tips-consult h2 { text-align: center; color: #fff; font-size: clamp(26px, 4vw, 38px); font-weight: 900; line-height: 1.35; margin: 0 0 10px; }
+    .tips-consult h2 em { color: #f0a93a; font-style: normal; }
+    .tips-consult .tc-sub { text-align: center; color: #b8c0cf; font-size: 15px; line-height: 1.8; margin: 0 auto 36px; max-width: 560px; }
+    .tips-consult form { background: #0e1420; border: 1px solid #1f2a3d; border-radius: 18px; padding: 28px 26px; }
+    .tips-consult .tc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+    .tips-consult .tc-full { grid-column: 1 / -1; }
+    .tips-consult label { display: block; color: #dfe5ef; font-size: 13.5px; font-weight: 700; margin: 12px 0 6px; }
+    .tips-consult label small { color: #7d8798; font-weight: 400; }
+    .tips-consult input, .tips-consult select, .tips-consult textarea {
+      width: 100%; box-sizing: border-box; background: #080b12; color: #fff;
+      border: 1.5px solid #2a3750; border-radius: 10px; padding: 11px 12px; font: inherit; font-size: 14.5px;
+    }
+    .tips-consult input:focus, .tips-consult select:focus, .tips-consult textarea:focus { outline: 2px solid #f0a93a; border-color: #f0a93a; }
+    .tips-consult .tc-roles { display: flex; gap: 10px; flex-wrap: wrap; }
+    .tips-consult .tc-role { flex: 1; min-width: 90px; text-align: center; padding: 10px 6px; border: 1.5px solid #2a3750; border-radius: 999px; color: #dfe5ef; font-size: 14px; font-weight: 700; cursor: pointer; user-select: none; }
+    .tips-consult .tc-role.on { background: #f0a93a; border-color: #f0a93a; color: #10131a; }
+    .tips-consult .tc-submit { display: block; width: 100%; margin-top: 22px; padding: 15px; border: none; border-radius: 12px;
+      background: #35d07f; color: #06130c; font-size: 16.5px; font-weight: 900; letter-spacing: .06em; cursor: pointer; }
+    .tips-consult .tc-submit:hover { filter: brightness(1.08); }
+    .tips-consult .tc-submit:disabled { opacity: .5; cursor: wait; }
+    .tips-consult .tc-privacy { color: #7d8798; font-size: 12px; line-height: 1.7; margin-top: 12px; text-align: center; }
+    .tips-consult .tc-ok { display: none; text-align: center; background: #0e1420; border: 1px solid #35d07f; border-radius: 18px; padding: 44px 26px; }
+    .tips-consult .tc-ok h3 { color: #35d07f; font-size: 24px; margin: 0 0 10px; }
+    .tips-consult .tc-ok p { color: #b8c0cf; font-size: 15px; line-height: 1.8; margin: 0 0 18px; }
+    .tips-consult .tc-ok a { display: inline-block; background: #35d07f; color: #06130c; font-weight: 900; padding: 12px 28px; border-radius: 999px; text-decoration: none; }
+    .tips-consult .tc-err { display: none; color: #ff8a80; font-size: 14px; margin-top: 10px; text-align: center; }
+    .tips-consult .tc-hp { position: absolute; left: -9999px; opacity: 0; height: 0; overflow: hidden; }
+    @media (max-width: 560px) { .tips-consult .tc-row { grid-template-columns: 1fr; } }
+  </style>
+
+  <div class="tc-inner">
+    <div class="tc-kicker">FREE CONSULT</div>
+    <h2>不確定孩子的學習歷程<br>該從哪一步開始？<em>留下資料，我們陪你看。</em></h2>
+    <p class="tc-sub">填 1 分鐘表單，TIPS 老師會在 1–2 個工作天內主動聯絡你，依孩子的年級與升學路線（學測／統測／出國）給出具體的下一步——免費、無推銷壓力。</p>
+
+    <form id="tc-form" novalidate>
+      <label>我是</label>
+      <div class="tc-roles" id="tc-roles">
+        <span class="tc-role on" data-v="parent">家長</span>
+        <span class="tc-role" data-v="student">學生</span>
+        <span class="tc-role" data-v="teacher">老師</span>
+      </div>
+
+      <div class="tc-row">
+        <div>
+          <label for="tc-name">怎麼稱呼你</label>
+          <input id="tc-name" placeholder="例：陳媽媽／小明" maxlength="80" required>
+        </div>
+        <div>
+          <label for="tc-email">Email</label>
+          <input id="tc-email" type="email" placeholder="you@email.com" maxlength="120" required>
+        </div>
+        <div>
+          <label for="tc-grade">孩子（或你）目前年級</label>
+          <select id="tc-grade">
+            <option value="">請選擇…</option>
+            <option>國中</option><option>高一</option><option>高二</option><option>高三</option><option>其他</option>
+          </select>
+        </div>
+        <div>
+          <label for="tc-contact">LINE ID 或電話 <small>（擇一，聯絡更快）</small></label>
+          <input id="tc-contact" placeholder="LINE ID 或手機號碼" maxlength="80">
+        </div>
+        <div class="tc-full">
+          <label for="tc-notes">想了解什麼？<small>（選填）</small></label>
+          <textarea id="tc-notes" rows="3" maxlength="500" placeholder="例：孩子高一，完全還沒開始存素材，想知道現在做什麼最重要…"></textarea>
+        </div>
+      </div>
+
+      <!-- honeypot：真人看不到，機器人填了會被後端默默丟棄 -->
+      <div class="tc-hp"><label>Website</label><input id="tc-web" tabindex="-1" autocomplete="off"></div>
+
+      <button class="tc-submit" id="tc-btn" type="submit">免費預約諮詢 →</button>
+      <p class="tc-err" id="tc-err"></p>
+      <p class="tc-privacy">依《個人資料保護法》，你的資料僅用於本次諮詢聯絡，妥善保存、不對外提供。</p>
+    </form>
+
+    <div class="tc-ok" id="tc-ok">
+      <h3>✓ 已收到！</h3>
+      <p>TIPS 老師會在 1–2 個工作天內聯絡你。<br>想更快得到回覆？加 LINE 直接聊。</p>
+      <a href="https://lin.ee/ZkwZc3d" target="_blank" rel="noopener">💬 加入 LINE 諮詢</a>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var API = 'https://script.google.com/macros/s/AKfycbyQBIQCqtfJL0SjwBlwAsFKfHzIaAUWk5hAZ5w_hOEd65pDpcOqpNsYjAbv5NfRwExA/exec';
+      var role = 'parent';
+      var rolesEl = document.getElementById('tc-roles');
+      rolesEl.addEventListener('click', function (e) {
+        var t = e.target.closest('.tc-role'); if (!t) return;
+        role = t.getAttribute('data-v');
+        rolesEl.querySelectorAll('.tc-role').forEach(function (x) { x.classList.toggle('on', x === t); });
+      });
+      document.getElementById('tc-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var err = document.getElementById('tc-err');
+        var email = document.getElementById('tc-email').value.trim();
+        var name = document.getElementById('tc-name').value.trim();
+        err.style.display = 'none';
+        if (!name) { err.textContent = '請填怎麼稱呼你。'; err.style.display = 'block'; return; }
+        if (email.indexOf('@') < 1) { err.textContent = '請填正確的 Email。'; err.style.display = 'block'; return; }
+        var btn = document.getElementById('tc-btn');
+        btn.disabled = true; btn.textContent = '送出中…';
+        var contact = document.getElementById('tc-contact').value.trim();
+        fetch(API, {
+          method: 'POST', headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({ action: 'waitlist', payload: {
+            role: role, name: name, email: email,
+            gradYear: document.getElementById('tc-grade').value,
+            contactApp: contact ? (/^[0-9+\-() ]+$/.test(contact) ? 'phone' : 'line') : '',
+            contactId: contact, lang: 'zh-TW',
+            notes: document.getElementById('tc-notes').value.trim(),
+            website: document.getElementById('tc-web').value,
+          }}),
+        }).then(function (r) { return r.json(); }).then(function (d) {
+          if (d && d.ok) {
+            document.getElementById('tc-form').style.display = 'none';
+            document.getElementById('tc-ok').style.display = 'block';
+          } else { throw new Error((d && d.error) || '送出失敗'); }
+        }).catch(function (ex) {
+          err.textContent = '送出失敗：' + ex.message + '（也可以直接加 LINE 諮詢）';
+          err.style.display = 'block';
+          btn.disabled = false; btn.textContent = '免費預約諮詢 →';
+        });
+      });
+    })();
+  </script>
+</section>
+
+
 <footer>
 <div class="wrap">
 <div class="foot-grid">
