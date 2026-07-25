@@ -494,5 +494,42 @@ var saved="zh";try{saved=localStorage.getItem("tips-lang")||"zh";}catch(e){}
 try{var q=new URLSearchParams(location.search).get("lang");if(q==="en"||q==="zh")saved=q;}catch(e){}
 if(saved==="en")setLang("en");
 })();</script>
+<script>
+(function(){
+  var sec=document.getElementById('consult'); if(!sec) return;
+  var orig=new WeakMap();
+  function q(s,r){return (r||document).querySelector(s);}
+  function labelOf(id){var el=document.getElementById(id);return el?el.closest('div').querySelector('label'):null;}
+  var T=[]; function add(el,kind,en){ if(el) T.push({el:el,kind:kind,en:en}); }
+  add(q('h2',sec),'own','Not sure where to start with your child’s learning portfolio?');
+  add(q('h2 em',sec),'text','Leave your details — we’ll walk through it with you.');
+  add(q('p.tc-sub',sec),'text','Fill out the 1-minute form and a TIPS teacher will contact you within 1–2 business days with concrete next steps for your child’s grade and path (GSAT / vocational exam / studying abroad) — free, no sales pressure.');
+  add(q('#tc-form > label',sec),'text','I am');
+  var roles=sec.querySelectorAll('.tc-role'), rn=['Parent','Student','Teacher'];
+  roles.forEach(function(r,i){add(r,'text',rn[i]);});
+  add(labelOf('tc-name'),'own','Your name'); var nm=q('#tc-name'); if(nm)add(nm,'ph','e.g. Ms. Chen / John');
+  add(labelOf('tc-grade'),'own','Child’s (or your) current grade');
+  var gr=['Please select','Junior high','Grade 10','Grade 11','Grade 12','Other'];
+  sec.querySelectorAll('#tc-grade option').forEach(function(o,i){if(gr[i])add(o,'text',gr[i]);});
+  var cl=labelOf('tc-contact'); add(cl&&cl.querySelector('small'),'text',' or phone (either one, faster contact)');
+  var ct=q('#tc-contact'); if(ct)add(ct,'ph','LINE ID or phone number');
+  var nl2=labelOf('tc-notes'); add(nl2,'own','What would you like to know?'); add(nl2&&nl2.querySelector('small'),'text',' (optional)');
+  var nt=q('#tc-notes'); if(nt)add(nt,'ph','e.g. My child is in Grade 10 and hasn’t started saving materials — what matters most now?');
+  add(q('#tc-btn',sec),'text','Book a free consult →');
+  add(q('.tc-privacy',sec),'text','Under Taiwan’s Personal Data Protection Act, your details are used only to contact you about this consultation, stored securely and never shared.');
+  var ok=q('#tc-ok',sec);
+  if(ok){ add(q('h3',ok),'text','Thanks — we’ve got your details.'); add(q('p',ok),'own','A TIPS teacher will contact you within 1–2 business days. Want a faster reply?'); add(q('a',ok),'text','Chat on LINE'); }
+  var numMap={'AI 須揭露':'AI Disclosure','100字':'100 words'};
+  [].slice.call(document.querySelectorAll('.num')).forEach(function(n){ var k=n.textContent.trim(); if(numMap[k]) add(n,'text',numMap[k]); });
+  function ownTN(el){for(var i=0;i<el.childNodes.length;i++){if(el.childNodes[i].nodeType===3&&el.childNodes[i].textContent.trim())return el.childNodes[i];}return null;}
+  function apply(en){ T.forEach(function(t){ var el=t.el; if(!el) return; if(!orig.has(el))orig.set(el,{}); var o=orig.get(el);
+    if(t.kind==='ph'){ if(o.ph===undefined)o.ph=el.getAttribute('placeholder')||''; el.setAttribute('placeholder',en?t.en:o.ph); }
+    else if(t.kind==='own'){ var tn=ownTN(el); if(tn){ if(o.own===undefined)o.own=tn.textContent; tn.textContent=en?t.en:o.own; } }
+    else { if(o.tx===undefined)o.tx=el.textContent; el.textContent=en?t.en:o.tx; } }); }
+  function isEn(){return document.documentElement.getAttribute('lang')==='en';}
+  apply(isEn());
+  new MutationObserver(function(){apply(isEn());}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+})();
+</script>
 </body>
 </html>
