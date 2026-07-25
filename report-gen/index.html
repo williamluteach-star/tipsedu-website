@@ -171,7 +171,7 @@ const PS_STYLE_Q={D:["成績有明確標準與要求","讀書計畫由家長規�
                   S:["會先聽完孩子的理由","願意支持冷門但有熱情的方向","常聊課業以外的事","先安撫情緒再談表現"]};
 
 
-/* ================= 三級志向引擎（挑戰/穩健/安穩） ================= */
+/* ================= 三級志向引擎（挑戰/穩健/保底） ================= */
 /* pub=面談版層級描述；int=內部版點名參考（🔒不印給家長） */
 const HS_ASP={
  "資訊學群":{pub:["頂尖國立大學資訊工程系（學測頂標帶）","國立大學／四大科大資訊科系","私立大學與科大資訊科系＋作品集實力路線"],int:["台大、清大、陽明交大、成大資工","中央、中興、中正資工；台科大、北科大","逢甲資訊、朝陽資工、勤益資工"]},
@@ -209,14 +209,14 @@ function aspireHS(ranked,internal){
     for(let t=0;t<3;t++){ tiers[t].push(`<b>${g.n.replace("學群","")}</b>：${a.pub[t]}`); tiersInt[t].push(a.int[t]); } });
   let careerRows="";
   (window.__careerSel||[]).forEach(i=>{ const c=CAREER_DB[i]; const asp=CAREER_ASP[c.n];
-    if(asp) careerRows+=`<div style="background:#fdf6e4; border-radius:14px; padding:10px 16px; margin-top:8px; font-size:.79rem;"><b>🎯 ${c.n}路線三級：</b>挑戰＝${asp[0]}｜穩健＝${asp[1]}｜安穩＝${asp[2]}</div>`; });
+    if(asp) careerRows+=`<div style="background:#fdf6e4; border-radius:14px; padding:10px 16px; margin-top:8px; font-size:.79rem;"><b>🎯 ${c.n}路線三級：</b>挑戰＝${asp[0]}｜穩健＝${asp[1]}｜保底＝${asp[2]}</div>`; });
   return `<h3 class="sec">三級志向建議（依適配前三學群生成）</h3>
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
       ${aspTierBox("挑戰志向","🔥","#c9526f","#fdeef1",tiers[0],tiersInt[0],internal)}
       ${aspTierBox("穩健志向","🎯","#2f8f6d","#e8f5ee",tiers[1],tiersInt[1],internal)}
-      ${aspTierBox("安穩志向","🛡","#3d7fc1","#eaf3fb",tiers[2],tiersInt[2],internal)}
+      ${aspTierBox("保底志向","🛡","#3d7fc1","#eaf3fb",tiers[2],tiersInt[2],internal)}
     </div>${careerRows}
-    <p style="font-size:.7rem; color:#5b6478; margin:6px 0;">三級志向採國際大學升學輔導通用的 <b>Reach－Match－Safety</b>（台灣稱「夢幻／落點／安全」）選填策略，為<b>方向規劃參考，非錄取預測</b>；實際錄取依當年成績、各校簡章與招生管道為準。建議三級都準備，把主力放在穩健帶、用挑戰帶拉高度、用安穩帶保心安。${internal?"（🔒 參考校系僅內部使用，面談時視情況口頭提及，不印給家長）":""}</p>`;
+    <p style="font-size:.7rem; color:#5b6478; margin:6px 0;">三級志向採國際大學升學輔導通用的 <b>Reach－Match－Safety</b>（台灣稱「夢幻／落點／安全」）選填策略，為<b>方向規劃參考，非錄取預測</b>；實際錄取依當年成績、各校簡章與招生管道為準。建議三級都準備，把主力放在穩健帶、用挑戰帶拉高度、用保底帶保心安。${internal?"（🔒 參考校系僅內部使用，面談時視情況口頭提及，不印給家長）":""}</p>`;
 }
 function aspireJH(T,ranked,internal){
   const top3=ranked.slice(0,3).map(g=>g.n);
@@ -239,12 +239,12 @@ function aspireJH(T,ranked,internal){
   }
   let careerRows="";
   (window.__careerSel||[]).forEach(i=>{ const c=CAREER_DB[i]; const asp=CAREER_ASP[c.n];
-    if(asp) careerRows+=`<div style="background:#fdf6e4; border-radius:14px; padding:10px 16px; margin-top:8px; font-size:.79rem;"><b>🎯 ${c.n}路線三級：</b>挑戰＝${asp[0]}｜穩健＝${asp[1]}｜安穩＝${asp[2]}</div>`; });
+    if(asp) careerRows+=`<div style="background:#fdf6e4; border-radius:14px; padding:10px 16px; margin-top:8px; font-size:.79rem;"><b>🎯 ${c.n}路線三級：</b>挑戰＝${asp[0]}｜穩健＝${asp[1]}｜保底＝${asp[2]}</div>`; });
   return `<h3 class="sec">三級志向建議（會考選填參考）</h3>
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
       ${aspTierBox("挑戰志向","🔥","#c9526f","#fdeef1",tiers[0],tiersInt[0],internal)}
       ${aspTierBox("穩健志向","🎯","#2f8f6d","#e8f5ee",tiers[1],tiersInt[1],internal)}
-      ${aspTierBox("安穩志向","🛡","#3d7fc1","#eaf3fb",tiers[2],tiersInt[2],internal)}
+      ${aspTierBox("保底志向","🛡","#3d7fc1","#eaf3fb",tiers[2],tiersInt[2],internal)}
     </div>${careerRows}
     <p style="font-size:.7rem; color:#5b6478; margin:6px 0;">依國際升學輔導通用 <b>Reach－Match－Safety</b>（夢幻／落點／安全）策略生成，為<b>方向規劃參考，非錄取預測</b>；實際選填以會考成績、當年序位與各區簡章為準。${internal?"（🔒 參考校系僅內部使用，不印給家長）":""}</p>`;
 }
