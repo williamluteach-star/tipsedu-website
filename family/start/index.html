@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>家長教養風格・親子合拍檢測（免費）｜TIPS 英典教育</title>
+<meta name="description" content="花 3 分鐘，看見你和孩子的相處風格。TIPS 英典教育免費家長教養風格檢測：從『要求』與『回應』兩個面向，用溫和的方式照見親子相處的樣子，並給你貼近孩子的小建議。台中南屯。">
+<meta property="og:title" content="免費家長教養風格檢測｜3 分鐘看見你和孩子的相處風格">
+<meta property="og:description" content="不是評分、不是標籤——用『要求 × 回應』雙軸，溫和照見你的教養風格，附貼近孩子的相處建議。TIPS 英典教育。">
+<meta name="robots" content="index,follow">
+<style>
+  :root{ --ink:#1d1d1f; --accent:#7a68cf; --accent2:#5a4bb0; --line:#06c755; --radius:18px; }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; background:#f1eefa; color:var(--ink); line-height:1.65; font-size:16px;}
+  .wrap{max-width:640px; margin:0 auto; padding:20px 16px 60px;}
+  .card{background:#fff; border-radius:var(--radius); padding:22px 22px; margin:14px 0; box-shadow:0 3px 16px rgba(60,40,110,.08);}
+  h1{font-size:1.5rem; letter-spacing:-.4px; line-height:1.35;}
+  h2{font-size:1.18rem; color:var(--accent2); margin-bottom:4px;}
+  h3{font-size:1rem; color:var(--accent2); margin:2px 0 8px;}
+  .hero{background:linear-gradient(135deg,#efe9fb,#f7e9f0); border-radius:var(--radius); padding:28px 22px; text-align:center;}
+  .hero .sub{margin-top:12px; color:#4a4458; font-size:1.02rem;}
+  .pill{display:inline-block; background:#fff; color:var(--accent2); border-radius:980px; padding:5px 14px; font-size:.82rem; font-weight:700; margin-bottom:12px;}
+  .stat-row{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:16px;}
+  .stat{background:#fff; border-radius:14px; padding:8px 16px; font-size:.82rem; color:#4a4458;}
+  .stat b{display:block; color:var(--accent); font-size:1.05rem;}
+  .field{margin:12px 0;}
+  label{display:block; font-weight:600; margin-bottom:5px; font-size:.92rem;}
+  input,select{width:100%; padding:11px 12px; border:1.5px solid #ddd6ec; border-radius:12px; font-size:1rem; font-family:inherit; background:#fff;}
+  input:focus,select:focus{outline:none; border-color:var(--accent);}
+  .row2{display:flex; gap:10px;} .row2>*{flex:1;}
+  .opt-bind{background:#f7f4fd; border:1.5px dashed #cfc4ec; border-radius:14px; padding:12px 14px; margin:12px 0;}
+  .consent{display:flex; gap:8px; align-items:flex-start; font-size:.82rem; color:#5a5468; font-weight:400; margin-top:14px; line-height:1.5;}
+  .consent input{width:auto; margin-top:3px; flex-shrink:0;}
+  .err{color:#c0392b; font-size:.8rem; margin-top:4px; display:none;}
+  .btn{display:inline-block; background:var(--accent); color:#fff; border:none; border-radius:980px; padding:13px 28px; font-size:1.05rem; font-weight:600; cursor:pointer; font-family:inherit; transition:.15s; text-decoration:none;}
+  .btn:hover{background:var(--accent2);}
+  .btn.secondary{background:#fff; color:var(--accent2); border:1.5px solid #d4cbee;}
+  .btn.block{width:100%;}
+  .note{background:#f6f3fc; border-radius:12px; padding:11px 14px; font-size:.76rem; color:#6a6480; margin-top:12px; line-height:1.6;}
+  .q{padding:12px 6px; border-bottom:1px solid #f0ecf8;}
+  .q:last-child{border-bottom:none;}
+  .q-text{font-weight:600; margin-bottom:9px; font-size:.98rem;}
+  .opts{display:flex; gap:6px; flex-wrap:wrap;}
+  .opts button{flex:1; min-width:58px; padding:9px 6px; border:1.5px solid #ddd6ec; background:#fff; border-radius:11px; font-size:.82rem; cursor:pointer; font-family:inherit; color:#4a4358; transition:.12s;}
+  .opts button:hover{border-color:var(--accent);}
+  .opts button.sel{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700;}
+  .q.miss{outline:2px solid #e8a0a0; border-radius:10px;}
+  .prog{height:7px; background:#e7e0f5; border-radius:980px; overflow:hidden; margin:6px 0 16px;}
+  .prog-fill{height:100%; background:linear-gradient(90deg,#b9aee8,var(--accent)); width:0%; transition:width .3s;}
+  .spectrum{margin:16px 0;}
+  .spectrum .lab{display:flex; justify-content:space-between; font-size:.8rem; color:#7a7488; margin-bottom:5px;}
+  .bar{height:14px; background:#ece6f7; border-radius:980px; position:relative;}
+  .bar .dot{position:absolute; top:50%; width:22px; height:22px; border-radius:50%; background:var(--accent); border:3px solid #fff; box-shadow:0 2px 6px rgba(90,75,176,.4); transform:translate(-50%,-50%);}
+  .band-tag{display:inline-block; font-weight:800; color:var(--accent2); font-size:1.05rem;}
+  .tip{background:#f7f4fd; border-left:4px solid var(--accent); border-radius:10px; padding:10px 14px; margin:9px 0; font-size:.9rem;}
+  .hidden{display:none;}
+  .foot{text-align:center; font-size:.72rem; color:#8a83a0; margin-top:22px; line-height:1.7;}
+  .foot .lic{display:inline-block; background:#efeaf9; border-radius:8px; padding:3px 10px; margin-top:4px; color:#6a6480;}
+  .line-float{position:fixed; right:16px; bottom:16px; background:var(--line); color:#fff; padding:11px 16px; border-radius:980px; text-decoration:none; font-weight:700; font-size:.9rem; box-shadow:0 4px 14px rgba(6,199,85,.4); z-index:50;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============ 1. LANDING + LEAD ============ -->
+<div id="screen-intro">
+  <div class="hero">
+    <span class="pill">TIPS 英典教育・免費檢測</span>
+    <h1>3 分鐘，看見你和孩子的<br>相處風格</h1>
+    <p class="sub">不是評分、不是標籤，也不是要挑你的毛病。<br>只是用「要求」和「回應」兩個溫和的面向，<br>幫你照見親子相處的樣子，帶一個貼近孩子的小方法回家。</p>
+    <div class="stat-row">
+      <div class="stat"><b>3 分鐘</b>10 題</div>
+      <div class="stat"><b>雙軸</b>要求 × 回應</div>
+      <div class="stat"><b>0 元</b>免費</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>開始前，留個聯絡方式</h2>
+    <p style="font-size:.88rem; color:#6a6480; margin-bottom:8px;">結果會即時顯示給你看；若你願意，顧問也能在解讀時給更貼近的建議。</p>
+    <div class="field">
+      <label>家長稱呼 *</label>
+      <input type="text" id="pName" placeholder="例：陳媽媽 / 王先生" maxlength="20">
+      <div class="err" id="ePName">請填寫稱呼</div>
+    </div>
+    <div class="field">
+      <label>聯絡手機 *</label>
+      <input type="tel" id="pPhone" placeholder="09xxxxxxxx" maxlength="10">
+      <div class="err" id="ePPhone">請填寫正確的手機號碼（09 開頭共 10 碼）</div>
+    </div>
+    <div class="field">
+      <label>LINE ID（選填，方便顧問聯繫）</label>
+      <input type="text" id="pLine" placeholder="選填">
+    </div>
+
+    <div class="opt-bind">
+      <label style="font-weight:700; color:var(--accent2);">
+        <input type="checkbox" id="bindOn" onchange="toggleBind()" style="width:auto; margin-right:6px;">想和孩子的測驗一起看？（選填）
+      </label>
+      <p style="font-size:.8rem; color:#6a6480; margin:4px 0 8px;">如果孩子做過 TIPS 的生涯／準備度測驗，填孩子的姓名與年級，顧問就能把你們兩邊的視角並排對照。</p>
+      <div id="bindFields" class="hidden">
+        <div class="row2">
+          <div><label>孩子姓名</label><input type="text" id="cName" placeholder="孩子姓名" maxlength="20"></div>
+          <div><label>孩子年級</label>
+            <select id="cGrade">
+              <option value="">選擇</option>
+              <option>國小</option><option>國一</option><option>國二</option><option>國三</option>
+              <option>高一</option><option>高二</option><option>高三</option><option>其他</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <label class="consent"><input type="checkbox" id="pConsent">我同意 TIPS 英典教育依《<a href="/privacy/" target="_blank" rel="noopener" style="color:var(--accent2);">資料使用說明</a>》蒐集上述資料，用於提供檢測結果與課程資訊；我了解可隨時來電或於 LINE 表示拒絕接收行銷訊息。</label>
+    <div class="err" id="ePConsent">請先勾選同意，才能開始</div>
+
+    <button class="btn block" style="margin-top:16px;" onclick="startSurvey()">🚀 開始檢測（免費・約 3 分鐘）</button>
+
+    <div class="note">📚 <b>編製依據</b>：本檢測的「要求 × 回應」雙軸架構參考 Baumrind 教養理論（Maccoby &amp; Martin 擴展），題目參考 PSDQ（Robinson et al.）、PAQ（Buri）等國際量表並依台灣家庭情境在地化改寫。本工具為<b>親子溝通的參考工具，非臨床診斷、也不對教養方式做好壞評價</b>；教養沒有標準答案。</div>
+  </div>
+
+  <div class="foot">
+    TIPS 英典教育｜台中市南屯區黎明路一段295號｜0905-547839｜LINE @tipsedu<br>
+    <span class="lic">立案字號：中市教終字第1110061866號</span>
+  </div>
+</div>
+
+<!-- ============ 2. SURVEY ============ -->
+<div id="screen-survey" class="hidden">
+  <div class="prog"><div class="prog-fill" id="progFill"></div></div>
+  <div class="card">
+    <h2>你和孩子的相處</h2>
+    <p style="font-size:.86rem; color:#6a6480;">沒有對錯，依你平常實際的樣子選就好。</p>
+    <div id="qBox"></div>
+    <div class="err" id="eSurvey" style="margin-top:8px;">還有題目沒作答，已用色框標出。</div>
+    <button class="btn block" style="margin-top:16px;" onclick="showResult()">看我的相處風格 →</button>
+  </div>
+  <div class="foot"><span class="lic">立案字號：中市教終字第1110061866號</span></div>
+</div>
+
+<!-- ============ 3. RESULT ============ -->
+<div id="screen-result" class="hidden"></div>
+
+</div>
+
+<a class="line-float" href="https://line.me/R/ti/p/@tipsedu" target="_blank" rel="noopener">💬 LINE 諮詢</a>
+
+<script>
+/* ================= 設定 ================= */
+const TIPS_CONFIG = {
+  LINE_URL: "https://line.me/R/ti/p/@tipsedu",
+  LINE_ID: "@tipsedu",
+  PHONE: "0905-547839",
+  ADDRESS: "台中市南屯區黎明路一段295號",
+  // 沿用「高中定向測驗名單」表單，家長自測以 status 欄標記區分；日後可換成專屬表單
+  FORM_ID: "1FAIpQLSdwZcgV-siWgbG_9XZqREfzzDfMsTxdbbHntPmnV2veWt81-A",
+  ENTRY: { name:"486381738", grade:"1165516373", phone:"1581099603", line:"1626200585", status:"713860075", result:"44798434" }
+};
+function submitToGoogleForm(fields){
+  if(!TIPS_CONFIG.FORM_ID) return;
+  try{
+    const url = `https://docs.google.com/forms/d/e/${TIPS_CONFIG.FORM_ID}/formResponse`;
+    const fd = new FormData();
+    for(const k in fields){ const id = TIPS_CONFIG.ENTRY[k]; if(id) fd.append(`entry.${id}`, fields[k]); }
+    fetch(url, {method:"POST", mode:"no-cors", body:fd}).catch(()=>{});
+  }catch(e){}
+}
+
+/* ================= 題目（要求軸 D×4、回應軸 S×4，＋期望 1） ================= */
+const LIKERT=["很不同意","不太同意","普通","還算同意","非常同意"];
+/* 每題 [軸, 題幹]；答案 0-4 */
+const QS=[
+ ["D","我對孩子的成績或表現，有明確的標準與要求"],
+ ["D","孩子的作息、讀書計畫，主要由我來安排規定"],
+ ["D","孩子沒達到我的期望時，我會明確讓他知道"],
+ ["D","重大決定（選組、選科、才藝）最終該由父母把關"],
+ ["S","孩子表達不同意見時，我會先聽完他的理由"],
+ ["S","就算方向冷門，只要孩子有熱情，我願意支持"],
+ ["S","我常和孩子聊學習以外的事（興趣、朋友、心情）"],
+ ["S","孩子遇到挫折時，我會先安撫情緒，再談表現"]];
+const EXPECT=["希望他拚一點、追求更好的成績","順其自然，快樂健康最重要","尊重孩子，看他自己的方向"];
+let ans=new Array(QS.length).fill(null), expect=null;
+
+/* ================= 流程 ================= */
+function val(id){ return (document.getElementById(id).value||"").trim(); }
+function toggleBind(){ document.getElementById("bindFields").classList.toggle("hidden", !document.getElementById("bindOn").checked); }
+
+function startSurvey(){
+  let ok=true;
+  const nm=val("pName"), ph=val("pPhone");
+  document.getElementById("ePName").style.display = nm?"none":"block";
+  const phOk=/^09\d{8}$/.test(ph);
+  document.getElementById("ePPhone").style.display = phOk?"none":"block";
+  const cons=document.getElementById("pConsent").checked;
+  document.getElementById("ePConsent").style.display = cons?"none":"block";
+  if(!nm||!phOk||!cons){ if(!nm||!phOk) window.scrollTo(0,0); return; }
+  // 進度記錄（開始，未完成）
+  submitToGoogleForm({ name:(val("cName")||nm), grade:val("cGrade"), phone:ph, line:val("pLine"), status:"家長教養自測（開始）", result:"" });
+  document.getElementById("screen-intro").classList.add("hidden");
+  renderSurvey();
+  document.getElementById("screen-survey").classList.remove("hidden");
+  window.scrollTo(0,0);
+}
+
+function renderSurvey(){
+  let html="";
+  QS.forEach((q,i)=>{
+    const btns=LIKERT.map((o,v)=>`<button type="button" id="q${i}v${v}" onclick="pick(${i},${v})">${o}</button>`).join("");
+    html+=`<div class="q" id="q${i}"><div class="q-text">${i+1}. ${q[1]}</div><div class="opts">${btns}</div></div>`;
+  });
+  // 期望題
+  const eb=EXPECT.map((o,v)=>`<button type="button" id="ev${v}" onclick="pickE(${v})">${o}</button>`).join("");
+  html+=`<div class="q" id="qE"><div class="q-text">${QS.length+1}. 對孩子的未來，你現在的心情比較接近？</div><div class="opts" style="flex-direction:column;">${eb}</div></div>`;
+  document.getElementById("qBox").innerHTML=html;
+  updProg();
+}
+function pick(i,v){
+  ans[i]=v;
+  LIKERT.forEach((_,x)=>document.getElementById(`q${i}v${x}`).classList.toggle("sel",x===v));
+  document.getElementById("q"+i).classList.remove("miss");
+  updProg();
+}
+function pickE(v){
+  expect=v;
+  EXPECT.forEach((_,x)=>document.getElementById("ev"+x).classList.toggle("sel",x===v));
+  document.getElementById("qE").classList.remove("miss");
+  updProg();
+}
+function updProg(){
+  const done=ans.filter(a=>a!==null).length + (expect!==null?1:0);
+  document.getElementById("progFill").style.width=Math.round(done/(QS.length+1)*100)+"%";
+}
+
+/* ================= 結果 ================= */
+function band(r){ return r>=0.6?"偏高": r>=0.4?"中等":"偏低"; }
+function showResult(){
+  let ok=true;
+  ans.forEach((a,i)=>{ if(a===null){ document.getElementById("q"+i).classList.add("miss"); ok=false; } });
+  if(expect===null){ document.getElementById("qE").classList.add("miss"); ok=false; }
+  if(!ok){ document.getElementById("eSurvey").style.display="block"; return; }
+
+  const dSum=ans.filter((_,i)=>QS[i][0]==="D").reduce((a,b)=>a+b,0); // 0-16
+  const sSum=ans.filter((_,i)=>QS[i][0]==="S").reduce((a,b)=>a+b,0); // 0-16
+  const dR=dSum/16, sR=sSum/16, dB=band(dR), sB=band(sR);
+
+  // 家長端建議（正向、非評價；無型別、無分數）
+  const dTip={ "偏高":"你對孩子有清楚的標準和期待，這給了孩子方向感與安全感。小提醒：把「為什麼要這樣做」講給孩子聽，要求會更容易被接受。",
+    "中等":"你在「給方向」和「給空間」之間拿捏得不錯，能依孩子的狀態彈性調整——這是很成熟的位置。",
+    "偏低":"你傾向讓孩子自己來、少施壓，孩子有很大的自主空間。小提醒：在關鍵時刻（選組、考程）主動幫他搭一點結構，會幫上大忙。"}[dB];
+  const sTip={ "偏高":"你很願意傾聽、先接住孩子的情緒，這是親子信任最厚實的基礎，孩子遇事會願意找你。",
+    "中等":"你能回應孩子，也守得住原則。孩子挫折時多一句「我懂」，關係會更靠近。",
+    "偏低":"你重視結果與效率、說話直接到位。小提醒：先接情緒、再談事情——「先同理、再處理」，孩子會更聽得進去。"}[sB];
+
+  const childName=document.getElementById("bindOn").checked?val("cName"):"";
+  const pName=val("pName"), ph=val("pPhone");
+
+  // 內部：送出可讀摘要＋代碼（顧問端）
+  const code=`PSTG1|${pName}|${childName||"—"}|${dSum},${sSum}|${expect}`;
+  const summary=`家長教養自測｜要求軸${dSum}/16(${dB})｜回應軸${sSum}/16(${sB})｜期望:${EXPECT[expect]}｜綁定:${childName||"未綁定"}｜代碼[${code}]`;
+  submitToGoogleForm({ name:(childName||pName), grade:val("cGrade"), phone:ph, line:val("pLine"), status:"家長教養自測完成", result:summary });
+
+  const dotD=Math.max(6,Math.min(94,dR*100)), dotS=Math.max(6,Math.min(94,sR*100));
+  const rs=document.getElementById("screen-result");
+  rs.innerHTML=`
+  <div class="card">
+    <span class="pill" style="background:#efeaf9;">${pName} 的相處風格光譜</span>
+    <h2 style="margin-top:8px;">這是你此刻的樣子，不是評分</h2>
+    <div class="spectrum">
+      <div class="lab"><span>順其自然</span><span>要求 <span class="band-tag">${dB}</span></span><span>高度要求</span></div>
+      <div class="bar"><div class="dot" style="left:${dotD}%;"></div></div>
+    </div>
+    <div class="spectrum">
+      <div class="lab"><span>放手讓他來</span><span>回應 <span class="band-tag">${sB}</span></span><span>細心回應</span></div>
+      <div class="bar"><div class="dot" style="left:${dotS}%;"></div></div>
+    </div>
+    <div class="tip">🌱 ${dTip}</div>
+    <div class="tip">💛 ${sTip}</div>
+    <p style="font-size:.86rem; color:#5a5468; margin-top:12px; background:#f6f3fc; border-radius:10px; padding:11px 14px;">
+      教養沒有標準答案，這只是你此刻的相處風格光譜，<b>不是評分，也不是標籤</b>。在華人家庭裡，「嚴」常常就是「愛」的一種表達方式——重點不是分數高低，而是孩子有沒有感覺到被理解。
+    </p>
+  </div>
+
+  <div class="card" style="text-align:center;">
+    <h3>想更貼近孩子的想法？</h3>
+    <p style="font-size:.92rem; color:#4a4458; margin-bottom:6px;">${childName?`我們已收到你的檢測，會和 <b>${childName}</b> 的測驗一起，由顧問為你們並排解讀。`:"歡迎帶孩子做一次免費的生涯／準備度測驗，我們把你和孩子兩邊的視角並排看，找出最合拍的相處與學習方式。"}</p>
+    <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+      <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" rel="noopener">📅 加 LINE 預約解讀（${TIPS_CONFIG.LINE_ID}）</a>
+      <a class="btn secondary" href="tel:0905547839">📞 來電 ${TIPS_CONFIG.PHONE}</a>
+    </div>
+  </div>
+
+  <div class="foot">
+    TIPS 英典教育｜${TIPS_CONFIG.ADDRESS}｜${TIPS_CONFIG.PHONE}<br>
+    <span class="lic">立案字號：中市教終字第1110061866號</span>
+  </div>`;
+  document.getElementById("screen-survey").classList.add("hidden");
+  rs.classList.remove("hidden");
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
