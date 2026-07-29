@@ -155,8 +155,21 @@ const TIPS_CONFIG = {
   ADDRESS: "台中市南屯區黎明路一段295號",
   // 沿用「高中定向測驗名單」表單，家長自測以 status 欄標記區分；日後可換成專屬表單
   FORM_ID: "1FAIpQLSdwZcgV-siWgbG_9XZqREfzzDfMsTxdbbHntPmnV2veWt81-A",
-  ENTRY: { name:"486381738", grade:"1165516373", phone:"1581099603", line:"1626200585", status:"713860075", result:"44798434" }
+  ENTRY: { name:"486381738", grade:"1165516373", phone:"1581099603", line:"1626200585", status:"713860075", result:"44798434" },
+  PIXEL_ID: "1280092368513326"   // Meta Pixel「TIPS 官網」（tips_educationcenter 組合）
 };
+/* ===== Meta Pixel（PIXEL_ID 有值才載入）===== */
+(function(){
+  if(!TIPS_CONFIG.PIXEL_ID) return;
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', TIPS_CONFIG.PIXEL_ID);
+  fbq('track', 'PageView');
+})();
+function pixelLead(){ try{ if(TIPS_CONFIG.PIXEL_ID && window.fbq) fbq('track','Lead'); }catch(e){} }
 function submitToGoogleForm(fields){
   if(!TIPS_CONFIG.FORM_ID) return;
   try{
@@ -259,6 +272,7 @@ function showResult(){
   const code=`PSTG1|${pName}|${childName||"—"}|${dSum},${sSum}|${expect}`;
   const summary=`家長教養自測｜要求軸${dSum}/16(${dB})｜回應軸${sSum}/16(${sB})｜期望:${EXPECT[expect]}｜綁定:${childName||"未綁定"}｜代碼[${code}]`;
   submitToGoogleForm({ name:(childName||pName), grade:val("cGrade"), phone:ph, line:val("pLine"), status:"家長教養自測完成", result:summary });
+  pixelLead();  // Meta Pixel「Lead」轉換事件（PIXEL_ID 有值時才觸發）
 
   const dotD=Math.max(6,Math.min(94,dR*100)), dotS=Math.max(6,Math.min(94,sR*100));
   const rs=document.getElementById("screen-result");
