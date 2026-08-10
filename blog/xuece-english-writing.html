@@ -162,7 +162,7 @@
     .foot-grid{grid-template-columns:1fr 1fr}
     .article h1{font-size:1.6rem}
   }
-</style>
+@media(max-width:820px){.burger{margin-left:auto}.ltoggle{margin-left:0}}</style>
 </head>
 <body>
 <header>
@@ -170,7 +170,7 @@
     <a class="brand" href="/">
       <span class="word" data-i18n="t1">TIPS 英典教育<small>KNOWLEDGE CORE</small></span>
     </a>
-    <button class="ltoggle" id="langToggle" type="button" aria-label="Switch language / 切換語言">EN</button>
+    
     <button class="burger" id="burger" aria-label="選單" data-i18n-label="a2"><span></span><span></span><span></span></button>
     <nav class="menu" id="menu">
       <a href="/" data-i18n="t2">首頁</a>
@@ -183,7 +183,7 @@
       <a href="/about.html" data-i18n="t8">關於</a>
       <a href="/index.html#contact" data-i18n="t9">聯絡我們</a>
       <a class="cta" href="https://lin.ee/ZkwZc3d" data-i18n="t10">加入 LINE 諮詢</a>
-    </nav>
+    </nav><button class="ltoggle" id="langToggle" type="button" aria-label="Switch language / 切換語言">EN</button>
   </div>
 </header>
 
