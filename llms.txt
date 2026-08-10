@@ -13,8 +13,19 @@
 ## 部落格
 - [部落格](https://www.tips-edu.com/blog/): 升學與英語學習的家長指南。
 - [AI取代的是什麼？孩子該如何正確使用AI](https://www.tips-edu.com/blog/ai-replace-what-kids-should-learn.html)
-- [台中南屯補習班怎麼選？家長必看的 5 個重點](https://www.tips-edu.com/blog/how-to-choose-nantun-cramschool.html)
+- [全美語 vs 中師英文，孩子適合哪一種？先弄懂三個關鍵再決定](https://www.tips-edu.com/blog/all-english-vs-local-teacher.html)
+- [AI素養是什麼？孩子在AI時代該學的4種能力](https://www.tips-edu.com/blog/ai-literacy-for-kids.html)
+- [AI個人化學習對孩子有用嗎？](https://www.tips-edu.com/blog/ai-personalized-learning.html)
+- [高一家長必看：學習歷程三年怎麼佈局？](https://www.tips-edu.com/blog/portfolio-3year-guide.html)
+- [學習歷程「編輯中」陷阱：上傳了，不等於交了](https://www.tips-edu.com/blog/portfolio-editing-trap.html)
+- [自主學習計畫怎麼開始？87% 校系都在看](https://www.tips-edu.com/blog/self-directed-learning-guide.html)
+- [孩子的第一張英語證書：小學英檢與全民英檢初級怎麼規劃](https://www.tips-edu.com/blog/children-gept-prep.html)
+- [高中生學測英文作文怎麼拿高分？評分標準與段落結構一次搞懂](https://www.tips-edu.com/blog/xuece-english-writing.html)
+- [南屯安親班、課輔班差在哪？國小家長挑選前要懂的事](https://www.tips-edu.com/blog/nantun-anqin-class.html)
+- [暑假怎麼安排孩子的學習？避免「暑期失憶」又不過勞的方法](https://www.tips-edu.com/blog/summer-study-plan.html)
+- [國小幾年級開始學英文最好？小孩幾歲學英文啟蒙懶人包](https://www.tips-edu.com/blog/when-kids-start-english.html)
 - [國中會考國文作文怎麼寫？審題、立意、結構一次搞懂](https://www.tips-edu.com/blog/huikao-chinese-composition.html)
+- [台中南屯補習班怎麼選？家長必看的 5 個重點](https://www.tips-edu.com/blog/how-to-choose-nantun-cramschool.html)
 
 ## 免費測驗中心
 - [免費教育測驗中心](https://www.tips-edu.com/tests/): 幼兒園到高中四份免費線上測驗總覽，即測即得＋免費一對一解讀。
@@ -22,6 +33,9 @@
 - [國中準備度檢測（小四～小六）](https://www.tips-edu.com/ready/start/): 七大能力評估小升國中銜接就緒度，參考 LASSI 學習策略量表。
 - [生涯興趣測驗（國中）](https://www.tips-edu.com/test/start/): 76 題 Holland 何倫碼分析，高中／高職適性判定與技高 15 群科排名，採 O*NET 架構。
 - [高中生涯定向測驗（高一～高三）](https://www.tips-edu.com/hs/start/): 選組傾向指數與大學 18 學群適配排名，對接選課與學習歷程規劃。
+
+## 課程焦點
+- AI 人工智慧語言課程: 2026 年 9 月起跑，專為國小 1～6 年級設計的 AI 素養課程，一學期 16 堂課、八大能力（提示工程、AI 溝通、人機協作、AI 工作流、AI 代理與自動化、驗證與判讀、AI 創作、綜合專題），依低中高年級分層教學。課程介紹：https://apexschool.coolfii.com/apexwang/Apexschool-%E4%BA%BA%E5%B7%A5%E6%99%BA%E6%85%A7%E8%AA%9E%E8%A8%80%E8%AA%B2%E7%A8%8B.html
 
 ## 核心系統
 - KC 科基語測: AI 雙語學習與檢測系統，個人語言模型（PLM）、知識點蒸餾、能力雷達圖；曾獲金鼎獎入圍、教育部認證、多項發明專利，信效度經文藻外語大學研究驗證。
