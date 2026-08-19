@@ -1,12 +1,15 @@
 # TIPS 英典教育
 
-> 台中市南屯區的升學與英語補習班，服務國小到高中的孩子。以獲金鼎獎入圍、教育部認證的 KC 科基語測 AI 系統為每位孩子建立個人化學習路徑；課程涵蓋愛美語全英文授課、Lumos 英文閱讀、國中會考與高中學測衝刺、全民英檢、國小課輔安親、鋼琴與美術才藝，以及菲律賓宿霧遊學。主張因材施教、進度透明，用科學數據陪孩子規劃 12 年學習藍圖。
+> 台中市南屯區的升學與英語補習班，服務國小到高中的孩子。以獲金鼎獎入圍、教育部認證的 KC 科基語測 AI 系統為每位孩子建立個人化學習路徑；課程涵蓋愛美語全英文授課、Lumos 英文閱讀、國中會考與高中學測衝刺、全民英檢、國小課輔安親、鋼琴與美術才藝，以及海外遊學（菲律賓宿霧現正招生，英國、美國 2027 規劃中）。主張因材施教、進度透明，用科學數據陪孩子規劃 12 年學習藍圖。
 
 ## 主要頁面
 - [關於 TIPS 英典教育](https://www.tips-edu.com/about.html): 辦學理念、課程系統與創辦團隊介紹。
 - [國小部](https://www.tips-edu.com/elementary.html): 愛美語全英文授課、Lumos 英文閱讀、課輔安親、兒童英檢。
 - [國高中部](https://www.tips-edu.com/junior-senior-high.html): 國中會考與高中學測衝刺、全民英檢、KC 科基語測 AI 個人化學習。
-- [菲律賓宿霧遊學](https://www.tips-edu.com/abroad.html): 國高中生海外遊學，費用、安全與行前準備。
+- [海外遊學](https://www.tips-edu.com/abroad.html): 國高中生海外遊學。菲律賓宿霧現正招生；英國、美國為 2027 規劃中，尚未開放報名。
+- [高中學習歷程檔案輔導](https://www.tips-edu.com/learning-portfolio.html): 高中三年陪伴式學習歷程規劃與檢核。
+- [台中兒童 AI 課程](https://www.tips-edu.com/ai-course.html): 國小 1–6 年級 AI 素養班，一學期 16 堂、八大能力分層教學。
+- [服務學區](https://www.tips-edu.com/schools.html): 南屯與烏日鄰近學校（黎明國中、大墩國中、萬和國中、惠文高中、明道中學、嶺東中學、鎮平國小等）的到班說明。
 - [學生專區](https://www.tips-edu.com/student.html): 學習系統入口（KC 科基語測、Lumos、金頭腦、ERIS）。
 - [媒體報導](https://www.tips-edu.com/media.html): 媒體採訪與報導。
 
@@ -35,10 +38,11 @@
 - [新生入班評估（幼兒園～小三）](https://www.tips-edu.com/newstudent/start/): 家長填答，專注、語言、情緒、自理、學習興趣五大面向，參考 NAEYC 幼教發展指標。
 - [國中準備度檢測（小四～小六）](https://www.tips-edu.com/ready/start/): 七大能力評估小升國中銜接就緒度，參考 LASSI 學習策略量表。
 - [生涯興趣測驗（國中）](https://www.tips-edu.com/test/start/): 76 題 Holland 何倫碼分析，高中／高職適性判定與技高 15 群科排名，採 O*NET 架構。
+- [家長版：教養風格・親子適配檢測](https://www.tips-edu.com/family/start/): 家長填答，了解自己的教養節奏與孩子的適配度。
 - [高中生涯定向測驗（高一～高三）](https://www.tips-edu.com/hs/start/): 選組傾向指數與大學 18 學群適配排名，對接選課與學習歷程規劃。
 
 ## 課程焦點
-- AI 人工智慧語言課程: 2026 年 9 月起跑，專為國小 1～6 年級設計的 AI 素養課程，一學期 16 堂課、八大能力（提示工程、AI 溝通、人機協作、AI 工作流、AI 代理與自動化、驗證與判讀、AI 創作、綜合專題），依低中高年級分層教學。課程介紹：https://apexschool.coolfii.com/apexwang/Apexschool-%E4%BA%BA%E5%B7%A5%E6%99%BA%E6%85%A7%E8%AA%9E%E8%A8%80%E8%AA%B2%E7%A8%8B.html
+- AI 人工智慧語言課程: 2026 年 9 月起跑，專為國小 1～6 年級設計的 AI 素養課程，一學期 16 堂課、八大能力（提示工程、AI 溝通、人機協作、AI 工作流、AI 代理與自動化、驗證與判讀、AI 創作、綜合專題），依低中高年級分層教學。課程介紹：https://www.tips-edu.com/ai-course.html
 
 ## 核心系統
 - KC 科基語測: AI 雙語學習與檢測系統，個人語言模型（PLM）、知識點蒸餾、能力雷達圖；曾獲金鼎獎入圍、教育部認證、多項發明專利，信效度經文藻外語大學研究驗證。
