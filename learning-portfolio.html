@@ -599,7 +599,8 @@ if(saved==="en")setLang("en");
   function q(s,r){return (r||document).querySelector(s);}
   function labelOf(id){var el=document.getElementById(id);return el?el.closest('div').querySelector('label'):null;}
   var T=[]; function add(el,kind,en){ if(el) T.push({el:el,kind:kind,en:en}); }
-  add(q('h2',sec),'own','Not sure where to start with your child’s learning portfolio?');
+  add(q('h2',sec),'own','Not sure where to start');
+  add(q('h2',sec),'own1','with your child’s learning portfolio?');
   add(q('h2 em',sec),'text','Leave your details — we’ll walk through it with you.');
   add(q('p.tc-sub',sec),'text','Fill out the 1-minute form and a TIPS teacher will contact you within 1–2 business days with concrete next steps for your child’s grade and path (GSAT / vocational exam / studying abroad) — free, no sales pressure.');
   add(q('#tc-form > label',sec),'text','I am');
@@ -609,20 +610,20 @@ if(saved==="en")setLang("en");
   add(labelOf('tc-grade'),'own','Child’s (or your) current grade');
   var gr=['Please select','Junior high','Grade 10','Grade 11','Grade 12','Other'];
   sec.querySelectorAll('#tc-grade option').forEach(function(o,i){if(gr[i])add(o,'text',gr[i]);});
-  var cl=labelOf('tc-contact'); add(cl&&cl.querySelector('small'),'text',' or phone (either one, faster contact)');
+  var cl=labelOf('tc-contact'); add(cl,'own','LINE ID or phone'); add(cl&&cl.querySelector('small'),'text',' (either one, faster contact)');
   var ct=q('#tc-contact'); if(ct)add(ct,'ph','LINE ID or phone number');
   var nl2=labelOf('tc-notes'); add(nl2,'own','What would you like to know?'); add(nl2&&nl2.querySelector('small'),'text',' (optional)');
   var nt=q('#tc-notes'); if(nt)add(nt,'ph','e.g. My child is in Grade 10 and hasn’t started saving materials — what matters most now?');
   add(q('#tc-btn',sec),'text','Book a free consult →');
   add(q('.tc-privacy',sec),'text','Under Taiwan’s Personal Data Protection Act, your details are used only to contact you about this consultation, stored securely and never shared.');
   var ok=q('#tc-ok',sec);
-  if(ok){ add(q('h3',ok),'text','Thanks — we’ve got your details.'); add(q('p',ok),'own','A TIPS teacher will contact you within 1–2 business days. Want a faster reply?'); add(q('a',ok),'text','Chat on LINE'); }
+  if(ok){ add(q('h3',ok),'text','Thanks — we’ve got your details.'); add(q('p',ok),'own','A TIPS teacher will contact you within 1–2 business days.'); add(q('p',ok),'own1','Want a faster reply? Chat with us on LINE.'); add(q('a',ok),'text','Chat on LINE'); }
   var numMap={'AI 須揭露':'AI Disclosure','100字':'100 words'};
   [].slice.call(document.querySelectorAll('.num')).forEach(function(n){ var k=n.textContent.trim(); if(numMap[k]) add(n,'text',numMap[k]); });
-  function ownTN(el){for(var i=0;i<el.childNodes.length;i++){if(el.childNodes[i].nodeType===3&&el.childNodes[i].textContent.trim())return el.childNodes[i];}return null;}
+  function ownTN(el,n){n=n||0;var c=0;for(var i=0;i<el.childNodes.length;i++){var x=el.childNodes[i];if(x.nodeType===3&&x.textContent.trim()){if(c===n)return x;c++;}}return null;}
   function apply(en){ T.forEach(function(t){ var el=t.el; if(!el) return; if(!orig.has(el))orig.set(el,{}); var o=orig.get(el);
     if(t.kind==='ph'){ if(o.ph===undefined)o.ph=el.getAttribute('placeholder')||''; el.setAttribute('placeholder',en?t.en:o.ph); }
-    else if(t.kind==='own'){ var tn=ownTN(el); if(tn){ if(o.own===undefined)o.own=tn.textContent; tn.textContent=en?t.en:o.own; } }
+    else if(t.kind==='own'||t.kind==='own1'){ var ix=(t.kind==='own1')?1:0, ky='own'+ix, tn=ownTN(el,ix); if(tn){ if(o[ky]===undefined)o[ky]=tn.textContent; tn.textContent=en?t.en:o[ky]; } }
     else { if(o.tx===undefined)o.tx=el.textContent; el.textContent=en?t.en:o.tx; } }); }
   function isEn(){return document.documentElement.getAttribute('lang')==='en';}
   apply(isEn());

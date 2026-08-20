@@ -430,7 +430,7 @@ document.documentElement.setAttribute('lang',en?'en':'zh-Hant');
 document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n');var v=en?EN[k]:ZH[k];if(v!==undefined)el.innerHTML=v;});
 Object.keys(AMAP).forEach(function(a){document.querySelectorAll('[data-i18n-'+a+']').forEach(function(el){var k=el.getAttribute('data-i18n-'+a);var v=en?ENA[k]:ZHA[k];if(v!==undefined&&v!==null)el.setAttribute(AMAP[a],v);});});
 document.title=en?META.title:ZHMETA.title;
-if(mdEl)mdEl.setAttribute('content',en?META.desc:ZHMETA.desc);
+if(mdEl)mdEl.setAttribute('content',en?(META.desc||META.description||''):ZHMETA.desc);
 var yr=document.getElementById('yr');if(yr)yr.textContent=new Date().getFullYear();
 try{localStorage.setItem('tips-lang',en?'en':'zh');}catch(e){}
 try{var u=new URL(location.href);if(en)u.searchParams.set('lang','en');else u.searchParams.delete('lang');history.replaceState(null,'',u.toString());}catch(e){}
