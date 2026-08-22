@@ -174,13 +174,24 @@ header .wrap{position:relative}
 .float-test{bottom:136px;z-index:60}
 @media(max-width:560px){.float-line,.float-test,.tb-btn{width:140px;height:38px;font-size:.88rem}.float-line{bottom:16px}.tb-btn{bottom:68px}.float-test{bottom:120px}}
 /* === narrow-fix 2026-08-19 === ≤420px 時 logo＋漢堡＋免費健檢＋語言鈕擠不下，語言鈕會被推出視窗造成橫向捲動 */
-@media(max-width:420px){header .wrap,header .nav{gap:6px;padding-left:14px;padding-right:14px}.mob-test{font-size:.72rem;padding:6px 9px}.ltoggle{height:32px;padding:0 9px;font-size:.74rem}}</style></head>
+@media(max-width:420px){header .wrap,header .nav{gap:6px;padding-left:14px;padding-right:14px}.mob-test{font-size:.72rem;padding:6px 9px}.ltoggle{height:32px;padding:0 9px;font-size:.74rem}}
+/* logo-lock 2026-08-22：文章頁改用圖片 logo，與主站一致 */
+.lock{display:flex;align-items:center;gap:10px;background:#0e1a2e;border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:3px 12px}
+.lock img{display:block;width:auto}
+.lock img.lg-tips{height:44px}
+.lock img.lg-kc{height:32px}
+.lock .dvr{width:1px;height:30px;background:rgba(255,255,255,.22)}
+@media(max-width:560px){.lock img.lg-tips{height:38px}.lock img.lg-kc{height:28px}.lock{padding:2px 10px;gap:8px}}
+
+/* foot-course-4-5 2026-08-22：課程欄拆左4右5、與國小部頂端對齊；窄螢幕單欄 */
+.foot-grid>div:first-child ul{display:inline-block;vertical-align:top}
+.foot-grid>div:first-child ul.fc-more{margin-left:26px}
+@media(max-width:600px){.foot-grid>div:first-child ul{display:block}.foot-grid>div:first-child ul.fc-more{margin-left:0}}
+</style></head>
 <body>
 <header>
 <div class="wrap">
-<a class="brand" href="/">
-<span class="word" data-i18n="t1">TIPS 英典教育<small>KNOWLEDGE CORE</small></span>
-</a>
+<a class="lock" href="/"><img alt="TIPS 英典教育" class="lg-tips" src="/img/logo-tips.png"/><span class="dvr"></span><img alt="KC 科基語測 Knowledge Core" class="lg-kc" src="/img/logo-kc.png"/></a>
 <button aria-label="選單" class="burger" data-i18n-label="a2" id="burger"><span></span><span></span><span></span></button>
 <nav class="menu" id="menu">
 <a data-i18n="t2" href="/">首頁</a>
@@ -266,7 +277,7 @@ header .wrap{position:relative}
 <li><a data-i18n="t50" href="/elementary.html">國小部（1~4年級）</a></li>
 <li><a data-i18n="t51" href="/junior-senior-high.html">高年級・國高中部</a></li>
 <li><a data-i18n="t52" href="/abroad.html">海外遊學</a></li>
-<li><a data-i18n="t53" href="/index.html#tech">KC 智慧教學系統</a></li><li><a data-i18n="tfttst" href="/tests/">🎯 免費測驗中心</a></li><li><a data-i18n="tnai2" href="/ai-course.html">🤖 AI 人工智慧課程</a></li><li><a data-i18n="tsch" href="/schools.html">📍 服務學區</a></li><li><a data-i18n="tang" href="/anglia.html">🎓 安格國際英檢</a></li><li><a data-i18n="tgept" href="/gept.html">📝 全民英檢備考</a></li>
+<li><a data-i18n="t53" href="/index.html#tech">KC 智慧教學系統</a></li></ul><ul class="fc-more"><li><a data-i18n="tfttst" href="/tests/">🎯 免費測驗中心</a></li><li><a data-i18n="tnai2" href="/ai-course.html">🤖 AI 人工智慧課程</a></li><li><a data-i18n="tsch" href="/schools.html">📍 服務學區</a></li><li><a data-i18n="tang" href="/anglia.html">🎓 安格國際英檢</a></li><li><a data-i18n="tgept" href="/gept.html">📝 全民英檢備考</a></li>
 </ul>
 </div>
 <div>
