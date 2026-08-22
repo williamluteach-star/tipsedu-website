@@ -1,0 +1,14 @@
+{
+  "name": "TIPS 英典教育｜台中南屯升學與英語補習班",
+  "short_name": "TIPS 台中南屯",
+  "description": "台中南屯的升學與英語補習班，以 KC 科基語測 AI 系統為孩子規劃國小到高中的學習藍圖。",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#0e1a2e",
+  "theme_color": "#0e1a2e",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
+  ]
+}
