@@ -395,11 +395,14 @@ header .nav,header .wrap{position:relative}
 .kb-step>*{min-width:0}
 @media(max-width:760px){.kb-step{grid-template-columns:1fr}}
 /* foot-course-4-5 2026-08-22：課程欄拆左4右5、與國小部頂端對齊；窄螢幕單欄 */
-.foot-grid>div:first-child{display:flex;flex-wrap:wrap;align-content:flex-start;column-gap:26px}
+.foot-grid>div:first-child{display:flex;flex-wrap:wrap;align-content:flex-start;column-gap:16px}
 .foot-grid>div:first-child h4{flex:0 0 100%}
-.foot-grid>div:first-child ul{display:inline-block;vertical-align:top}
+.foot-grid>div:first-child ul{display:block;flex:1 1 0;min-width:0}
 .foot-grid>div:first-child ul.fc-more{margin-left:0}
-@media(max-width:600px){.foot-grid>div:first-child ul{display:block}.foot-grid>div:first-child ul.fc-more{margin-left:0}}
+/* en-2col 2026-08-25：英文字串較長會把第二欄擠掉；改成等寬彈性兩欄＋窄螢幕縮字，中英一致維持兩欄 */
+@media(min-width:601px) and (max-width:960px){.foot-grid{grid-template-columns:1.5fr 1fr}}
+@media(max-width:1000px){.foot-grid>div:first-child ul a{font-size:.85rem}}
+@media(max-width:430px){.foot-grid>div:first-child ul a{font-size:.79rem}}
 </style>
 
   <div class="tc-inner">
