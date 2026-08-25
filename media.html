@@ -169,7 +169,7 @@ html[data-theme="light"] .cdcard .cdnum{background:linear-gradient(135deg,#e0890
 .cc{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 /* footer */
 footer{background:var(--bg2);border-top:1px solid var(--line);padding:46px 0 30px}
-.foot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.foot-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:30px}
 footer h4{color:var(--txt);font-size:1rem;margin-bottom:14px}
 footer ul{list-style:none;display:grid;gap:9px}
 footer ul a{font-size:.92rem;color:var(--muted)}footer ul a:hover{color:#f5a623}
@@ -304,8 +304,10 @@ header .nav,header .wrap{position:relative}
 .kb-step>*{min-width:0}
 @media(max-width:760px){.kb-step{grid-template-columns:1fr}}
 /* foot-course-4-5 2026-08-22：課程欄拆左4右5、與國小部頂端對齊；窄螢幕單欄 */
+.foot-grid>div:first-child{display:flex;flex-wrap:wrap;align-content:flex-start;column-gap:26px}
+.foot-grid>div:first-child h4{flex:0 0 100%}
 .foot-grid>div:first-child ul{display:inline-block;vertical-align:top}
-.foot-grid>div:first-child ul.fc-more{margin-left:26px}
+.foot-grid>div:first-child ul.fc-more{margin-left:0}
 @media(max-width:600px){.foot-grid>div:first-child ul{display:block}.foot-grid>div:first-child ul.fc-more{margin-left:0}}
 </style><script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "KC 科基語測是誰研發的？", "acceptedAnswer": {"@type": "Answer", "text": "由語言學教授王冠程研發。王教授推動雙語教學 30 餘年，其開發的 AI 英文作文檢定系統曾獲金鼎獎入圍肯定，相關新聞報導整理在本頁的「KC 科基語測研發者」專區，可直接點進原始媒體網站查看。"}}, {"@type": "Question", "name": "這些媒體報導可以看到原文嗎？", "acceptedAnswer": {"@type": "Answer", "text": "可以。本頁每一則報導都直接連到原始媒體網站，包含 BUZZ DAILY、YAHOO 新聞、民視新聞、經濟日報與風傳媒等；活動影音則連到 YouTube 頻道的原始影片，沒有經過重新剪輯。"}}, {"@type": "Question", "name": "可以預約參觀或諮詢嗎？", "acceptedAnswer": {"@type": "Answer", "text": "可以。班址在台中市南屯區黎明路一段 295 號，電話 0905-547839，也可以加 LINE 官方帳號 @tipsedu 預約參觀時間與一對一諮詢。"}}]}
