@@ -103,7 +103,7 @@
 
 <div class="panel">
   <h1>🔒 TIPS 報告產生器（內部工具，請勿外流網址）<span style="float:right;"><a href="luodian/" style="font-size:.75rem; color:#5b8fd8; text-decoration:none; margin-right:12px;">📊 學測落點</a><a href="manual.html" style="font-size:.75rem; color:#5b8fd8; text-decoration:none; margin-right:12px;">📘 使用說明</a><a href="sop.html" style="font-size:.75rem; color:#5b8fd8; text-decoration:none;">📖 解讀面談 SOP</a></span></h1>
-  <p class="hint">從試算表複製「結果摘要」欄整格貼上即可（孩子那筆＋對照卷那筆可以一起貼，系統會自動抓「代碼[…]」）。支援：高中定向 HSC／國中興趣 JHC／準備度 RDC／入班評估 NSC＋各對照卷代碼。</p>
+  <p class="hint">從試算表複製「結果摘要」欄整格貼上即可（孩子那筆＋對照卷那筆可以一起貼，系統會自動抓「代碼[…]」）。支援：高中定向 HSC／國中興趣 JHC／準備度 RDC／入班評估 NSC＋各對照卷代碼；家長版檢測 PSTG 可單獨貼，或和孩子那筆一起貼成親子合併報告。</p>
   <textarea id="codeInput" placeholder="把試算表的結果摘要貼在這裡（可多筆一起貼）…"></textarea>
   <div class="row" id="careerRow" style="gap:6px; align-items:flex-start;">
     <span style="font-size:.83rem; font-weight:700; padding-top:4px;">🎯 職業聚焦（選填，可複選，僅適用①⑤生涯類報告）：</span>
@@ -466,7 +466,7 @@ function rptShell(title, stu, body){
       <div class="rpt-title"><h2>${title}</h2><div class="sub">產出日期 ${today()}｜僅供教育諮詢使用，非臨床診斷</div></div>
     </div>
     <div class="stu-row">${stu}</div>
-    ${body}
+    ${body}${__FAM_HTML}
     <h3 class="sec">顧問建議（面談時填寫）</h3>
     <div class="note-box">&nbsp;</div>
     <div class="foot"><span>TIPS 英典教育｜台中市南屯區黎明路一段295號｜0905-547839｜LINE @tipsedu</span><span>O*NET・CEEC・LASSI・Baumrind・OECD 生涯準備指標 架構在地化編製</span></div>
@@ -520,7 +520,7 @@ function parseCodes(txt){
   // 也接受直接貼裸代碼
   txt.split(/[\n\r]+/).forEach(line=>{
     const t=line.trim();
-    if(/^(HSC1|HSP1|HSP2|JHC1|JHP1|JHP2|RDC1|RDP1|RDP2|NSC1|NSP1|NSP2)\|/.test(t) && !found.includes(t)) found.push(t);
+    if(/^(HSC1|HSP1|HSP2|JHC1|JHP1|JHP2|RDC1|RDP1|RDP2|NSC1|NSP1|NSP2|PSTG1|PSTG2)\|/.test(t) && !found.includes(t)) found.push(t);
   });
   const out={};
   found.forEach(c=>{ let tag=c.split("|")[0]; tag=tag.replace(/2$/,"1"); out[tag]=c; });
@@ -937,7 +937,7 @@ function rdTips(pPlan,pWorry,vals,pA){
     4:null}[pWorry];
   if(worryTip) tips.push(worryTip);
   const planTip={0:"家長傾向全科班——確認孩子弱項向度，避免過度安排造成反效果。",
-    1:"家長傾向單科補強——用六大能力數據幫他選對科目。",
+    1:"家長傾向單科補強——用各項能力數據幫他選對科目。",
     2:"家長傾向自主學習——強調我們的進度透明與定期回報，作為自主學習的安全網。",
     3:"家長還沒有明確規劃——這是最好的顧問切入點，從數據直接給方案。"}[pPlan];
   if(planTip) tips.push(planTip);
@@ -1035,13 +1035,13 @@ function renderRD(cc, pc, internal){
   if(pc) planBlock=`<h3 class="sec">家長的規劃與擔心</h3><table><tr><th>國中學習安排傾向</th><th>最擔心</th></tr><tr><td>${RD_PLAN[pPlan]}</td><td>${RD_WORRY[pWorry]}</td></tr></table>`;
   const body=
     qWarn(__seg[4],internal)+
-    `<h3 class="sec">六大能力：孩子自評${pA?" vs 家長觀察":""}（就緒指數 <span class="badge">${index}</span>）</h3>
+    `<h3 class="sec">${vals.length===7?"七":"六"}大能力：孩子自評${pA?" vs 家長觀察":""}（就緒指數 <span class="badge">${index}</span>）</h3>
      <div class="flex"><div style="text-align:center;">${radarDual(labels,vals,parentVals,32)}<div class="legend">─ <span class="c1">孩子自評</span>${pA?"　╌ <span class='c2'>家長觀察</span>":""}</div></div><div>${table}</div></div>`+
     planBlock+
     interpRD(vals,index,pPlan,pWorry)+
     (pc?styleBlock(pC.slice(0,2),pC.slice(2,4),pC.slice(4),internal,rdTips(pPlan,pWorry,vals,pA)):"")+
     answerAppendix([
-      (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("孩子作答｜六大能力 48 題",itemsRows(RDQ,RDQ_O,a,0)):null;})(),
+      (()=>{const a=segOf(cc,"ANS:"); return a?detailTable(`孩子作答｜${vals.length===7?"七":"六"}大能力 ${vals.length*8} 題`,itemsRows(RDQ,RDQ_O,a,0)):null;})(),
       pA?detailTable("家長對照卷｜眼中的孩子",pairRows(RDPS_A_TXT,pA,RDPS_FIT_O)):null,
       pC?detailTable("家長對照卷｜教育想法",pairRows(RDPS_C6_TXT,pC,PS_AGREE_O)):null
     ],internal);
@@ -1179,6 +1179,49 @@ function renderGrowth(allCodes, internal){
   return rptShell("12 年學習藍圖・成長軌跡報告",
     `<span>學生：<b>${esc(name)}</b></span><span>測評次數：<b>${parsed.length}</b></span><span>期間：<b>${esc(parsed[0].grade)} → ${esc(parsed[parsed.length-1].grade)}</b></span>`, body);
 }
+/* ================= 家長版檢測（/family/ 的 PSTG 代碼，2026-10-03） =================
+   PSTG2|家長稱呼|綁定孩子(—=未綁)|8 題作答 0-4|期望題   ← 新版，含逐題
+   PSTG1|家長稱呼|綁定孩子|要求總分,回應總分|期望題     ← 舊版，只有兩軸總分
+   和孩子的測驗代碼一起貼 → 併進孩子報告；只貼家長版 → 單獨出「家長教養風格報告」。 */
+let __FAM_HTML="";
+const FAMQ=[["D","我對孩子的成績或表現，有明確的標準與要求"],["D","孩子的作息、讀書計畫，主要由我來安排規定"],["D","孩子沒達到我的期望時，我會明確讓他知道"],["D","重大決定（選組、選科、才藝）最終該由父母把關"],["S","孩子表達不同意見時，我會先聽完他的理由"],["S","就算方向冷門，只要孩子有熱情，我願意支持"],["S","我常和孩子聊學習以外的事（興趣、朋友、心情）"],["S","孩子遇到挫折時，我會先安撫情緒，再談表現"]];
+const FAM_EXPECT=["希望他拚一點、追求更好的成績","順其自然，快樂健康最重要","尊重孩子，看他自己的方向"];
+const FAM_LIKERT=["很不同意","不太同意","普通","還算同意","非常同意"];
+function famParse(code){
+  const s=code.split("|");
+  const f={ver:s[0], pName:s[1]||"", child:(s[2]&&s[2]!=="—")?s[2]:"", ans:null, D:[], S:[], expect:null};
+  if(s[0]==="PSTG2"){
+    f.ans=(s[3]||"").split(",").map(Number);
+    f.ans.forEach((a,i)=>{ if(FAMQ[i]) (FAMQ[i][0]==="D"?f.D:f.S).push(a); });
+  } else {
+    const ds=(s[3]||"0,0").split(",").map(Number);
+    const spread=x=>[0,1,2,3].map(i=>Math.floor(x/4)+(i<x%4?1:0));   // 只有總分：平均攤回 4 題，總分不變
+    f.D=spread(ds[0]||0); f.S=spread(ds[1]||0);
+  }
+  if(s[4]!==undefined && s[4]!=="" && !isNaN(+s[4])) f.expect=+s[4];
+  return f;
+}
+function famBlock(code, internal, mainChild, standalone){
+  const f=famParse(code);
+  let warn="";
+  if(internal){
+    if(standalone) warn= f.child?`<div class="verdict">💡 家長綁定的孩子：<b>${esc(f.child)}</b>。孩子若做過測驗，把孩子那筆結果摘要一起貼上，就會出親子合併報告（先用名單表的「家長手機」確認是同一個家庭）。</div>`:"";
+    else if(!f.child) warn=`<div class="verdict warn">⚠ 家長版沒有綁定孩子姓名——請先用名單表的「家長手機」確認這兩筆是同一個家庭。</div>`;
+    else if(mainChild && f.child.replace(/\s/g,"")!==String(mainChild).replace(/\s/g,"")) warn=`<div class="verdict warn">⚠ 家長版綁定的孩子是「${esc(f.child)}」，這份測驗是「${esc(mainChild)}」——名字不同，請先用名單表的「家長手機」確認是同一位孩子。</div>`;
+  }
+  let html=styleBlock(f.D, f.S, null, internal, []).replace("家長教養互動風格</h3>", "家長教養互動風格（家長版檢測・"+esc(f.pName)+" 本人填答）</h3>");
+  if(f.expect!==null && FAM_EXPECT[f.expect]) html+=`<table><tr><th>對孩子未來，家長現在的心情</th></tr><tr><td>${FAM_EXPECT[f.expect]}</td></tr></table>`;
+  const app = f.ans
+    ? answerAppendix([detailTable("家長版檢測｜逐題作答", FAMQ.map((q,i)=>[i+1, q[1]+(q[0]==="D"?"（要求）":"（回應）"), FAM_LIKERT[f.ans[i]]!==undefined?FAM_LIKERT[f.ans[i]]:"—", null]))], internal)
+    : (internal?`<div class="internal"><h4>🔒 附錄</h4><div style="font-size:.74rem;">舊版家長代碼（PSTG1）只有兩軸總分，沒有逐題明細。</div></div>`:"");
+  return warn+html+app;
+}
+function renderFAM(code, internal){
+  const f=famParse(code);
+  return rptShell("家長教養風格報告",
+    `<span>家長：<b>${esc(f.pName)}</b></span>${f.child?`<span>綁定孩子：<b>${esc(f.child)}</b></span>`:""}`,
+    famBlock(code, internal, null, true));
+}
 /* ================= 主流程 ================= */
 function generate(){
   window.__careerSel=[...document.querySelectorAll(".cchip.on")].map(b=>+b.dataset.i);
@@ -1187,7 +1230,10 @@ function generate(){
   const modeVal=document.querySelector('input[name="mode"]:checked').value;
   const internal=modeVal==="internal";
   let html="";
+  __FAM_HTML="";
   try{
+    const mainC=codes.HSC1||codes.JHC1||codes.RDC1||codes.NSC1||null;
+    if(modeVal!=="growth" && codes.PSTG1 && mainC) __FAM_HTML=famBlock(codes.PSTG1, internal, mainC.split("|")[1], false);
     if(modeVal==="growth"){
       html=renderGrowth(codes.__all||[], true);
       if(!html){ err.textContent="成長軌跡需要同一位學生至少 2 筆不同時間的測驗代碼（由舊到新貼上「已完成」那幾筆的結果摘要）。"; err.style.display="block"; return; }
@@ -1197,6 +1243,7 @@ function generate(){
     else if(codes.JHC1) html=renderJH(codes.JHC1, codes.JHP1||null, internal);
     else if(codes.RDC1) html=renderRD(codes.RDC1, codes.RDP1||null, internal);
     else if(codes.NSC1) html=renderNS(codes.NSC1, codes.NSP1||null, internal);
+    else if(codes.PSTG1) html=renderFAM(codes.PSTG1, internal);
     else { err.textContent="找不到有效的報告代碼——請確認貼的是試算表「結果摘要」欄的完整內容（要包含「代碼[…]」）。"; err.style.display="block"; return; }
   }catch(e){
     err.textContent="代碼格式解析失敗："+e.message; err.style.display="block"; return;

@@ -13,6 +13,7 @@
    4. 手機號碼：自動去掉「-」與空白、全形數字轉半形。
    5. 作答中收起大標題與 LINE 浮動鈕，翻頁直接看到題目。
    6. 結束頁：預約到班看報告（官方 LINE 一鍵帶入「已完成」訊息／轉傳給家長／請老師來電）。
+      2026-10-03：轉傳給家長改用手機內建分享選單，叫不出來時改顯示 簡訊／LINE／複製訊息；訊息附電話。
    注意：帶有孩子姓名與手機的 LINE 連結一律用程式開啟，不寫在 <a href> 裡，
    避免被 GA「外部連結點擊」記錄到個資。
    ===================================================================== */
@@ -186,6 +187,9 @@
   '.dv2 .alt b{font-size:.92rem}' +
   '.dv2 .small{font-size:.8rem;color:#6e6e73;margin-top:8px;line-height:1.6}' +
   '.dv2 .done-call{display:none;background:#e8f5ee;border-radius:12px;padding:10px 12px;font-size:.88rem;color:#2b7a57;margin-top:10px}' +
+  '.dv2 .shalt{display:none;gap:8px;margin-top:10px;flex-wrap:wrap}' +
+  '.dv2 .shalt .sbtn{flex:1;min-width:84px;text-align:center;text-decoration:none;font-weight:700;font-size:.92rem;padding:11px 6px;border-radius:12px;border:1.5px solid #d2d2d7;color:#1d1d1f;background:#fff}' +
+  '.dv2 .shalt textarea{display:none;width:100%;min-height:130px;font-size:.8rem;border:1px solid #d2d2d7;border-radius:10px;padding:8px;font-family:inherit}' +
   '.dv2 .foot{font-size:.78rem;color:#6e6e73;text-align:center;margin-top:16px}';
   function injectCSS(){ var s = document.createElement('style'); s.id = 'tips-funnel-css'; s.textContent = CSS; document.head.appendChild(s); }
 
@@ -204,9 +208,20 @@
       '\n測驗：' + cfg.name + '\n家長手機：' + fmtPhone(L.phone) + '\n方便到班：' + (slot || '再跟老師約');
   }
   function oaURL(text){ return 'https://line.me/R/oaMessage/' + OA_ID + '/?' + encodeURIComponent(text); }
-  function shareURL(L){
-    var t = '我做完 TIPS 英典教育的「' + cfg.name + '」了！報告要請家長到補習班，由老師當面解讀（免費）。點下面的連結、加入官方 LINE 就能預約時間：\n' + oaURL(bookingMsg(L, ''));
-    return 'https://line.me/R/share?text=' + encodeURIComponent(t);
+  function shareText(L){
+    return '我做完 TIPS 英典教育的「' + cfg.name + '」了！報告要請家長到補習班，由老師當面解讀（免費）。點下面的連結、加入官方 LINE 就能預約時間：\n' + oaURL(bookingMsg(L, '')) +
+      '\n不用 LINE 也可以直接打電話：' + PHONE_SHOW;
+  }
+  function shareURL(L){ return 'https://line.me/R/share?text=' + encodeURIComponent(shareText(L)); }
+  function smsURL(L){ return 'sms:' + (/iPhone|iPad|iPod|Macintosh/i.test(navigator.userAgent || '') ? '&' : '?') + 'body=' + encodeURIComponent(shareText(L)); }
+  function copyText(t, cb){
+    function legacy(){
+      var ok = false;
+      try{ var ta = document.createElement('textarea'); ta.value = t; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+        document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, t.length); ok = document.execCommand('copy'); document.body.removeChild(ta); }catch(e){}
+      cb(ok);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function(){ cb(true); }, legacy); else legacy();
   }
   function go(url){ setTimeout(function(){ location.href = url; }, 120); }
 
@@ -221,7 +236,7 @@
       '<p class="hint">LINE 打開後，訊息已經幫您打好，按「傳送」就完成預約。<br>還不是好友的話，順手按「加入好友」，之後的通知才收得到。</p>' +
       '<div class="preview" id="tfPrev"><em>會傳出的訊息</em>' + esc(bookingMsg(L, slot)) + '</div>';
     var shareBlock =
-      '<a class="bigbtn line" id="tfShare" href="' + OA_ADD + '">📤 把預約連結傳給家長</a>' +
+      '<a class="bigbtn line" id="tfShare" href="' + OA_ADD + '">📤 把預約連結傳給家長</a>' + '<div class="shalt" id="tfShareAlt"><a class="sbtn" id="tfSms" href="#">💬 簡訊</a><a class="sbtn" id="tfShLine" href="#">LINE</a><a class="sbtn" id="tfCopy" href="#">📋 複製訊息</a><textarea id="tfCopyBox" readonly></textarea></div>' +
       '<p class="hint">家長點開連結、加入官方 LINE，就能預約到班時間。</p>';
     var html =
       '<div class="card dv2">' +
@@ -233,7 +248,7 @@
           ? '<h3>預約到班看報告</h3><div class="lbl">方便到班的時段（可略過）</div><div class="slots">' +
               slots.map(function(x){ return '<button type="button" data-slot="' + x + '">' + x + '</button>'; }).join('') + '</div>' +
               lineBlock +
-              (cfg.parentFill ? '' : '<a class="bigbtn ghost" id="tfShare2" href="' + OA_ADD + '">📤 用孩子的手機？傳連結給家長</a>')
+              (cfg.parentFill ? '' : '<a class="bigbtn ghost" id="tfShare2" href="' + OA_ADD + '">📤 用孩子的手機？傳連結給家長</a>' + '<div class="shalt" id="tfShareAlt"><a class="sbtn" id="tfSms" href="#">💬 簡訊</a><a class="sbtn" id="tfShLine" href="#">LINE</a><a class="sbtn" id="tfCopy" href="#">📋 複製訊息</a><textarea id="tfCopyBox" readonly></textarea></div>')
           : '<h3>最後一步：請家長預約到班</h3>' + shareBlock +
               '<a class="bigbtn ghost" id="tfLine" href="' + OA_ADD + '">📩 家長本人？直接加入官方 LINE 預約</a>') +
         '<div class="alt"><b>沒有用 LINE？</b>' +
@@ -269,15 +284,30 @@
       log('預約到班（按了 LINE）', '方便到班：' + (slot || '未選'));
       go(oaURL(bookingMsg(L, slot)));
     };
+    /* 2026-10-03：傳給家長改用手機內建分享選單；叫不出來（多數 App 內建瀏覽器）就顯示 簡訊／LINE／複製訊息 */
+    function showAlt(){ var a = $('tfShareAlt'); if(a) a.style.display = 'flex'; }
     ['tfShare','tfShare2'].forEach(function(id){
       var el = $(id); if(!el) return;
       el.onclick = function(ev){
         ev.preventDefault();
         track('book_share');
         log('預約到班（傳給家長）', '');
-        go(shareURL(L));
+        if(navigator.share){
+          try{ navigator.share({ text: shareText(L) }).catch(function(){ showAlt(); }); }catch(e){ showAlt(); }
+        } else showAlt();
       };
     });
+    var smsB = $('tfSms'); if(smsB) smsB.onclick = function(ev){ ev.preventDefault(); go(smsURL(L)); };
+    var shL = $('tfShLine'); if(shL) shL.onclick = function(ev){ ev.preventDefault(); go(shareURL(L)); };
+    var cpB = $('tfCopy'); if(cpB) cpB.onclick = function(ev){
+      ev.preventDefault();
+      var txt = shareText(L);
+      copyText(txt, function(ok){
+        if(ok){ cpB.textContent = '✅ 已複製'; return; }
+        var box = $('tfCopyBox'); if(box){ box.value = txt; box.style.display = 'block'; box.focus(); box.select(); }
+        cpB.textContent = '請長按下方文字複製';
+      });
+    };
     $('tfCall').onclick = function(ev){
       ev.preventDefault();
       track('book_call');

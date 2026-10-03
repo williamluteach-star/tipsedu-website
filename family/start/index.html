@@ -66,6 +66,11 @@
   .foot{text-align:center; font-size:.72rem; color:#8a83a0; margin-top:22px; line-height:1.7;}
   .foot .lic{display:inline-block; background:#efeaf9; border-radius:8px; padding:3px 10px; margin-top:4px; color:#6a6480;}
   .line-float{position:fixed; right:16px; bottom:16px; background:var(--line); color:#fff; padding:11px 16px; border-radius:980px; text-decoration:none; font-weight:700; font-size:.9rem; box-shadow:0 4px 14px rgba(6,199,85,.4); z-index:50;}
+
+/* 2026-10-03 同意框排版修正：flex 會把文字拆成多欄 → 改成一般段落；字小一點、勾選框放大 */
+.consent{display:block!important;position:relative;padding-left:36px!important;min-height:26px;font-size:.76rem!important;line-height:1.65!important;cursor:pointer;}
+.consent input[type=checkbox]{position:absolute;left:0;top:-1px;width:26px!important;height:26px!important;margin:0!important;padding:0!important;cursor:pointer;accent-color:var(--accent,#2f6fed);}
+.consent .err{margin-top:4px;}
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Quiz", "name": "家長教養風格・親子合拍檢測", "url": "https://www.tips-edu.com/family/start/", "about": "家長教養風格與親子相處適配度", "educationalLevel": "家長版", "description": "從「要求」與「回應」兩個面向，用溫和的方式照見親子相處的樣子", "inLanguage": "zh-Hant", "isAccessibleForFree": true, "provider": {"@type": "EducationalOrganization", "name": "TIPS 英典教育", "url": "https://www.tips-edu.com/", "telephone": "+886905547839", "address": {"@type": "PostalAddress", "addressLocality": "台中市", "addressRegion": "南屯區", "streetAddress": "黎明路一段295號", "addressCountry": "TW"}}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "首頁", "item": "https://www.tips-edu.com/"}, {"@type": "ListItem", "position": 2, "name": "免費測驗中心", "item": "https://www.tips-edu.com/tests/"}, {"@type": "ListItem", "position": 3, "name": "家長教養風格・親子合拍檢測", "item": "https://www.tips-edu.com/family/start/"}]}</script>
@@ -78,7 +83,7 @@
   <div class="hero">
     <span class="pill">TIPS 英典教育・免費檢測</span>
     <h1>3 分鐘，看見你和孩子的<br>相處風格</h1>
-    <p class="sub">不是評分、不是標籤，也不是要挑你的毛病。<br>只是用「要求」和「回應」兩個溫和的面向，<br>幫你照見親子相處的樣子，帶一個貼近孩子的小方法回家。</p>
+    <p class="sub">不是評分、不是標籤，也不是要挑你的毛病。<br>只是用「要求」和「回應」兩個溫和的面向，<br>幫你照見親子相處的樣子；完整解讀由老師到班說明。</p>
     <div class="stat-row">
       <div class="stat"><b>3 分鐘</b>9 題</div>
       <div class="stat"><b>雙軸</b>要求 × 回應</div>
@@ -88,7 +93,7 @@
 
   <div class="card">
     <h2>開始前，留個聯絡方式</h2>
-    <p style="font-size:.88rem; color:#6a6480; margin-bottom:8px;">結果會即時顯示給你看；若你願意，顧問也能在解讀時給更貼近的建議。</p>
+    <p style="font-size:.88rem; color:#6a6480; margin-bottom:8px;">做完會先給你一句話的風格摘要；完整的相處光譜與親子對照，由老師到班一對一說明（免費）。</p>
     <div class="field">
       <label>家長稱呼 *</label>
       <input type="text" id="pName" placeholder="例：陳媽媽 / 王先生" maxlength="20">
@@ -280,37 +285,35 @@ function showResult(){
   const pName=val("pName"), ph=val("pPhone");
 
   // 內部：送出可讀摘要＋代碼（顧問端）
-  const code=`PSTG1|${pName}|${childName||"—"}|${dSum},${sSum}|${expect}`;
+  const code=`PSTG2|${pName}|${childName||"—"}|${ans.join(",")}|${expect}`;  // 2026-10-03 改 PSTG2：存逐題作答，報告產生器可合併親子報告
   const summary=`家長教養自測｜要求軸${dSum}/16(${dB})｜回應軸${sSum}/16(${sB})｜期望:${EXPECT[expect]}｜綁定:${childName||"未綁定"}｜代碼[${code}]`;
   submitToGoogleForm({ name:(childName||pName), grade:val("cGrade"), phone:ph, line:val("pLine"), status:"家長教養自測完成", result:summary });
   pixelLead();  // Meta Pixel「Lead」轉換事件（PIXEL_ID 有值時才觸發）
 
-  const dotD=Math.max(6,Math.min(94,dR*100)), dotS=Math.max(6,Math.min(94,sR*100));
+  // 2026-10-03 做法 B：網站只給一句話摘要，完整光譜與建議留到班由老師解讀（報告產生器）
+  const dP={"偏高":"對孩子有清楚的方向與期待","中等":"在「給方向」和「給空間」之間拿捏得宜","偏低":"願意給孩子很大的自主空間"}[dB];
+  const sP={"偏高":"也很願意先接住孩子的情緒","中等":"也能在回應孩子與守住原則之間取得平衡","偏低":"說話直接、重視效率"}[sB];
+  const oneLine=`你${dP}，${sP}。`;
   const rs=document.getElementById("screen-result");
   rs.innerHTML=`
   <div class="card">
-    <span class="pill" style="background:#efeaf9;">${pName} 的相處風格光譜</span>
-    <h2 style="margin-top:8px;">這是你此刻的樣子，不是評分</h2>
-    <div class="spectrum">
-      <div class="lab"><span>順其自然</span><span>要求 <span class="band-tag">${dB}</span></span><span>高度要求</span></div>
-      <div class="bar"><div class="dot" style="left:${dotD}%;"></div></div>
+    <span class="pill" style="background:#efeaf9;">✅ 檢測完成</span>
+    <h2 style="margin-top:8px;">${pName}，這是你的相處風格摘要</h2>
+    <div class="tip">🌱 ${oneLine}</div>
+    <div style="background:#f6f3fc; border:1px dashed #c9bdf0; border-radius:12px; padding:12px 14px; margin-top:12px; font-size:.9rem; color:#4a4458; line-height:1.8;">
+      🔒 <b>完整解讀請到班，由老師一對一說明（免費）</b><br>
+      ・「要求 × 回應」雙軸相處光譜<br>
+      ・和孩子溝通時最好用的具體方法<br>
+      ${childName?`・和 <b>${childName}</b> 的測驗並排對照`:"・帶孩子做一次測驗，還能看親子對照"}
     </div>
-    <div class="spectrum">
-      <div class="lab"><span>放手讓他來</span><span>回應 <span class="band-tag">${sB}</span></span><span>細心回應</span></div>
-      <div class="bar"><div class="dot" style="left:${dotS}%;"></div></div>
-    </div>
-    <div class="tip">🌱 ${dTip}</div>
-    <div class="tip">💛 ${sTip}</div>
-    <p style="font-size:.86rem; color:#5a5468; margin-top:12px; background:#f6f3fc; border-radius:10px; padding:11px 14px;">
-      教養沒有標準答案，這只是你此刻的相處風格光譜，<b>不是評分，也不是標籤</b>。在華人家庭裡，「嚴」常常就是「愛」的一種表達方式——重點不是分數高低，而是孩子有沒有感覺到被理解。
-    </p>
+    <p style="font-size:.84rem; color:#6a6480; margin-top:12px;">教養沒有標準答案，這不是評分，也不是標籤。</p>
   </div>
 
   <div class="card" style="text-align:center;">
     <h3>想更貼近孩子的想法？</h3>
     <p style="font-size:.92rem; color:#4a4458; margin-bottom:6px;">${childName?`我們已收到你的檢測，會和 <b>${childName}</b> 的測驗一起，由顧問為你們並排解讀。`:"歡迎帶孩子做一次免費的生涯／準備度測驗，我們把你和孩子兩邊的視角並排看，找出最合拍的相處與學習方式。"}</p>
     <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-      <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" rel="noopener" onclick="return window.TIPSF?TIPSF.familyBook():true">📩 加入官方 LINE，預約到班聊聊</a>
+      <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" rel="noopener" onclick="return window.TIPSF?TIPSF.familyBook():true">📩 加入官方 LINE，預約到班看完整解讀</a>
       <a class="btn secondary" href="tel:0905547839">📞 來電 ${TIPS_CONFIG.PHONE}</a>
     </div>
   </div>
@@ -325,7 +328,7 @@ function showResult(){
 }
 </script>
 <!-- 測驗共用模組 2026-10-02：來源判斷、追蹤事件、作答暫存續答、預約到班結束頁（見 /tests/tips-funnel.js） -->
-<script src="/tests/tips-funnel.js?v=20261002"></script>
+<script src="/tests/tips-funnel.js?v=20261003"></script>
 <script>window.TIPSF&&TIPSF.init({key:'family'});</script>
 </body>
 </html>
