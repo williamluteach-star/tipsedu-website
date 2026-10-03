@@ -172,7 +172,8 @@ const TIPS_CONFIG = {
   // 沿用「高中定向測驗名單」表單，家長自測以 status 欄標記區分；日後可換成專屬表單
   FORM_ID: "1FAIpQLSdwZcgV-siWgbG_9XZqREfzzDfMsTxdbbHntPmnV2veWt81-A",
   ENTRY: { name:"486381738", grade:"1165516373", phone:"1581099603", line:"1626200585", status:"713860075", result:"44798434" },
-  PIXEL_ID: "1280092368513326"   // Meta Pixel「TIPS 官網」（tips_educationcenter 組合）
+  PIXEL_ID: "1280092368513326",   // Meta Pixel「TIPS 官網」（tips_educationcenter 組合）
+  PIXEL_ID2: "2234570507273971"   // 2026-10-03 加：Meta Pixel「TIPS 官網（英典學習中心）」（TIPS 英典教育學習中心 組合），兩個同時收
 };
 /* ===== Meta Pixel（PIXEL_ID 有值才載入）===== */
 (function(){
@@ -183,6 +184,7 @@ const TIPS_CONFIG = {
   t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
   document,'script','https://connect.facebook.net/en_US/fbevents.js');
   fbq('init', TIPS_CONFIG.PIXEL_ID);
+  if(TIPS_CONFIG.PIXEL_ID2) fbq('init', TIPS_CONFIG.PIXEL_ID2);
   fbq('track', 'PageView');
 })();
 function pixelLead(){ try{ if(TIPS_CONFIG.PIXEL_ID && window.fbq) fbq('track','Lead'); }catch(e){} }
