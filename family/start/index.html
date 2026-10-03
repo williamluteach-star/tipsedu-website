@@ -80,7 +80,7 @@
     <h1>3 分鐘，看見你和孩子的<br>相處風格</h1>
     <p class="sub">不是評分、不是標籤，也不是要挑你的毛病。<br>只是用「要求」和「回應」兩個溫和的面向，<br>幫你照見親子相處的樣子，帶一個貼近孩子的小方法回家。</p>
     <div class="stat-row">
-      <div class="stat"><b>3 分鐘</b>10 題</div>
+      <div class="stat"><b>3 分鐘</b>9 題</div>
       <div class="stat"><b>雙軸</b>要求 × 回應</div>
       <div class="stat"><b>0 元</b>免費</div>
     </div>
@@ -96,7 +96,7 @@
     </div>
     <div class="field">
       <label>聯絡手機 *</label>
-      <input type="tel" id="pPhone" placeholder="09xxxxxxxx" maxlength="10">
+      <input type="tel" id="pPhone" placeholder="09xxxxxxxx" maxlength="13">
       <div class="err" id="ePPhone">請填寫正確的手機號碼（09 開頭共 10 碼）</div>
     </div>
     <div class="field">
@@ -187,7 +187,7 @@ function submitToGoogleForm(fields){
     const url = `https://docs.google.com/forms/d/e/${TIPS_CONFIG.FORM_ID}/formResponse`;
     const fd = new FormData();
     for(const k in fields){ const id = TIPS_CONFIG.ENTRY[k]; if(id) fd.append(`entry.${id}`, fields[k]); }
-    fetch(url, {method:"POST", mode:"no-cors", body:fd}).catch(()=>{});
+    fetch(url, {method:"POST", mode:"no-cors", body:fd, keepalive:true}).catch(()=>{});
   }catch(e){}
 }
 
@@ -310,7 +310,7 @@ function showResult(){
     <h3>想更貼近孩子的想法？</h3>
     <p style="font-size:.92rem; color:#4a4458; margin-bottom:6px;">${childName?`我們已收到你的檢測，會和 <b>${childName}</b> 的測驗一起，由顧問為你們並排解讀。`:"歡迎帶孩子做一次免費的生涯／準備度測驗，我們把你和孩子兩邊的視角並排看，找出最合拍的相處與學習方式。"}</p>
     <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-      <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" rel="noopener">📅 加 LINE 預約解讀（${TIPS_CONFIG.LINE_ID}）</a>
+      <a class="btn" href="${TIPS_CONFIG.LINE_URL}" target="_blank" rel="noopener" onclick="return window.TIPSF?TIPSF.familyBook():true">📩 加入官方 LINE，預約到班聊聊</a>
       <a class="btn secondary" href="tel:0905547839">📞 來電 ${TIPS_CONFIG.PHONE}</a>
     </div>
   </div>
@@ -324,5 +324,8 @@ function showResult(){
   window.scrollTo(0,0);
 }
 </script>
+<!-- 測驗共用模組 2026-10-02：來源判斷、追蹤事件、作答暫存續答、預約到班結束頁（見 /tests/tips-funnel.js） -->
+<script src="/tests/tips-funnel.js?v=20261002"></script>
+<script>window.TIPSF&&TIPSF.init({key:'family'});</script>
 </body>
 </html>

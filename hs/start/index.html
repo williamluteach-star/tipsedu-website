@@ -151,7 +151,7 @@
   }
 </style>
 <!-- Meta Pixel Code -->
-<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1280092368513326');fbq('track','PageView');document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a||!window.fbq)return;var h=a.getAttribute('href')||'';if(h.indexOf('lin.ee')>-1)fbq('track','Lead');else if(h.indexOf('tel:')===0)fbq('track','Contact');},true);</script>
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1280092368513326');fbq('track','PageView');document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a');if(!a||!window.fbq)return;var h=a.getAttribute('href')||'';if(h.indexOf('lin.ee')>-1||h.indexOf('line.me')>-1)fbq('track','Contact');else if(h.indexOf('tel:')===0)fbq('track','Contact');},true);</script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1280092368513326&ev=PageView&noscript=1"/></noscript>
 <!-- End Meta Pixel Code -->
 </head>
@@ -197,7 +197,7 @@
       </div>
       <div class="field">
         <label>家長聯絡手機 *（測驗報告解讀通知用）</label>
-        <input type="tel" id="leadPhone" placeholder="09xxxxxxxx" maxlength="10">
+        <input type="tel" id="leadPhone" placeholder="09xxxxxxxx" maxlength="13">
         <div class="err" id="errPhone">請填寫正確的手機號碼（09 開頭共 10 碼）</div>
       </div>
       <div class="field">
@@ -207,7 +207,7 @@
       <label class="consent"><input type="checkbox" id="leadConsent">我同意 TIPS 英典教育依《<a href="/privacy/" target="_blank" rel="noopener" style="color:inherit;">資料使用說明</a>》蒐集以上資料，用於提供測驗報告解讀與課程資訊。<span class="err" id="errConsent" style="display:none;">請勾選同意</span></label>
       <button class="btn" style="margin-top:14px; width:100%; font-size:1.1rem;" onclick="startTest()">🚀 開始免費測驗（約 20 分鐘）</button>
     </div>
-    <div class="note">📚 <b>編製依據</b>：本測驗第一部分改編自美國勞工部 O*NET Interest Profiler 短式量表（CC 授權），採 Holland 六型碼理論；解讀架構參考大考中心興趣量表；學群對照採大考中心「十八學群」分類，詳細說明見報告末。本工具為生涯探索的<b>參考輔助工具</b>，非正式標準化心理測驗。</div>
+    <div class="note">📚 <b>編製依據</b>：本測驗第一部分改編自美國勞工部 O*NET Interest Profiler 短式量表（CC 授權），採 Holland 六型碼理論；解讀架構參考大考中心興趣量表；學群對照採大考中心「十八學群」分類，詳細說明由老師解讀報告時提供。本工具為生涯探索的<b>參考輔助工具</b>，非正式標準化心理測驗。</div>
   </div>
 </div>
 
@@ -244,7 +244,7 @@ function submitToGoogleForm(fields){
     const url = `https://docs.google.com/forms/d/e/${TIPS_CONFIG.FORM_ID}/formResponse`;
     const fd = new FormData();
     for(const k in fields){ const id = TIPS_CONFIG.ENTRY[k]; if(id) fd.append(`entry.${id}`, fields[k]); }
-    fetch(url, {method:"POST", mode:"no-cors", body:fd});
+    fetch(url, {method:"POST", mode:"no-cors", body:fd, keepalive:true});
   }catch(e){}
 }
 function leadData(){
@@ -462,7 +462,7 @@ function renderPage(){
   }
   document.getElementById("qContainer").innerHTML = html;
   document.getElementById("btnPrev").style.visibility = page===0?"hidden":"visible";
-  document.getElementById("btnNext").textContent = (end===TOTAL)?"看結果 →":"下一頁 →";
+  document.getElementById("btnNext").textContent = (end===TOTAL)?"完成送出 →":"下一頁 →";
   updateProgress(); window.scrollTo(0,0);
 }
 function pick(gi,v){
@@ -689,5 +689,8 @@ function showDone(parentDone){
 <a class="line-float" id="lineFloat" href="https://line.me/R/ti/p/@tipsedu" target="_blank">💬 LINE 諮詢</a>
 <script>document.getElementById("lineFloat").href = TIPS_CONFIG.LINE_URL;</script>
 <div style="text-align:center;color:#8a8f98;font-size:12px;line-height:1.6;padding:16px 12px">TIPS 英典教育學習中心｜立案字號：中市教終字第1110061866號｜台中市南屯區黎明路一段295號｜0905-547-839</div>
+<!-- 測驗共用模組 2026-10-02：來源判斷、追蹤事件、作答暫存續答、預約到班結束頁（見 /tests/tips-funnel.js） -->
+<script src="/tests/tips-funnel.js?v=20261002"></script>
+<script>window.TIPSF&&TIPSF.init({key:'hs',name:'高中生涯定向測驗',contents:'興趣六型雷達圖・自然組／社會組傾向・大學 18 學群排名',get:function(){return {answers:answers,page:page};},set:function(s){answers=s.answers;page=s.page;}});</script>
 </body>
 </html>

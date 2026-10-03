@@ -2,6 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
+<script src="/report-gen/gate.js?v=20261002"></script><!-- 2026-10-02 密碼視窗 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TIPS 報告產生器（內部工具）</title>
 <meta name="robots" content="noindex,nofollow">
@@ -1095,10 +1096,11 @@ function renderNS(cc, pc, internal){
      <h3 class="sec">英語與學習背景</h3><div class="verdict">${esc(bg)||"（未填）"}</div>`+
      interpNS(vals)+
      (pc?styleBlock(pc.split("|")[1].split(",").map(Number).slice(0,2), pc.split("|")[1].split(",").map(Number).slice(2,4), pc.split("|")[1].split(",").map(Number).slice(4,6), internal, []):"")+
-     ((pc && pc.split("|")[0]==="NSP2")?devBlock(pc.split("|")[2], pc.split("|")[3].split(",").map(Number), internal):"")+
+     ((pc && pc.split("|")[0]==="NSP2" && ["SKIP","PAPER"].includes(pc.split("|")[3]) && internal)?'<div class="internal"><h4>🔒 發展關懷檢核（內部）</h4><p style="font-size:.8rem;">'+(pc.split("|")[3]==="PAPER"?"此段改為到班以紙本填寫：請看紙本觀察表，計分方式見《老師整理說明》。":"家長選擇略過此段（選填），沒有資料。")+'</p></div>':"")+
+     ((pc && pc.split("|")[0]==="NSP2" && !["SKIP","PAPER"].includes(pc.split("|")[3]))?devBlock(pc.split("|")[2], pc.split("|")[3].split(",").map(Number), internal):"")+
      answerAppendix([
        (()=>{const a=segOf(cc,"ANS:"); return a?detailTable("家長作答｜五大面向 30 題",itemsRows(NSQ,NSQ_O,a,0)):null;})(),
-       (()=>{if(!pc||pc.split("|")[0]!=="NSP2") return null;
+       (()=>{if(!pc||pc.split("|")[0]!=="NSP2"||["SKIP","PAPER"].includes(pc.split("|")[3])) return null;
          const trk=pc.split("|")[2], dv=pc.split("|")[3].split(",").map(Number);
          const items=trk==="A"?DEVA:DEVB, opts=trk==="A"?DEVA_O:DEVB_O;
          return detailTable("日常學習行為觀察 "+(trk==="A"?"10":"18")+" 題（紅字＝達關注選項）",
