@@ -207,6 +207,10 @@ header .wrap{position:relative}
 @media(max-width:600px){.foot-grid>div:first-child ul{display:block}.foot-grid>div:first-child ul.fc-more{margin-left:0}}
 /* en-font 2026-09-28 === 英文模式改用 Source Sans 3：Noto Sans TC 會把 ’ “ ” 排成全形（Can’t 的 ’t 被推開）；Source Sans 3 與 Noto Sans TC 內建英文字同一設計，外觀不變 */
 html[lang="en"] body{font-family:"Source Sans 3","Noto Sans TC",-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif}
+
+/* social-wrap 2026-10-12 === 頁尾 FB／IG／Threads／YouTube 四個連結不換行，手機 ≤420px 把「關於」欄撐寬造成橫向捲動；英文頁 360px 語言鈕超出 3px */
+.social{flex-wrap:wrap;row-gap:4px}
+@media(max-width:380px){html[lang="en"] .mob-test{padding:6px 7px;font-size:.68rem}}
 </style>
 <link rel="icon" href="/favicon.ico" sizes="any"/><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png"/><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png"/><link rel="apple-touch-icon" href="/apple-touch-icon.png"/><link rel="manifest" href="/site.webmanifest"/><meta name="apple-mobile-web-app-title" content="TIPS 台中南屯"/><meta name="theme-color" content="#0e1a2e"/></head>
 <body>
