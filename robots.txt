@@ -39,3 +39,4 @@ User-agent: Amazonbot
 Allow: /
 
 Sitemap: https://www.tips-edu.com/sitemap.xml
+Sitemap: https://www.tips-edu.com/video-sitemap.xml
