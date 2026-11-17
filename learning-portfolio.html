@@ -404,7 +404,9 @@ header .nav,header .wrap{position:relative}
 @media(min-width:601px) and (max-width:960px){.foot-grid{grid-template-columns:1.5fr 1fr}}
 @media(max-width:1000px){.foot-grid>div:first-child ul a{font-size:.85rem}}
 @media(max-width:430px){.foot-grid>div:first-child ul a{font-size:.79rem}}
-/* social-ext 2026-10-01 */.social a.th:hover{background:#000;border-color:#000}.social a.yt:hover{background:#ff0000;border-color:#ff0000}/* nav-video 2026-10-28 */@media(min-width:1140px) and (max-width:1199px){header .menu{gap:5px}header .menu a.cta{padding:7px 11px}}</style>
+/* social-ext 2026-10-01 */.social a.th:hover{background:#000;border-color:#000}.social a.yt:hover{background:#ff0000;border-color:#ff0000}/* nav-video 2026-10-28 */@media(min-width:1140px) and (max-width:1199px){header .menu{gap:5px}header .menu a.cta{padding:7px 11px}}
+/* float-test-hide 2026-11-17：頁首已有免費學習健檢，浮動鈕三顆減為兩顆 */.float-test{display:none!important}
+</style>
 
   <div class="tc-inner">
     <div class="tc-kicker">FREE CONSULT</div>
@@ -518,7 +520,7 @@ header .nav,header .wrap{position:relative}
 </div>
 </footer>
 <script>
-(function(){var s=localStorage.getItem('tips-theme')||'dark';document.documentElement.setAttribute('data-theme',s);})();
+(function(){var s=localStorage.getItem('tips-theme')||'light';document.documentElement.setAttribute('data-theme',s);})();
 function icon(){var d=document.documentElement.getAttribute('data-theme')==='dark';document.querySelectorAll('.ttoggle').forEach(function(b){b.innerHTML=d?'&#9728;&#65039;':'&#127769;';});}
 function toggleTheme(){var d=document.documentElement.getAttribute('data-theme')==='dark';var n=d?'light':'dark';document.documentElement.setAttribute('data-theme',n);localStorage.setItem('tips-theme',n);icon();}
 document.addEventListener('DOMContentLoaded',function(){
